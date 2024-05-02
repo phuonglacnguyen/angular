@@ -1,0 +1,464 @@
+<div id="tabs" class="tabs" *ngIf="_userService.user_current != undefined">
+  <form [formGroup]="userForm" enctype="multipart/form-data" novalidate (ngSubmit)="onSubmit()">
+    <div class="tabfield show" id="tab_1">
+      <div class="wellr well-lgr">
+        <div class="form-group">
+          <div class="row {{ _userService.userSelected._id != '' ? '' : 'hidden'}}">
+            <div class="col-sm-2">
+              <label>_id</label>
+            </div><div class="col-sm-10">
+              <input tabindex="0" type="text" id="_id" formControlName="_id" class="form-control" />
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-sm-2">
+              <label for="first_name">First name profile</label>
+            </div><div class="col-sm-10">
+              <input tabindex="1" type="text" id="first_name" formControlName="first_name" class="form-control" required />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-2">
+              <label for="last_name">Last name</label>
+            </div><div class="col-sm-10">
+              <input tabindex="2" type="text" id="last_name" formControlName="last_name" class="form-control" />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-2">
+              <label for="email">E-mail</label>
+            </div><div class="col-sm-10">
+              <input tabindex="3" type="email" id="email" formControlName="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" class="form-control" />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-2">
+              <label>Password</label>
+            </div><div class="col-sm-10">
+              <input tabindex="4" type="password" formControlName="password" pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,60})" class="form-control" />
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-sm-2">
+              <label for="telephone">Telephone</label>
+            </div><div class="col-sm-10">
+              <input tabindex="5" type="text" formControlName="telephone" class="form-control" />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-2">
+              <label for="userRole">User Roles</label>
+            </div><div class="col-sm-10">
+              <select tabindex="6" formControlName="userRole" class="form-control">
+                <option value="" selected="selected">Select user role</option>
+                <option value="0" *ngIf="_userService.user_current.userRole >= 0">Visitor</option>
+                <option value="30" *ngIf="_userService.user_current.userRole >= 30">Editor</option>
+                <option value="50" *ngIf="_userService.user_current.userRole >= 50">Admin</option>
+                <option value="100" *ngIf="_userService.user_current.userRole >=100">Super User</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-2">
+              <label for="gender">Gender</label>
+            </div><div class="col-sm-10">
+              <div class="form-controlg bg_lightgreen">
+              <input type="radio" formControlName="gender" value="M" (click)="passgender('gender', 'M');" name="gender" checked="{{_userService.userSelected.gender == 'M' ? 'checked' : ''}}" />Male 
+              <input type="radio" formControlName="gender" value="F" (click)="passgender('gender', 'F');"  name="gender" checked="{{_userService.userSelected.gender == 'F' ? 'checked' : ''}}" />Female
+              </div>
+              <input type="text"  id="gender" class="button_hide hidden form-control" />
+
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-2">
+              <label for="Active">Active</label>
+            </div>
+            <div class="col-sm-10" style="text-align:left;">
+              <div class="form-controlg bg_lightgreen">
+                <input tabindex="7" type="checkbox" formControlName="active" class="checkbox" />
+              </div>
+            </div>
+          </div><br />
+
+          <div class="row">
+            <div class="col-sm-2">
+            </div><div class="col-sm-10">
+              <button [disabled]="_userService.isUserLoggedIn == false || userForm.pristine" type="submit" id="saveUser" class="btn btn-success btn_r">Save</button>
+              <button type="reset" [disabled]="userForm.pristine" class="hidden btn btn-danger">Revert</button>
+              <input type="button" class="hidden btn btn-primary" id="cancelUser" (click)="close_user_edit()" value="Close" />
+              <input type="button" class="btn btn-primary" [disabled]="_userService.isUserLoggedIn == false || userForm.pristine" id="deleteUser" (click)="destroy()" ng-confirm-click="Would you like to say hi?" value="Delete" />
+            </div>
+          </div><br />
+
+          <div class="row">
+            <div class="col-sm-2">
+              <label for="telephone">Face coords</label>
+            </div><div class="col-sm-10">
+              <input tabindex="5" type="text" id="faceCoords" formControlName="faceCoords" class="form-control" />
+            </div>
+          </div>
+
+          <div class="row">
+          <div class="col-sm-2">
+            <label for="street">User image</label>
+          </div><div class="col-sm-10">
+            <input (change)="fileCheck($event)" 
+            tabindex="13" 
+            name="fileInput" 
+            id="fileInput" 
+            #fileInput 
+            type="file" 
+            title="filetypeiuser"
+            data-dir="{{_userService.userSelected._id}}"
+            class="form-controli contentFileUpload" />
+            <div class="filetypei form-control4 hidden" id="filetypeiuser">
+              <img src="" id="userImage" />
+              <div id="content_filetypeiuser"></div>
+            
+            <input style="margin:1px 12px 0px 0px;" [disabled]="_userService.isUserLoggedIn == false" type="button" value="Delete" class="btn-danger contentthumb contentthumbbutton btn {{ _userService.isUserLoggedIn == false ? 'hidden' : ''}}" />
+
+            <input type="button" id="saveImageButton" (click)="fileUpload()" class="button_user btn btn-primary btn_r hidden {{ _userService.isUserLoggedIn == false ? 'hidden' : ''}}" value="Save image" />
+            
+            <input type="button" class="btn btn-primary" value="face recognition" (click)="faceR()" />
+
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-2">
+          </div><div class="col-sm-10" id="userImageContents">
+            <img src="" alt="" id="userImage" /><div id="TheImageContents"></div>
+          </div>
+        </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="tabfield hidden" id="tab_2">
+      <div class="well well-lg">
+        <div class="larger">
+          <div class="icon icmn-plus-circle" id="addAddress" title="Add an address" (click)="addLair()"></div>
+        </div>
+
+        <div formArrayName="secretLairs">
+          <div *ngFor="let address of secretLairs.controls; let i=index" [formGroupName]="i">
+
+            <div class="form-group">
+
+              <h4>Address {{ i+1 }}<span (click)="delete_address(i)" class="float_r icmn-cancel-circle icon_red"></span></h4>
+              <div class="row">
+                <div class="col-sm-2">
+                  <label for="street">Street</label>
+                </div><div class="col-sm-10">
+                  <input type="text" formControlName="street" class="form-control" />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-2">
+                  <label for="city">City</label>
+                </div><div class="col-sm-10">
+                  <input type="text" class="form-control" formControlName="city" />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-2">
+                  <label for="state">State</label>
+                </div><div class="col-sm-10">
+                  <input type="text" class="form-control" formControlName="state" />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-2">
+                  <label for="postal">Postal</label>
+                </div><div class="col-sm-10">
+                  <input type="text" formControlName="zip" class="form-control" />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-2">
+                  <label for="country">Country</label>
+                </div><div class="col-sm-10">
+                  <select formControlName="country" class="form-control">
+                    <option value="" selected="selected">Select country</option>
+                    <option value="NL">Netherlands</option>
+                  </select>
+                </div>
+              </div><Br />
+
+              <div class="row">
+                <div class="col-sm-2">
+                </div><div class="col-sm-10">
+                  <input type="submit" class="btn_r btn btn-primary" [disabled]="_userService.isUserLoggedIn == false" id="saveAddress" value="Save" />
+                  <input type="button" class="btn btn-primary" [disabled]="_userService.isUserLoggedIn == false" id="cancelAddress" (click)="cancel_addAddress()" value="Cancel" />
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+
+
+    <div class="tabfield hidden" id="tab_5">
+      <div class="well well-lg">
+        
+
+      <div class="larger">
+          <div class="icon icmn-plus-circle" [style.display]="_userService.isUserLoggedIn == false ? 'hidden' : ''"  id="addFavorites" title="Add to favorite" (click)="addFavorite()"></div>
+        </div>
+      <div formArrayName="secretFavorites">
+          <div *ngFor="let treeid of secretFavorites.controls; let i=index" [formGroupName]="i">
+
+            <div class="form-group">
+              <h4>Favorite {{ i+1 }}<span (click)="delete_favorite(i)" class="float_r icmn-cancel-circle icon_red"></span></h4>
+                <div class="row">
+                <div class="col-sm-2">
+                  <label for="country">Id</label>
+                </div><div class="col-sm-10">
+                  <input type="text" formControlName="_id" class="form-control" />
+                </div></div>
+
+                <div class="row">
+                <div class="col-sm-2">
+                  <label for="country">Title</label>
+                </div><div class="col-sm-10">
+                  <input type="text" formControlName="title" class="form-control" />
+                </div></div><br />
+              
+              <div class="row">
+                <div class="col-sm-2">
+                </div><div class="col-sm-10">
+                  <input type="submit" class="btn_r btn btn-primary" [disabled]="_userService.isUserLoggedIn == false" value="Save" />
+                  <input type="button" class="btn btn-primary" [disabled]="_userService.isUserLoggedIn == false" (click)="cancel_addFavorites()" value="Cancel" />
+                </div>
+              </div>
+            
+
+            </div>
+          </div>
+        </div>
+
+        <h4>History</h4>
+        <div class="larger">
+          <div class="icon icmn-plus-circle" [style.display]="_userService.isUserLoggedIn == false ? 'hidden' : ''"  id="addUrlHistory" title="Add to Url History" (click)="addUrlHistory()"></div>
+        </div>
+      <div formArrayName="secretUrlHistory">
+          <div *ngFor="let treeid of secretUrlHistory.controls; let i=index" [formGroupName]="i">
+
+            <div class="form-group">
+              <h4>Url History {{ i+1 }}<span (click)="delete_UrlHistory(i)" class="float_r icmn-cancel-circle icon_red"></span></h4>
+                <div class="row">
+                <div class="col-sm-2">
+                  <label for="country">Id</label>
+                </div><div class="col-sm-10">
+                  <input type="text" formControlName="_id" class="form-control" />
+                </div></div>
+
+                <div class="row">
+                <div class="col-sm-2">
+                  <label for="country">Title</label>
+                </div><div class="col-sm-10">
+                  <input type="text" formControlName="title" class="form-control" />
+                </div></div><br />
+              
+              <div class="row">
+                <div class="col-sm-2">
+                </div><div class="col-sm-10">
+                  <input type="submit" class="btn_r btn btn-primary" [disabled]="_userService.isUserLoggedIn == false" value="Save" />
+                  <input type="button" class="btn btn-primary" [disabled]="_userService.isUserLoggedIn == false" (click)="cancel_addUrlHistory()" value="Cancel" />
+                </div>
+              </div>
+            
+
+            </div>
+          </div>
+        </div>
+
+        <h4>Movies</h4>
+        <div class="larger">
+          <div class="icon icmn-plus-circle" [style.display]="_userService.isUserLoggedIn == false ? 'hidden' : ''"  id="addMovies" title="Add to favorite" (click)="addMovies()"></div>
+        </div>
+      <div formArrayName="secretMovies">
+          <div *ngFor="let treeid of secretMovies.controls; let i=index" [formGroupName]="i">
+
+            <div class="form-group">
+              <h4>Movies {{ i+1 }}<span (click)="delete_movies(i)" class="float_r icmn-cancel-circle icon_red"></span></h4>
+                <div class="row">
+                <div class="col-sm-2">
+                  <label for="country">Id</label>
+                </div><div class="col-sm-10">
+                  <input type="text" formControlName="_id" class="form-control" />
+                </div></div>
+
+                <div class="row">
+                <div class="col-sm-2">
+                  <label for="country">Title</label>
+                </div><div class="col-sm-10">
+                  <input type="text" formControlName="title" class="form-control" />
+                </div></div><br />
+              
+              <div class="row">
+                <div class="col-sm-2">
+                </div><div class="col-sm-10">
+                  <input type="submit" class="btn_r btn btn-primary" [disabled]="_userService.isUserLoggedIn == false" value="Save" />
+                  <input type="button" class="btn btn-primary" [disabled]="_userService.isUserLoggedIn == false" (click)="cancel_addFavorites()" value="Cancel" />
+                </div>
+              </div>
+            
+
+            </div>
+          </div>
+        </div>
+
+
+
+
+        
+      </div>
+    </div>
+
+    <div class="tabfield hidden" id="tab_6">
+      <div class="well well-lg">
+      
+      </div>
+    </div>
+
+
+    <div class="tabfield hidden" id="tab_3">
+      <div class="well well-lg">
+      </div>
+    </div>
+
+    <div class="tabfield" id="tab_4">
+      <div formArrayName="secretImages" class="well well-lg">
+
+
+
+        <div *ngFor="let image of secretImages.controls; let i=index" [formGroupName]="i">
+          <div>
+            <h4>
+              Image {{ i+1 }}
+              <span (click)="delete_mediaimage(i)" class="pull-right icmn-cancel-circle icon"></span>
+            </h4>
+            <img src="" alt="" class="userImage" />
+
+            <div class="row">
+              <div class="col-sm-2">
+                <label for="postal">Title</label>
+              </div><div class="col-sm-10">
+                <input type="text" class="form-control" #title formControlName="mediaTitle" />
+              </div>
+            </div>
+
+            <div class="text_small">
+
+              <div class="row">
+                <div class="col-sm-2">
+                  <label>Width</label>
+                </div><div class="col-sm-4">
+                  <input type="number" readonly class="form-control" id="mediaWidth" #mwidth formControlName="mediaWidth" />
+                </div>
+                <div class="col-sm-2">
+                  <label for="postal">Height</label>
+                </div><div class="col-sm-4">
+                  <input type="number" readonly class="form-control" #mheight id="mediaHeight" formControlName="mediaHeight" />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-2">
+                  <label for="postal">Type</label>
+                </div><div class="col-sm-4">
+                  <input type="text" readonly class="form-control" #mtype id="mediaType" formControlName="mediaType" />
+                </div>
+                <div class="col-sm-2">
+                  <label for="postal">Extension</label>
+                </div><div class="col-sm-4">
+                  <input type="text" readonly class="form-control" #mext id="mediaExtension" formControlName="mediaExtension" />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-2">
+                  <label for="postal">Path</label>
+                </div><div class="col-sm-4">
+                  <input type="text" readonly class="form-control" #mpath id="mediaPath" formControlName="mediaPath" />
+                </div>
+                <div class="col-sm-2">
+                  <label for="postal">Filesize</label>
+                </div><div class="col-sm-4">
+                  <input type="number" readonly class="form-control" #mfsize id="mediaFilesize" formControlName="mediaFilesize" />
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-2">
+                  <label for="postal">Last modified</label>
+                </div><div class="col-sm-4">
+                  <input type="text" readonly class="form-control" #mlmod id="lastModified" formControlName="lastModified" />
+                </div>
+                <div class="col-sm-2">
+                  <label for="postal">Date Created</label>
+                </div><div class="col-sm-4">
+                  <input type="text" readonly class="form-control" #mdmod id="imageCreated" formControlName="imageCreated" />
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-2">
+          </div><div class="col-sm-10">
+            <input type="button" id="addImageButton" class="btn btn-primary hidden" value="Add an image" (click)="addImage()" />
+
+            <input type="button" id="cancelImageButton" class="no_display btn btn-primary" (click)="cancel_user_image()" value="Cancel" />
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+   <div class="tabfield hidden" id="tab_7">
+      <div class="well well-lg">
+        
+
+      
+      </div>
+    </div>
+
+    <div class="tabfield hidden" id="tab_10">
+      <pre>{{ _userService.userSelected | json }}</pre>
+    </div>
+  </form>
+
+
+
+
+
+
+
+</div>
+
+

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   id="svg102"
+   width="360"
+   height="100"
+   viewBox="0 0 360 100"
+   sodipodi:docname="tekniek-logo-main.svg"
+   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)">
+  <metadata
+     id="metadata108">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs106" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1113"
+     inkscape:window-height="1023"
+     id="namedview104"
+     showgrid="false"
+     inkscape:zoom="1.1156574"
+     inkscape:cx="147.3265"
+     inkscape:cy="50"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg102" />
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:53.33333206px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0ea5e4;fill-opacity:1;stroke:none"
+     x="97.050629"
+     y="55.901279"
+     id="text3803"><tspan
+       sodipodi:role="line"
+       id="tspan3801"
+       x="97.050629"
+       y="55.901279"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:53.33333206px;font-family:'Copperplate Gothic Bold';-inkscape-font-specification:'Copperplate Gothic Bold, ';fill:#0ea5e4;fill-opacity:1">Tekniek</tspan></text>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:21.73333549px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0ea5e4;fill-opacity:1;stroke:none"
+     x="96.596581"
+     y="77.782272"
+     id="text4612"><tspan
+       sodipodi:role="line"
+       id="tspan4610"
+       x="96.596581"
+       y="77.782272"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:21.73333549px;font-family:'Copperplate Gothic Bold';-inkscape-font-specification:'Copperplate Gothic Bold, ';fill:#0ea5e4;fill-opacity:1">Internet Solutions</tspan></text>
+  <path
+     sodipodi:type="star"
+     style="fill:#0ea5e4;fill-opacity:1;fill-rule:evenodd;stroke:#0ea5e4;stroke-width:2.25003123;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+     id="path4614"
+     sodipodi:sides="13"
+     sodipodi:cx="49.822868"
+     sodipodi:cy="48.417396"
+     sodipodi:r1="28.643715"
+     sodipodi:r2="14.136885"
+     sodipodi:arg1="-0.27413644"
+     sodipodi:arg2="-0.032475465"
+     inkscape:flatsided="false"
+     inkscape:rounded="-3.1225023e-017"
+     inkscape:randomized="0"
+     d="M 77.397008,40.663093 63.952299,47.958375 77.842161,54.365643 62.547176,54.577227 71.868432,66.705522 58.227067,59.784936 60.84433,74.855812 51.981657,62.388479 47.295344,76.949379 45.241696,61.791415 34.325383,72.506613 39.551225,58.130524 24.90571,62.545298 36.213864,52.244473 21.194257,49.347451 35.994162,45.481685 24.041274,35.93654 38.94245,39.391433 32.794543,25.384842 44.383311,35.368921 45.448797,20.109625 51.070309,34.335657 59.105098,21.319378 57.471533,36.528349 70.634952,28.73696 62.12054,41.44468 Z"
+     inkscape:transform-center-x="0.099235983"
+     inkscape:transform-center-y="-2.6436737" />
+</svg>

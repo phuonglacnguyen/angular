@@ -1,0 +1,33 @@
+<app-videoplayer-menu></app-videoplayer-menu>
+<app-videoplayer-topbuttons></app-videoplayer-topbuttons>
+<video preload="metadata" #videoplayer id="video_mp4" controls muted>
+ <source src="" type="video/mp4">
+  Your browser does not support the video tag. 
+</video>
+
+<div class="videoplayer_buttons row">
+  <div id="player_cut_begin" class="col-md-1 icon_smaller icmn-arrow-left"></div>
+  <div id="player_cut_end" class="col-md-1 icon_smaller icmn-arrow-right"></div>
+  <div id="player_volume_down" (click)="player_volumeDown($event)" class="col-md-1 icon icmn-volume-decrease"></div>
+  <div id="player_volume_up" (click)="player_volumeUp($event)" class="col-md-1 icon icmn-volume-increase"></div>
+  <div id="player_volume_mute" (click)="player_mute(1)" class="col-md-1 icon icmn-volume-mute2"></div>
+  <div id="player_volume_unmute" (click)="player_mute(0)" class="col-md-1 icon icmn-volume-medium hidden"></div>
+  <div id="player_begin" (click)="player_back()" class="col-md-1 icon icmn-first"></div>
+  <div id="player_back" (click)="player_seek_back($event)" class="col-md-1 icon icmn-backward2"></div>
+  <div id="player_play" (click)="player_play()" class="col-md-1 icon icmn-play4"></div>
+  <div id="player_stop" (click)="player_stop()" class="col-md-1 icon icmn-stop2"></div>
+  <div id="player_pause" #btnPause (click)="player_stop()" class="col-md-1 icon icmn-pause2 hidden"></div>
+  <div id="player_forward" (click)="player_seek_forward($event)" class="col-md-1 icon icmn-forward3"></div>
+  <div id="player_last" (click)="player_forward()" class="col-md-1 icon icmn-last"></div>
+  <div id="player_enlarge" class="col-md-1 icon icmn-enlarge"></div>
+</div>
+
+
+<div class="hidden">
+  <input type="text" #timejump id="timejump" value="10" />
+  <input type="text" #item_id id="item_id" />
+  <input type="text" #item_length id="item_length" />
+  <div id="track_id" #track_id></div>
+  <div id="track_date" #track_date></div>
+</div>
+

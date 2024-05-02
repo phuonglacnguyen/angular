@@ -1,0 +1,125 @@
+<div class="carousel">
+  <ul class="carousel-inner">
+    <li class="carousel-item carousel-itemz">
+      <h2 class="center cursor">
+        <span (click)="reloadImages()" class="icmn-loop3"></span>
+        <span
+          *ngIf="
+            _userService.getUserLoggedIn() == true &&
+            _userService.user_current.userRole == 100
+          "
+          routerLink="{{
+            items.length > 0 ? '/cms/' + items[0]._id + '/true' : ''
+          }}"
+          class="icmn-pencil7"
+        ></span
+        ><a
+          *ngIf="page"
+          title="Go to {{ page.title }}"
+          routerLink="../Videos/{{ _id }}"
+          >{{ page.title ? page.title : "History" }}</a
+        >
+      </h2>
+      <div *ngIf="type == 'v' || type == 'd' || type == 'p'">
+        <video
+          class="video poster"
+          preload="none"
+          controls
+          poster=""
+          #dashboardmoviesvplayercvm
+          id="home_{{ type }}_{{ _id }}"
+          title="{{ items.length > 0 ? 'Go to ' + items[0].title : '' }}"
+          routerLink="{{
+            items.length > 0 ? '/Videos/' + this._id + '/' + items[0]._id : ''
+          }}"
+        >
+          <source id="dashboardmoviesvplayercvsrc" src="" type="video/mp4" />
+          <track
+            id="enTrack_{{ _id }}"
+            src=""
+            label="English"
+            kind="subtitles"
+            srclang="en"
+            default
+          />
+          <track
+            id="nlTrack_{{ _id }}"
+            src=""
+            label="Dutch"
+            kind="subtitles"
+            srclang="nl"
+          />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div *ngIf="type == 'c' || type == 'q'">
+        <img
+          src=""
+          id="home_{{ type }}_{{ _id }}"
+          alt="{{ items.length > 0 ? items[0].title : '' }}"
+          class="carousel-image carousel-imagez"
+          routerLink="{{
+            items.length > 0 ? '/Videos/' + this._id + '/' + items[0]._id : ''
+          }}"
+        />
+        <video
+          *ngIf="type == 'q' && _id == '5ca885cce19d492df0898192'"
+          class="video poster"
+          preload="none"
+          controls
+          poster=""
+          #dashboardmoviesvplayercvm
+          id="home_video_{{ type }}_{{ _id }}"
+          title="{{ items.length > 0 ? 'Go to ' + items[0].title : '' }}"
+          routerLink="{{
+            items.length > 0 ? '/Videos/' + this._id + '/' + items[0]._id : ''
+          }}"
+        ></video>
+      </div>
+      <div *ngIf="type == 'm'">
+        <div class="containHeight">
+          <div *ngFor="let items of items; let c = index">
+            <a
+              title="Play song {{ items.title }}"
+              (click)="
+                loadfile(
+                  items.schemaextend[0].url.replace('POP/', ''),
+                  items.title
+                )
+              "
+              style="display: block; font-size: 1em"
+              >{{ items.title }}</a
+            >
+          </div>
+        </div>
+        <audio controls id="home_{{ type }}_{{ _id }}" autoplay>
+          <source src="" type="audio/mpeg" />
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+      <div *ngIf="type == 'h' && _userService.user_current">
+        <div
+          *ngFor="
+            let video of _userService.user_current.urlHistory;
+            let i = index
+          "
+        >
+          <a title="{{ video.time }}" routerLink="{{ video._id }}">{{
+            video.title
+          }}</a>
+          - <a (click)="removeHistory(i)">Delete</a><br />
+        </div>
+      </div>
+      <div class="carousel-info pointer">
+        <h3
+          title="{{ items.length > 0 ? 'Go to ' + items[0].title : '' }}"
+          routerLink="{{
+            items.length > 0 ? '../Videos/' + _id + '/' + items[0]._id : ''
+          }}"
+        >
+          {{ items.length > 0 ? items[0].title : "" }}
+        </h3>
+      </div>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,86 @@
+.video_buttons {
+  margin: 0px 0px 0px 0px;
+  padding: 0px 20px 10px 20px;
+  color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  display: flex;
+}
+
+.video_buttons span {
+  font-size: 2.5em;
+  margin: 10px 0px 10px 0px;
+  cursor: pointer;
+  color: #000000;
+}
+
+.video_buttons span:hover {
+  color: #dc3545;
+}
+
+#player_hideshowbutton {
+  font-size: 2.3em;
+}
+
+#player_favbutton {
+  font-size: 2.2em;
+}
+
+#indexbutton {
+  height: 48px;
+  margin: 0px 0px 0px 0px;
+}
+
+.indexbutton {
+  font-size: 32px;
+  float: left;
+  margin: 0px 5px 0px 0px;
+  cursor: pointer;
+  color: #666666;
+}
+.indexbutton:hover {
+  color: #dc3545;
+}
+#player_volumedecrease,
+#player_volumeincrease {
+  display: none;
+}
+
+@media screen and (max-device-width: 1000px) {
+  #label_bitrate_tr,
+  #label_musicgenre_tr {
+    display: none;
+  }
+  #video_buttons {
+    text-align: center;
+    padding: 0px;
+  }
+  #player_favbutton {
+    font-size: 1.7em;
+  }
+  .video_buttons span {
+    font-size: 2.1em;
+    margin: 10px 14px 5px 14px;
+    padding: 10px 0px 10px 0px;
+    cursor: pointer;
+  }
+
+  .video_buttons {
+    margin: 8px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+    text-align: center;
+    width: 100%;
+  }
+  #player_hideshowbutton,
+  #player_volumedecrease,
+  #player_volumeincrease,
+  #player_muteoffbutton,
+  #player_muteonbutton {
+    display: none;
+  }
+
+  .button2 {
+    margin: 0px 5px 10px 0px;
+  }
+}

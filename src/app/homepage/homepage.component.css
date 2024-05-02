@@ -1,0 +1,48 @@
+.flex-container {
+  padding: 0px;
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+  column-gap: 10px;
+}
+
+.flex-container .cara {
+  background-color: #f1f1f1;
+
+  margin: 0px 0px 10px 0px;
+  text-align: center;
+}
+
+.wrapper .flex-container .cara {
+  border-radius: 6px;
+}
+
+@media screen and (max-device-width: 600px) {
+  .wrapper .flex-container .cara {
+    background-color: #f1f1f1;
+    width: 100%;
+    margin: 0px 0px 10px 0px;
+    text-align: center;
+    float: left;
+  }
+
+  .flex-container {
+    display: block;
+    justify-content: space-between;
+    padding: 0px;
+  }
+}
+
+@media screen and (max-device-width: 1000px) {
+  .wrapper .flex-container .cara {
+    background-color: #f1f1f1;
+    text-align: center;
+    width: 100%;
+    height: auto;
+  }
+
+  .flex-container {
+    display: block;
+    justify-content: space-between;
+    padding: 0px;
+  }
+}

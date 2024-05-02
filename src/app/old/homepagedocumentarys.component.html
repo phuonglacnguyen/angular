@@ -1,0 +1,39 @@
+<div class="carousel">
+  <h2 class="center cursor">
+    <span (click)="reloadImages()" class="icmn-loop3"></span>
+    <span
+      *ngIf="
+        _userService.getUserLoggedIn() == true &&
+        _userService.user_current.userRole == 100 &&
+        items[0] != undefined
+      "
+      routerLink="{{ enviapiurl }}/cms/{{ items[0]._id }}/true"
+      class="icmn-pencil7"
+    ></span>
+    <a
+      title="Go to Documentarys"
+      routerLink="{{ enviapiurl }}/Videos/5c0d45ea64c6c530246b568c"
+      >Documentary
+    </a>
+  </h2>
+  <a
+    title="Go to {{ items.length > 0 ? items[0].title : '' }}"
+    routerLink="{{ enviapiurl }}/Videos/{{
+      items.length > 0 ? items[0]._id : ''
+    }}"
+  >
+    <img
+      src=""
+      id="homepagedocumentarys"
+      alt="{{ items.length > 0 ? items[0].title : '' }}"
+      class="carousel-image carousel-imagez"
+    />
+  </a>
+  <h3
+    *ngIf="items.length > 0"
+    title="Go to {{ items[0].title }}"
+    routerLink="{{ enviapiurl }}/Videos/{{ items[0]._id }}"
+  >
+    {{ items[0].title }}
+  </h3>
+</div>

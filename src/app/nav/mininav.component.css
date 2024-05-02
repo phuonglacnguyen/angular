@@ -1,0 +1,46 @@
+#menumini {
+  margin: 0px 0px 0px 0px;
+  padding: 20px 0px 10px 35px;
+  background-color: #efefef;
+  position: fixed;
+  left:0px;
+  right:0px;
+  top:0px;
+  z-index: 300000;
+  border-bottom: 1px solid #333333;
+}
+
+#menumini .icomoon {
+  display: inline-block;
+}
+
+#menumini .icomoon, #menumini .icmn-home6, #menumini .icmn-search2 {
+    font-size: 2.6em;
+    cursor: pointer;
+    margin: 0px 12px 10px 0px;
+}
+
+#menumini .icomoon:hover, #menumini .icmn-home6:hover, #menumini .icmn-search2:hover {
+    color: #dc3545;
+}
+
+@media screen and (max-device-width: 800px) {
+
+  #menumini .icomoon {
+    display: inline-block;
+  }
+
+  #menumini {
+    margin: 0px;
+    padding: 20px 10px 0px 10px;
+  }
+
+}
+
+@media screen and (max-device-width: 1000px) {
+  
+    #menumini {
+        padding: 20px 0px 10px 20px;
+    }
+
+}

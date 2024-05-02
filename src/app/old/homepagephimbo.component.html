@@ -1,0 +1,15 @@
+<div *ngIf="items[0] != undefined" class="carousel">
+  <ul class="carousel-inner">
+    <li class="carousel-item carousel-itemz">
+      <h2 class="center cursor">
+        <span (click)="reloadImages();" class="icmn-loop3"></span>
+        <span *ngIf="_userService.getUserLoggedIn() == true && _userService.user_current.userRole == 100" routerLink="/cms/{{ items[0]._id }}/true" class="icmn-pencil7"></span>
+        <a title="Go to Computers" routerLink="/Videos/5c0d45ea64c6c530246b5691">Phim Bo</a></h2>
+      <a title="Go to {{ items[0].title }}" routerLink="/Videos/{{items[0]._id}}"><img src="/api/assets/content/{{items[0]._id}}/thumb.jpg" alt="{{items[0].title}}" class="" /></a>
+      <div class="carousel-info pointer">
+        <h3 title="Go to {{ items[0].title }}" routerLink="/Videos/{{items[0]._id}}">{{items[0].title}}</h3>
+      </div>
+    </li>
+  </ul>
+</div>
+

@@ -1,0 +1,12 @@
+<div class="field">
+  <h4 class="title6">{{ parentName }}</h4>
+  <div class="flex-container">
+    <div *ngFor="let page of allItems; let b=index"
+         routerLink="/{{ titlecheck(page.title) }}/{{page._id}}"
+         class="blok_kid {{ pageId == page._id ? 'txt_red' : ''}}">
+      <div class="info">
+        <h4>{{page.title}}</h4>
+      </div>
+    </div>
+  </div>
+</div>

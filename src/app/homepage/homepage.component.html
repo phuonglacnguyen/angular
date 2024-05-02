@@ -1,0 +1,22 @@
+<div id="PopupDiv" (click)="clearPopupDiv()"></div>
+<div id="homepage">
+  <div class="wrapper">
+    <div class="flex-container">
+      <div *ngFor="let blok of bloks; let e = index" class="cara">
+        <app-homepageblok
+          id="{{ blok._id }}"
+          [_id]="blok._id"
+          [type]="blok.type"
+        ></app-homepageblok>
+      </div>
+    </div>
+  </div>
+  <h4 class="titleb icontitle">
+    <span
+      class="float_r icmn-circle-up2"
+      id="scrollToTop"
+      (click)="scrollToTop()"
+    ></span
+    >&nbsp;
+  </h4>
+</div>

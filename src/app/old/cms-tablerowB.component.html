@@ -1,0 +1,42 @@
+<ul cdkDropList 
+    class="levelB turowlink table rowul_{{currentPage._id}}" 
+    id="rowul{{currentPage._id}}"
+    (cdkDropListDropped)="onDrop($event)"
+    [style.display]="_userService.isUserLoggedIn == true ? '' : 'none'">
+    <li cdkDrag class="trow_{{bpage.parent}} turwlink trow_{{ bpage._id }} table-row {{ b%2 == 0 ? 'bg_grey' : 'bg_white' }}"
+        *ngFor='let b = index, let bpage of  cmsPages'
+        id="rowli_{{bpage._id}}"
+        data-kids="on"
+        [attr.data-kids]="getDataKids(bpage)"
+        scope="rowB"
+        dir="{{ bpage.parent }}"
+        [cdkDragData]="bpage"
+        ><div  id="tabrowdl_{{bpage._id}}" class="levelb tabrowdl {{ bpage._id == _cmsService.pageSelected._id && _cmsService.treelevels.length == 2 ? 'active' : '' }} {{ _cmsService.treelevels.length > 2 && _cmsService.treelevels[1]._id == bpage._id && bpage._id != _cmsService.pageSelected._id ? 'bactive' : '' }}">
+            <span [style.display]="_userService.isUserLoggedIn == true ? '' : 'none'" class="hidden table-cell col-sm-1 dnd {{ userlogin == true && bpage.parent == _cmsService.pageSelected._id ? ' icmn-arrow-resize8' : ' icmn-arrow-resize7' }}"></span>
+            <span class="table-cell col-sm-1 Visibility icon {{ bpage.visible == true ? 'icmn-lamp8' : 'icmn-lamp7' }}" title="{{ bpage.visible == true ? 'On' : 'Off' }}" id="visibility_{{bpage._id}}"></span>
+            <span class="table-cell col-sm-1 Security hidden {{ bpage.secure == true ? 'icmn-link4' : 'icmn-unlink4' }}" id="published_{{bpage._id}}"></span>
+            <span class="table-cell col-sm-1 {{ bpage.kids > 0 && bpage.title != 'Website' ? 'icmn-arrow-right5' : 'icmn-arrow-down5' }}" title="{{bpage.kids}}" id="rowchild_{{bpage._id}}"></span>
+            <span class="table-cell col-sm-1 hidden letter" title="B">2</span>
+            <span class="table-cell col-sm-1 Checkboxes hidden"><input class="checkbox chklevelB  {{ bpage.secure == true ? 'disabled' : ''}}" type="checkbox" id="chk_{{ bpage._id }}" value="1" title="{{ bpage.title }}" /> &nbsp; </span>
+            <a (click)="_cmsService.listlink(bpage)"
+               id="tabrowl_{{bpage._id}}"
+               class=" tabrowl table-cell mybuttonz col-sm-6 kid{{bpage.treelevel}} indent_2"
+               title="{{ bpage.kids > 0 ? bpage.kids + ' items under ' + bpage.title : '' }}">
+              {{bpage.title}}
+
+              <span *ngIf="_cmsService.filterFull.length > 0">
+                <span *ngFor="let prop of _cmsService.filterFull;">
+                   <span *ngIf="bpage._id == _cmsService.pageSelected._id && prop.pname != undefined " class="ucfirst smalltxt">{{ prop.pname != undefined ? '| '+prop.pname : '' }}</span>
+                </span>
+              </span>
+              
+              <span class="float_r iconLetter" id="rowcell_{{bpage._id}}">{{bpage.kids > 0 ? bpage.kids : '0'}}</span>
+            </a>
+        </div>
+        <app-cms-tablerowC [currentPage]="bpage"
+                            [userlogin]="userlogin"
+                            [cmsPages]="bpage.cmsSubPages"
+                            [tableLevel]="(tableLevel+1)">
+        </app-cms-tablerowC> 
+    </li>
+</ul>

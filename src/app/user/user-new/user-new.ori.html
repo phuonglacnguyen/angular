@@ -1,0 +1,102 @@
+﻿
+<div *ngIf="sshowNewUser" id="div_new_user" class="border border-light rounded">
+
+  <form (submit)="create()" name="myForm">
+    <div class="row">
+      <h2>New user</h2>
+      <div *ngIf="first_name.invalid && (first_name.dirty || first_name.touched)" class="alert alert-danger">
+        <div *ngIf="first_name.errors.required">
+          Firstname is required.
+        </div>
+        <div *ngIf="first_name.errors.minlength">
+          Firstname must be at least {{ first_name.errors.minlength.requiredLength }} characters long.
+        </div>
+        <div *ngIf="first_name.errors.maxlength">
+          Firstname must can be max {{ first_name.errors.maxlength.requiredLength }} characters long.
+        </div>
+        <div *ngIf="first_name.errors.pattern">
+          Firstname cannot have special characters like @.
+        </div>
+      </div>
+      <input type="text" tabindex="1" #first_name="ngModel" name="first_name" [(ngModel)]="newUser.first_name" required minlength="2" maxlength="20" class="form-control" placeholder="First name" /><br />
+
+      <div *ngIf="last_name.invalid && (last_name.dirty || last_name.touched)" class="alert alert-danger">
+        <div *ngIf="last_name.errors.required">
+          last_name is required.
+        </div>
+        <div *ngIf="last_name.errors.minlength">
+          last_name must be at least 2 characters long.
+        </div>
+      </div>
+      <input type="text" tabindex="2" #last_name="ngModel" name="last_name" [(ngModel)]="newUser.last_name" required minlength="2" class="form-control" placeholder="Last name" /><br />
+
+
+      <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
+        <div *ngIf="!email?.valid">
+          email is invalid.
+        </div>
+      </div>
+      <input type="email" tabindex="3" #email="ngModel" name="email" [(ngModel)]="newUser.email" email required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" [ngClass]="{invalid : email.touched && !email?.valid}" class="form-control" placeholder="E-mail" /><br />
+
+      <div *ngIf="telephone.invalid && (telephone.dirty || telephone.touched)" class="alert alert-danger">
+        <div *ngIf="telephone.errors.required">
+          Telephone is required.
+        </div>
+        <div *ngIf="telephone.errors.minlength">
+          Telephone must be at least 10 characters long.
+        </div>
+      </div>
+      <input type="text" tabindex="4" #telephone="ngModel" name="telephone" [(ngModel)]="newUser.telephone" required minlength="10" class="form-control" placeholder="Telephone" /><br />
+
+      <div formArrayName="secretLairs" class="well well-lg">
+        <div *ngFor="let address of secretLairs.controls; let i=index" [formGroupName]="i">
+          <input type="text" tabindex="7" formControlName="street" class="form-control" placeholder="Street" /><br />
+          <input type="text" tabindex="9" formControlName="zip" class="form-control" placeholder="Postal" /><br />
+          <input type="text" tabindex="8" formControlName="city" class="form-control" placeholder="City" /><br />
+          <select tabindex="10" formControlName="country" class="form-control">
+            <option value="" selected="selected">Select country</option>
+            <option value="NL">Netherlands</option>
+          </select>
+          <br />
+        </div>
+      </div>
+
+
+      <div class="input-group">
+        <span class="input-group-addon">
+          <input type="radio" aria-label="Radio button for following text input">
+        </span>
+        <input type="text" class="form-control" aria-label="Text input with radio button" value="Active">
+      </div><br />
+
+      <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger">
+        <div *ngIf="password.errors.required">
+          Password is required.
+        </div>
+        <div *ngIf="password.errors.minlength">
+          Password must be at least 6 characters long.
+        </div>
+        <div *ngIf="password.errors.pattern">
+          Passwordd should be atleast contain one number, one lowercase character, one uppercase character and one special character.
+        </div>
+      </div>
+      <input type="password" tabindex="5" pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})" #password="ngModel" name="password" [(ngModel)]="newUser.password" required minlength="6" class="form-control" placeholder="Password" /><br />
+
+      <select tabindex="6" #userRole="ngModel" name="userRole" [(ngModel)]="newUser.userRole" required class="form-control">
+        <option value="" selected="selected">Select user role</option>
+        <option value="0">Visitor</option>
+        <option value="50">Editor</option>
+        <option value="100">Admin</option>
+      </select>
+      <br />
+
+      <input type="submit" value="Save" class="btn btn-primary" />
+      <input type="hidden" name="dateCreated" id="dateCreated" [(ngModel)]="newUser.dateCreated" />
+    </div>
+
+  </form>
+</div>
+
+
+
+

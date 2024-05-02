@@ -1,0 +1,43 @@
+<ul cdkDropList 
+    class="rowul_{{currentPage._id}} levelG turowlink"
+    (cdkDropListDropped)="onDrop($event)">
+    <li cdkDrag class="{{  gpage._id == _cmsService.pageSelected._id ? 'current' : '' }}  {{ g%2 == 0 ? 'bg_grey' : 'bg_white' }}"
+        *ngFor="let g = index, let gpage of cmsPages | filter : (_cmsService.treelevels.length == 6) &&  _filterService.filterText | firstletter : (_cmsService.treelevels.length == 6) && _filterService.filterFirstletter"
+        data-kids="off"
+        (onDropSuccess)="_cmsService.onMoveb(gpage, g)"
+        scope="rowG"
+        [cdkDragData]="gpage"
+        dir="{{ gpage.parent }}"
+        id="rowli_{{gpage._id}}">
+        <div id="tabrowdl_{{gpage._id}}" class="tabrowdl {{ gpage._id == _cmsService.pageSelected._id ? 'active' : '' }} {{ _cmsService.treelevels.length > 6 && _cmsService.treelevels[6]._id == gpage._id && gpage._id != _cmsService.pageSelected._id ? 'bactive' : '' }}">
+            <span [style.display]="_userService.isUserLoggedIn == true ? '' : 'none'" class="hidden table-cell col-sm-1 dnd icon handle {{ userlogin == true && gpage.parent == _cmsService.pageSelected._id ? ' icmn-arrow-resize8' : ' icmn-arrow-resize7' }}"></span>
+            <span class="table-cell Visibility col-sm-1 icon {{ gpage.visible == true ? 'icmn-lamp8' : 'icmn-lamp7' }}" title="{{ gpage.visible == true ? 'On' : 'Off' }}" id="visibility_{{gpage._id}}"></span>
+            <span class="table-cell Security col-sm-1 hidden {{ gpage.secure == true ? 'icmn-link4' : 'icmn-unlink4' }}" id="published_{{gpage._id}}"></span>
+            <span class="table-cell col-sm-1 {{ gpage.kids > 0 ? 'icmn-play4' : '' }}" title="{{gpage.kids}}" id="rowchild_{{gpage._id}}"></span>
+            <span class="table-cell col-sm-1 hidden letter" title="G">7</span>
+            <span class="table-cell col-sm-1 Checkboxes hidden"><input class="checkbox chklevelG  {{ gpage.secure == true ? 'disabled' : ''}} {{ gpage.schemaextend[0].videocodec ? gpage.schemaextend[0].videocodec : '' }}" type="checkbox" name="{{ gpage.schemaextend[0].track }}" id="chk_{{ gpage._id }}" value="1" title="{{ gpage.title }}" (click)="_cmsService.listCheckboxCount('chk_'+gpage._id)" /> &nbsp; </span>
+            <a (click)="_cmsService.listlink(gpage)"
+               id="tabrowl_{{gpage._id}}"
+               title="{{gpage.title}}"
+               class="tabrowl mybuttonz col-sm-6 kid{{gpage.treelevel}} indent_7" style="white-space: nowrap;">
+               {{gpage.title | slice:0:40 }} {{ gpage.title.length > 40 ? '..' : ''}}
+
+           <span *ngFor="let prop of _cmsService.filterFull;">
+            <span class="ucfirst smalltxt">{{ gpage.schemaextend && gpage.schemaextend[0]['musicgenre'] != undefined ? ' | '+ gpage.schemaextend[0]['artist'] : 'niks' }}</span>
+        </span>
+
+
+
+
+<span *ngIf="gpage.objectType == '5bf9d60fe2776742d80831e5'"></span>
+              <span class="float_r iconLetter" id="rowcell_{{gpage._id}}">{{gpage.kids > 0 ? gpage.kids : ''}}</span>
+            </a>
+            
+        </div>
+        <app-cms-tablerowH [currentPage]="gpage"
+        [userlogin]="userlogin"
+        [cmsPages]="gpage.cmsSubPages"
+        [tableLevel]="(tableLevel+1)">
+</app-cms-tablerowH> 
+    </li>
+</ul>

@@ -1,0 +1,17 @@
+<div class="carousel">
+    <ul class="carousel-inner">
+      <li *ngFor="let item of items;" class="carousel-item carousel-itemz">
+         <h2 class="center cursor"><span (click)="reloadImages();" class="icmn-loop3"></span><span *ngIf="_userService.getUserLoggedIn() == true && _userService.user_current.userRole == 100 && album" routerLink="/cms/{{ album._id }}/true" class="icmn-pencil7"></span><a *ngIf="album" title="Go to {{ albums[0].title }}" routerLink="/Music/5c352818ecfbd41448ff71af/{{ albums[0]._id }}">{{ albums[0].title }} {{ album.title }}</a></h2>
+         <div class="containHeight">
+         <div  *ngFor="let items of kids;  let c=index">
+          <a title="Play song {{ items.title }}" (click)="loadfile(items.schemaextend[0].url.replace('POP/',''), items.title);" style="display: block;font-size:1.0em;">{{ items.title }}</a>
+        </div>
+      </div>
+        <audio controls id="mp3player" autoplay>
+          <source id="source" src="" type="audio/mpeg">
+        Your browser does not support the audio element.
+        </audio>
+     </li>
+    </ul>
+  </div>
+  

@@ -1,0 +1,25 @@
+<div id="menumini">
+  <span class="" title="Home">
+    <a id="home" routerLink="/homepage" (click)="resetBreadcrumb()" class="icmn-home6"></a>
+  </span>
+
+  <span *ngFor="let page of _cmsService.menuList; let b=index"
+        [style.display]="page.visible == true ? 'inline-block' : 'none'"
+        (mouseenter)="_cmsService.menuSubLink(page)"
+        [class.active]="activeMenu == page.title"
+        class="dropdown">
+    <a (click)="settabc(page.title, page)" class="icomoon {{ page.title == 'Media' ? 'icmn-file-play' : ''}} {{ page.title == 'Apps' ? 'icmn-file-picture' : ''}} {{ page.title == 'Music' ? 'icmn-file-music' : ''}} {{ page.title == 'Cms' ? 'icmn-cog2' : ''}} {{ page.title == 'Food' ? 'icmn-cart5' : ''}} dropdown-toggle {{ _cmsService.treelevels[2] != undefined && _cmsService.treelevels[2]._id == page._id ? 'txt_red' : ''}}" routerLink="/Kids/{{page.title}}/{{page._id}}"></a>
+  </span>
+
+  <span [style.display]="_userService.isUserLoggedIn == true ? 'inline-block' : 'none'">
+    <a class="icomoon icmn-cog2" [class.active]="activeMenu == 'Login' || activeMenu == 'Users' || activeMenu == 'System' || activeMenu == 'Cms' || activeMenu == 'Admin'" routerLink="/cms/5a111233aaa94d061a93e719" (click)="settab('Cms', '5a11ca02aaa94d061a93e71c')"></a>
+  </span>
+
+  <span [style.display]="_userService.isUserLoggedIn == true && _userService.user_current.userRole == 100 ? 'inline-block' : 'none'">
+    <a class="icomoon icmn-users" [class.active]="activeMenu == 'Users'" routerLink="/users" (click)="settab('Users', '')"></a>
+  </span>
+
+  <span title="Toggle search options">
+    <a id="search" (click)="d_toggle_searchdiv()" class="icmn-search2"></a>
+  </span>
+</div>

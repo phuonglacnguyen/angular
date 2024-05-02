@@ -1,0 +1,475 @@
+<div id="imgmenu" class="imgmenu">
+  <ul class="nav nav-tabs">
+    <li
+      class="imgmenua"
+      [style.display]="
+        _cmsService.pageSelected.listItem == true ? 'inline-block' : 'none'
+      "
+      id="toggle_div_new_cms"
+      (click)="toggle_new_cms()"
+    >
+      <a title="New page under {{ _cmsService.pageSelected.title }}">
+        <span class="icon_b icmn-file-plus cursor"></span>
+      </a>
+    </li>
+    <li class="imgmenua">
+      <a title="Options"><span class="icon_b icmn-cog2 cursor"></span></a>
+      <ul class="levelA" *ngIf="_userService.getUserLoggedIn() == true">
+        <li>
+          <a>Edit<span class="more float_r icmn-arrow-down5"></span></a>
+          <ul class="levelB dropdown-contentB">
+            <li style="white-space: nowrap">
+              <select id="saveObject" class="select_small">
+                <option value=""></option>
+                <option
+                  value="{{ season._id }}"
+                  *ngFor="let season of _cmsService.sysObjects"
+                >
+                  {{ season.title }}
+                </option>
+              </select>
+              <a (click)="saveListObject()" class="button_small">Object</a>
+            </li>
+            <li style="white-space: nowrap">
+              <select id="saveParent" class="select_small">
+                <option value=""></option>
+                <option value="5c35264fecfbd41448ff71ad">Albums</option>
+                <option
+                  value="{{ moddel._id }}"
+                  *ngFor="let moddel of _cmsService.parents"
+                >
+                  {{ moddel.title }}
+                </option>
+              </select>
+              <a (click)="saveList()" class="button_small">Parent</a>
+            </li>
+            <li style="white-space: nowrap">
+              <select id="treelevelParent" class="select_small">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+              </select>
+              <a (click)="saveListtreelevels()" class="button_small"
+                >Treelevel</a
+              >
+            </li>
+            <li style="white-space: nowrap">
+              <select id="saveListItem" class="select_small">
+                <option value=""></option>
+                <option value="true">True</option>
+                <option value="false">False</option>
+              </select>
+              <a (click)="saveListItem()" class="button_small">List item</a>
+            </li>
+            <li style="white-space: nowrap">
+              <input
+                type="number"
+                id="saveListKids"
+                class="input_small float_r"
+              />
+              <a (click)="saveListKids()" class="button_small">Kids</a>
+            </li>
+            <li>
+              <select id="saveListPersons" class="select_small">
+                <option value=""></option>
+                <option
+                  value="{{ moddel._id }}"
+                  *ngFor="let moddel of _cmsService.photopersons"
+                >
+                  {{ moddel.title }}
+                </option>
+              </select>
+              <a (click)="saveListPersons()" class="button_small">Persons</a>
+            </li>
+            <li>
+              <input
+                type="text"
+                id="stringToReplace"
+                class="input_small float_r"
+              />
+              <a (click)="setStringReplace()" class="button_small"
+                >String replace</a
+              >
+            </li>
+          </ul>
+        </li>
+
+        <li>
+          <a>Properties<span class="more float_r icmn-arrow-down5"></span></a>
+          <ul class="levelB dropdown-contentB">
+            <li
+              *ngFor="
+                let prop of _cmsService.pagetpropertiesFull;
+                let e = index
+              "
+            >
+              <div *ngIf="prop.inputtype != 'Object'">
+                <div *ngIf="prop.inputtype != 'File'">
+                  <div *ngIf="prop.inputtype == 'Text'">
+                    <input
+                      type="text"
+                      id="lst_prop_{{ prop._id }}"
+                      class="input_small float_r"
+                    />
+                  </div>
+                  <div *ngIf="prop.inputtype == 'number'">
+                    <input
+                      type="number"
+                      id="lst_prop_{{ prop._id }}"
+                      class="input_small float_r"
+                    />
+                  </div>
+                  <div *ngIf="prop.inputtype == 'Slider'">
+                    <input
+                      type="range"
+                      id="lst_prop_{{ prop._id }}"
+                      class="slider_small float_r"
+                    />
+                  </div>
+                  <div *ngIf="prop.inputtype == 'Datepicker'">
+                    <input
+                      type="date"
+                      id="lst_prop_{{ prop._id }}"
+                      class="input_small float_r"
+                    />
+                  </div>
+                  <div *ngIf="prop.inputtype == 'DateTime'">
+                    <input
+                      type="datetime-local"
+                      id="lst_prop_{{ prop._id }}"
+                      class="input_small float_r"
+                    />
+                  </div>
+                  <div
+                    *ngIf="
+                      prop.inputtype == 'SelectMulti' ||
+                      prop.inputtype == 'Select' ||
+                      prop.inputtype == 'SelectWithEmpty'
+                    "
+                  >
+                    <select class="select_small" id="lst_prop_{{ prop._id }}">
+                      <option value=""></option>
+                      <option
+                        *ngFor="let season of prop.valuesarr; let e = index"
+                        value="{{ prop.valuesarr[e] }}"
+                      >
+                        {{ prop.labelsarr[e] }}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div *ngIf="prop.inputtype == 'Checkbox'">
+                    <select class="select_small" id="lst_prop_{{ prop._id }}">
+                      <option value=""></option>
+                      <option value="true">True</option>
+                      <option value="false">False</option>
+                    </select>
+                  </div>
+
+                  <div *ngIf="prop.inputtype == 'Email'">
+                    <input
+                      type="email"
+                      id="lst_prop_{{ prop._id }}"
+                      class="input_small float_r"
+                    />
+                  </div>
+
+                  <div *ngIf="prop.inputtype == 'Number'">
+                    <input
+                      type="number"
+                      id="lst_prop_{{ prop._id }}"
+                      class="input_small float_r"
+                    />
+                  </div>
+
+                  <div
+                    *ngIf="
+                      prop.inputtype == 'Rtf' || prop.inputtype == 'Textarea'
+                    "
+                  >
+                    <textarea
+                      type="email"
+                      id="lst_prop_{{ prop._id }}"
+                      class="text_small float_r"
+                    >
+                    </textarea>
+                  </div>
+
+                  <div *ngIf="prop.inputtype == 'Radio'">
+                    <div class="float_r div_small">
+                      <input
+                        type="radio"
+                        id="lst_prop_1{{ prop._id }}"
+                        name="lst_prop_{{ prop._id }}"
+                        class="radio_small float_l"
+                        value="{{ prop.valuesarr[0] }}"
+                        (click)="radioset(prop.valuesarr[0], prop._id)"
+                      /><label
+                        for="lst_prop_1{{ prop._id }}"
+                        (click)="radioset(prop.valuesarr[0], prop._id)"
+                        >{{ prop.labelsarr[0] }}</label
+                      ><br />
+                      <input
+                        type="radio"
+                        id="lst_prop_2{{ prop._id }}"
+                        name="lst_prop_{{ prop._id }}"
+                        class="radio_small float_l"
+                        value="{{ prop.valuesarr[1] }}"
+                        (click)="radioset(prop.valuesarr[1], prop._id)"
+                      /><label
+                        for="lst_prop_2{{ prop._id }}"
+                        (click)="radioset(prop.valuesarr[1], prop._id)"
+                        >{{ prop.labelsarr[1] }}</label
+                      >
+                      <input
+                        type="text"
+                        id="lst_prop_{{ prop._id }}"
+                        class="hidden"
+                      />
+                    </div>
+                  </div>
+
+                  <a
+                    class="button_small"
+                    title="{{ prop.inputtype }}"
+                    (click)="saveListProperty(prop)"
+                    >{{ prop.title }}</a
+                  >
+                </div>
+              </div>
+              <div
+                *ngIf="prop.inputtype == 'Object' && prop.title != 'Addresses'"
+              >
+                <select
+                  id="lst_prop_{{ prop._id }}"
+                  class="select_small float_r"
+                  placeholder="Select preview"
+                >
+                  <option value=""></option>
+                  <option
+                    *ngFor="let season of prop.valuesarr; let e = index"
+                    value="{{ prop.valuesarr[e] }}"
+                  >
+                    {{ prop.labelsarr[e] }}
+                  </option>
+                </select>
+                <a
+                  class="button_small"
+                  title="{{ prop.inputtype }}"
+                  (click)="saveListProperty(prop)"
+                  >{{ prop.title }}</a
+                >
+              </div>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a>Options<span class="more float_r icmn-arrow-down5"></span></a>
+          <ul class="levelB dropdown-contentB">
+            <li>
+              <a>Levels<span class="more float_r icmn-arrow-down5"></span></a>
+              <ul class="levelC dropdown-contentC">
+                <li (click)="toggleLevel('chklevelA')"><a>Level A</a></li>
+                <li (click)="toggleLevel('chklevelB')"><a>Level B</a></li>
+                <li (click)="toggleLevel('chklevelC')"><a>Level C</a></li>
+                <li (click)="toggleLevel('chklevelD')"><a>Level D</a></li>
+                <li (click)="toggleLevel('chklevelE')"><a>Level E</a></li>
+                <li (click)="toggleLevel('chklevelF')"><a>Level F</a></li>
+                <li (click)="toggleLevel('chklevelG')"><a>Level G</a></li>
+              </ul>
+            </li>
+            <li>
+              <a
+                >Extensions<span class="more float_r icmn-arrow-down5"></span
+              ></a>
+              <ul class="levelB dropdown-contentB">
+                <li (click)="selectOnlyMp4()"><a>MP4</a></li>
+                <li (click)="selectOnlyJpg()"><a>JPG</a></li>
+              </ul>
+            </li>
+            <li>
+              <a>Sorting<span class="more float_r icmn-arrow-down5"></span></a>
+              <ul class="levelB dropdown-contentB">
+                <li (click)="setTitleSort()">
+                  <a class="button_small">Sort by title</a>
+                </li>
+                <li (click)="setTitleSubtraction()">
+                  <a class="button_small">Sort by subtraction</a>
+                </li>
+                <li (click)="setTrackSort()">
+                  <a class="button_small">Sort by track</a>
+                </li>
+                <li (click)="setPickOrder()">
+                  <a class="button_small">Set pickorder</a>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a>Toggle<span class="more float_r icmn-arrow-down5"></span></a>
+              <ul class="levelB dropdown-contentB">
+                <li (click)="toggleListDnd()"><a>DnD</a></li>
+                <li (click)="toggleListVisibility()"><a>Visibility</a></li>
+                <li (click)="toggleListSecurity()"><a>Security</a></li>
+                <li (click)="toggleListCheckboxes()"><a>Checkboxes</a></li>
+                <li (click)="toggleLetter()"><a>Letter</a></li>
+                <li (click)="toggleListKids()"><a>Kids</a></li>
+                <li (click)="toggleListImages()"><a>Images</a></li>
+              </ul>
+            </li>
+            <li>
+              <a
+                >Visibility<span class="more float_r icmn-arrow-down5"></span
+              ></a>
+              <ul class="levelB dropdown-contentB">
+                <li (click)="listSecInvisible()"><a>Selection Invisible</a></li>
+                <li (click)="listSecVisible()"><a>Selection Visible</a></li>
+              </ul>
+            </li>
+            <li>
+              <a>Security<span class="more float_r icmn-arrow-down5"></span></a>
+              <ul class="levelB dropdown-contentB">
+                <li (click)="listSendSec()"><a>Selection Secure</a></li>
+                <li (click)="UnsecureListSelection()">
+                  <a>Selection Unsecure</a>
+                </li>
+              </ul>
+            </li>
+            <li (click)="deleteListSelection()"><a>Selection Delete</a></li>
+          </ul>
+        </li>
+        <li>
+          <a>Video<span class="more float_r icmn-arrow-down5"></span></a>
+          <ul class="levelB dropdown-contentB">
+            <li>
+              <select id="saveListImagefromVIdeo" class="select_small">
+                <option value="00:00:02">2</option>
+                <option value="00:00:05">5</option>
+                <option value="00:00:10">10</option>
+                <option value="00:00:30">30</option>
+                <option value="00:01:00">60</option>
+                <option value="00:02:00">120</option>
+                <option value="00:03:00">180</option>
+                <option value="00:04:00">240</option>
+              </select>
+              <a (click)="saveListImagefromVIdeo()" class=""
+                >Image from video</a
+              >
+            </li>
+            <li (click)="setMovieConverter()">
+              <a class="button_small">Convert to 265</a>
+            </li>
+            <li (click)="setMovieConverterBat()">
+              <a class="button_small">Convert with bat file</a>
+            </li>
+            <li>
+              <a (click)="faststart()">Faststart</a>
+            </li>
+            <li (click)="saveListInfofromVIdeo()">
+              <a class="button_small">Info from video</a>
+            </li>
+            <li (click)="saveListImDBfromVideo()">
+              <a class="button_small">ImDB</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a>Audio<span class="more float_r icmn-arrow-down5"></span></a>
+          <ul class="levelB dropdown-contentB">
+            <li style="white-space: nowrap">
+              <select id="musicGenreParent" class="select_small">
+                <option value=""></option>
+                <option
+                  value="{{ moddel.title }}"
+                  *ngFor="let moddel of _cmsService.musicGenres"
+                >
+                  {{ moddel.title }}
+                </option>
+              </select>
+              <a (click)="saveListmusicgenre()" class="button_small"
+                >Music genre</a
+              >
+            </li>
+            <li (click)="saveListID3tagsfromAudio()">
+              <a class="button_small">ID3 tags</a>
+            </li>
+            <li (click)="saveListTrackFromTitle()" class="button_small">
+              <a>Track from title</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a>Images<span class="more float_r icmn-arrow-down5"></span></a>
+          <ul class="levelB dropdown-contentB">
+            <li (click)="toggleListAutoImage()">
+              <a
+                >List auto image:
+                {{ _cmsService.listAutoImage == false ? "Off" : "On" }}</a
+              >
+            </li>
+            <li (click)="createImageList()">
+              <a>Image and Thumb from movie</a>
+            </li>
+            <li (click)="createThumbFromImageList()">
+              <a>Thumb from Image</a>
+            </li>
+            <li (click)="fileToImageConverter()">
+              <a class="button_small">Main.jpg to image.jpg</a>
+            </li>
+            <li (click)="saveListThumbFromMain()">
+              <a class="button_small">Thumb from main</a>
+            </li>
+            <li (click)="saveListDeleteImage()">
+              <a class="button_small">Delete image</a>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a
+            id="top-icmn-pencil"
+            title="Toggle list view"
+            (click)="toggleDiv('index')"
+            >Swap Index</a
+          >
+        </li>
+      </ul>
+    </li>
+    <li class="imgmenua">
+      <a title="Toggle checkboxes"
+        ><span
+          class="icon_b icmn-checkbox-checked2 cursor"
+          (click)="toggleListCheckboxes()"
+        ></span
+      ></a>
+    </li>
+    <li class="imgmenua" *ngIf="_cmsService.treelevels.length > 5">
+      <a title="Toggle Level G checkboxes"
+        ><span class="icon_letter cursor" (click)="toggleLevel('chklevelG')"
+          >G</span
+        ></a
+      >
+    </li>
+    <li
+      class="imgmenua"
+      *ngIf="
+        _cmsService.treelevels.length > 5 && _cmsService.listCheckboxCounter > 0
+      "
+    >
+      <a title="Faststart"
+        ><span class="icon_b icmn-movie cursor" (click)="faststart()"></span
+      ></a>
+    </li>
+    <li class="imgmenua" *ngIf="_cmsService.listCheckboxCounter > 0">
+      <a title="Convert movies to H265"
+        ><span
+          class="icon_b icmn-clapboard-play cursor"
+          (click)="setMovieConverter()"
+        ></span
+      ></a>
+    </li>
+  </ul>
+</div>

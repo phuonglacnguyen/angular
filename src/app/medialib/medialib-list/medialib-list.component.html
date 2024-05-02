@@ -1,0 +1,125 @@
+<app-medialib-new
+  fileExt="JPG, GIF, PNG, MP4, MKV, WAV, AVI, WMV, MPG"
+  (getMediaList)="getImageDData()"
+></app-medialib-new>
+
+<div class="row row_fixa">
+  <h4>
+    File Library ({{ _mediaService.images.length }} file{{
+      _mediaService.images.length == 1 ? "" : "s"
+    }})
+  </h4>
+  <div class="flex-container4" id="mediaList">
+    <div
+      *ngFor="let img of _mediaService.pagedItems; let i = index"
+      id="blokdiv_{{ img._id }}"
+      class="cmsrow {{
+        _cmsService.pageSelected.media &&
+        _cmsService.pageSelected.media.indexOf(img._id) == -1
+          ? 'bg-grey'
+          : 'bg-green'
+      }}"
+    >
+      <div class="menu">
+        <ul class="levela nav navbar-nav">
+          <li class="dropdown">
+            <a
+              (click)="media_menu(img)"
+              class="dropdown-toggle icon_large icmn-paragraph-justify2"
+            ></a>
+            <ul class="levelb dropdown-content" id="mediaMenu_{{ img._id }}">
+              <li class="dropdown">
+                <a class="dropdown-toggle"
+                  >Admin<span class="float_r icmn-arrow-down5"></span
+                ></a>
+                <ul class="levelc">
+                  <li class="dropdown">
+                    <a class="dropdown-toggle">ID: {{ img._id }}</a>
+                  </li>
+                  <li><a (click)="deleteMedia(img, i)">Delete clip</a></li>
+                </ul>
+              </li>
+              <li class="dropdown">
+                <a (click)="showJson(img)" class="dropdown-toggle">Json</a>
+              </li>
+            </ul>
+          </li>
+
+          <li
+            *ngIf="
+              _cmsService.pageSelected.media &&
+              _cmsService.pageSelected.media.indexOf(img._id) == -1
+            "
+          >
+            <a
+              (click)="_cmsService.addMediaToTreeItem(img)"
+              class="icon_large {{
+                _cmsService.pageSelected.media.indexOf(img._id) == -1
+                  ? 'icmn-plus-circle2'
+                  : 'icmn-minus-circle2'
+              }}"
+            ></a>
+          </li>
+        </ul>
+      </div>
+      <!-- /.menu -->
+      <div class="blok">
+        <img src="./api/assets/media/{{ img._id }}" alt="media" />
+      </div>
+    </div>
+  </div>
+  <ul
+    *ngIf="
+      _mediaService.pager &&
+      _mediaService.pager.pages.length &&
+      _mediaService.pager.pages.length > 1
+    "
+    id="pagination"
+    class="pagination2"
+  >
+    <li *ngIf="_mediaService.pager.currentPage !== 1">
+      <a (click)="_mediaService.setPage(1)"><<</a>
+    </li>
+    <li [ngClass]="{ disabled: _mediaService.pager.currentPage === 1 }">
+      <a (click)="_mediaService.setPage(pager.currentPage - 1)"><</a>
+    </li>
+    <li
+      *ngFor="let page of _mediaService.pager.pages"
+      [ngClass]="{ active: _mediaService.pager.currentPage === page }"
+    >
+      <a (click)="_mediaService.setPage(page)">{{ page }}</a>
+    </li>
+    <li
+      [ngClass]="{
+        disabled:
+          _mediaService.pager.currentPage === _mediaService.pager.totalPages
+      }"
+    >
+      <a (click)="_mediaService.setPage(_mediaService.pager.currentPage + 1)"
+        >></a
+      >
+    </li>
+    <li
+      [ngClass]="{
+        disabled:
+          _mediaService.pager.currentPage === _mediaService.pager.totalPages
+      }"
+    >
+      <a (click)="_mediaService.setPage(_mediaService.pager.totalPages)">>></a>
+    </li>
+  </ul>
+  <button
+    *ngIf="
+      _cmsService.pageSelected.media &&
+      _cmsService.pageSelected.media.length > 0
+    "
+    id="closeJson"
+    (click)="closeJson()"
+    style="position: absolute; right: -10px; margin: -6px 10px 0px 0px"
+    class="hidden btn btn-danger"
+  >
+    Close Json
+  </button>
+
+  <pre>{{ jsonres | json }}</pre>
+</div>

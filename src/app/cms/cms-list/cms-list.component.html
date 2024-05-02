@@ -1,0 +1,11 @@
+<app-menu-listimage></app-menu-listimage>
+<div class="{{ _userService.isUserLoggedIn == true ? 'well-lgix' : 'well-lgi' }} welli " id="tablemenu">
+  <span class="k-icon k-i-loading" style="color: #ff6358"></span>
+  <div id="tbl" class="tablemenu table-responsive">
+    <app-cms-table [cmsPages]="_cmsService.pages"></app-cms-table>
+  </div>
+  <div id="listInfo">
+    <span id="selectedListCheckboxes" *ngIf="_cmsService.listCheckboxCounter > 0">{{ _cmsService.listCheckboxCounter}} item{{_cmsService.listCheckboxCounter > 1 ? 's' : ''}} selected</span>
+    <span id="selectedListStatus">{{ _cmsService.listCheckboxInfo }}</span>
+  </div>
+</div>

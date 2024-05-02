@@ -1,0 +1,501 @@
+<div class="row table-row">
+  <div
+    id="index"
+    class="{{ videoId == undefined ? 'field' : 'cell_left' }} table-cell"
+  >
+    <h4 class="title1" *ngIf="video">
+      Favorite personal<span id="allItemsCount" class="absolute_right"
+        >{{ playListIndex }} / {{ _cmsService.allItems3.length }}</span
+      >
+    </h4>
+    <div *ngIf="!_userService.user_current">
+      <h4 class="title6">Only for registered users</h4>
+    </div>
+    <div
+      class="{{
+        videoId == undefined ? '' : 'bg_white paddinger20b welli well-lgi2'
+      }} borderRadius"
+    >
+      <div
+        id="ngpipes"
+        style="margin-top: 0px"
+        *ngIf="_userService.user_current"
+        class="hidden ngpipes2"
+      >
+        <input
+          type="text"
+          name="filterText"
+          placeholder="Keyword"
+          (change)="filterKeyword($event)"
+          class="inputXSmall"
+          id="filterText"
+          value=""
+        />
+        <select
+          class="selectXSmall"
+          (change)="filterSelectFirstletter($event)"
+          id="filterFirstletter"
+        >
+          <option value="" selected="selected">1st letter</option>
+          <option *ngFor="let letter of items" value="{{ letter }}">
+            {{ letter }}
+          </option>
+        </select>
+        <select
+          class="selectXSmall"
+          (change)="filterSelectPerson($event)"
+          id="filterPersons"
+        >
+          <option value="" selected="selected">Select Person</option>
+          <option *ngFor="let person of persons" value="{{ person._id }}">
+            {{ person.title }}
+          </option>
+        </select>
+        <select class="selectXSmall" id="slideshowTimer">
+          <option value="1">1 sec</option>
+          <option value="2">2 sec</option>
+          <option value="3" selected="selected">3 sec</option>
+          <option value="4">4 sec</option>
+          <option value="5">5 sec</option>
+          <option value="10">10 sec</option>
+        </select>
+        <select class="selectXSmall" id="filterShf" (change)="setFilterShf()">
+          <option
+            value="10"
+            selected="{{ _filterService.filterShf == 10 ? 'selected' : '' }}"
+          >
+            10
+          </option>
+          <option
+            value="18"
+            selected="{{ _filterService.filterShf == 18 ? 'selected' : '' }}"
+          >
+            18
+          </option>
+          <option
+            value="30"
+            selected="{{ _filterService.filterShf == 30 ? 'selected' : '' }}"
+          >
+            30
+          </option>
+          <option
+            value="50"
+            selected="{{ _filterService.filterShf == 50 ? 'selected' : '' }}"
+          >
+            50
+          </option>
+          <option
+            value="100"
+            selected="{{ _filterService.filterShf == 100 ? 'selected' : '' }}"
+          >
+            100
+          </option>
+        </select>
+      </div>
+      <div
+        *ngIf="_userService.user_current && !video"
+        id="slideshowcontenta"
+        style="
+          position: absolute;
+          right: 0px;
+          padding: 6px 0px 0p 0px;
+          margin: 10px 16px 0px 0px;
+        "
+      >
+        <a
+          (click)="shuffle()"
+          class="icmn-loop3 slidebutton"
+          id="shuffleSlideshowbuttona"
+        ></a>
+        <a
+          (click)="preslideshow()"
+          id="startSlideshowbuttona"
+          class="icmn-play3 slidebutton"
+        ></a>
+        <a
+          (click)="stopSlideshow()"
+          class="hidden icmn-stop slidebutton"
+          id="stopSlideshowbuttona"
+        ></a>
+      </div>
+      <h4 *ngIf="_userService.user_current && !videoId" class="title6">
+        <span routerLink="/Media/5bd14e37f01e2a3d7c47dc56"
+          >Favorite personal</span
+        ><span
+          *ngIf="_cmsService.allItems3 && _cmsService.allItems3.length > 0"
+          class="hidden"
+          >{{ _cmsService.allItems3.length }} items</span
+        >
+      </h4>
+      <div class="{{ !video ? '' : 'phonescroller' }}">
+        <div class="{{ !video ? 'flex-container' : 'flex-container2' }}">
+          <div
+            *ngFor="
+              let page of _cmsService.pagedItems3
+                | filter : _filterService.filterText
+                | firstletter : _filterService.filterFirstletter
+                | imagePerson : _filterService.filterPersons;
+              let b = index
+            "
+            id="{{ page._id }}"
+            class="{{ !video ? 'blok_photo' : 'blok_phone' }} cursor {{
+              page.objectType == '5bf9d60fe2776742d80831e5' ? 'image' : 'movie'
+            }} {{ videoId == page._id ? 'active_picture' : '' }} {{
+              b % 2 == 0 && video == undefined ? '' : ''
+            }}"
+            title="{{ page._id }}"
+          >
+            <div class="blok_phone_bottom">
+              <span
+                *ngIf="page.schemaextend[0].videocodec"
+                class="codec {{
+                  page.schemaextend[0].videocodec
+                    ? page.schemaextend[0].videocodec
+                    : ''
+                }}"
+                >{{
+                  page.schemaextend[0].videocodec
+                    ? page.schemaextend[0].videocodec
+                    : ""
+                }}</span
+              >
+              <span *ngIf="seen(page)" class="seen">{{ seen(page) }}</span>
+            </div>
+            <div class="favmenu">
+              <div
+                title="{{ page.title }}"
+                *ngIf="_userService.user_current"
+                id="fav{{ page._id }}"
+                class="favorites_phone float_l {{
+                  _userService.user_current != undefined &&
+                  getFavByFind(page._id) === true
+                    ? 'icmn-heart7'
+                    : 'icmn-heart8'
+                }}"
+                (click)="toggleFavorite(page, page.title)"
+              ></div>
+              <div
+                routerLink="{{ _userService.user_current.userRole == 100 ? '/cms/{{ page._id}}/true' : ''}}"
+                *ngIf="page.objectType == '5bf9d60fe2776742d80831e5'"
+                class="icmn-image2 float_l"
+              ></div>
+              <div
+                routerLink="{{ _userService.user_current.userRole == 100 ? '/cms/{{ page._id}}/true' : ''}}"
+                *ngIf="page.objectType == '5c0114dc962a560534e3e576'"
+                class="icmn-clapboard-play float_l"
+              ></div>
+            </div>
+            <img
+              *ngIf="page.visible == true"
+              (click)="setVideoLink(b, page)"
+              class="{{ !video ? 'phonebrowserimage2 float_l' : '' }}"
+              src="/api/assets/content/{{ page._id }}/{{
+                page.objectType == '5c0114dc962a560534e3e576'
+                  ? 'image'
+                  : 'thumb'
+              }}.jpg"
+              alt=""
+            />
+            <div *ngIf="!video">
+              <span
+                *ngIf="_userService.user_current"
+                id="fav{{ page._id }}"
+                class="favorites {{
+                  _userService.user_current != undefined &&
+                  getFavByFind(page._id) === true
+                    ? 'icmn-heart7'
+                    : 'icmn-heart8'
+                }}"
+                (click)="toggleFavorite(page, page.title)"
+              ></span>
+              <div class="info" (click)="setVideoLink(b, page)">
+                <h4 (click)="setVideoLink(b, page)" title="{{ page.title }}">
+                  {{ page.title }}
+                </h4>
+                <div
+                  *ngIf="
+                    page.schemaextend[0] &&
+                    page.schemaextend[0].filesiz != undefined &&
+                    page.schemaextend[0].filesiz > 0
+                  "
+                >
+                  <label class="label">Filesize</label
+                  >{{ humanfilesize(page.schemaextend[0].filesiz, "MB", 2) }}
+                </div>
+                <div
+                  *ngIf="
+                    page.schemaextend[0] &&
+                    page.schemaextend[0].width != undefined &&
+                    page.schemaextend[0].width != ''
+                  "
+                >
+                  <label class="label">Res</label
+                  >{{ page.schemaextend[0].width }} x
+                  {{ page.schemaextend[0].height }}
+                </div>
+                <div
+                  *ngIf="
+                    page.schemaextend[0] &&
+                    page.schemaextend[0].videowidth != undefined &&
+                    page.schemaextend[0].videowidth > 0
+                  "
+                >
+                  <label class="label">Res</label
+                  >{{ page.schemaextend[0].videowidth }} x
+                  {{ page.schemaextend[0].videoheight }}
+                </div>
+                <div *ngIf="page.kids > 0">
+                  <label class="label">Items</label>{{ page.kids }}
+                </div>
+                <div><label class="label">Hits</label>{{ page.hits }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- pager -->
+      <ul
+        *ngIf="
+          _cmsService.pager3 &&
+          _cmsService.pager3.pages &&
+          _cmsService.pager3.pages.length &&
+          _cmsService.pager3.pages.length > 1
+        "
+        class="pagination2"
+        id="pagination"
+      >
+        <li [ngClass]="{ disabled: _cmsService.pager3.currentPage === 1 }">
+          <a (click)="setPage(1)">{{ videoId == undefined ? "<<" : "<<" }}</a>
+        </li>
+        <li [ngClass]="{ disabled: _cmsService.pager3.currentPage === 1 }">
+          <a (click)="setPage(_cmsService.pager3.currentPage - 1)">{{
+            videoId == undefined ? "<" : "<"
+          }}</a>
+        </li>
+        <li
+          *ngFor="let page of _cmsService.pager3.pages"
+          [ngClass]="{ active: _cmsService.pager3.currentPage === page }"
+        >
+          <a (click)="setPage(page)">{{ page }}</a>
+        </li>
+        <li
+          [ngClass]="{
+            disabled:
+              _cmsService.pager3.currentPage === _cmsService.pager3.totalPages
+          }"
+        >
+          <a (click)="setPage(_cmsService.pager3.currentPage + 1)">{{
+            videoId == undefined ? ">" : ">"
+          }}</a>
+        </li>
+        <li
+          [ngClass]="{
+            disabled:
+              _cmsService.pager3.currentPage === _cmsService.pager3.totalPages
+          }"
+        >
+          <a (click)="setPage(_cmsService.pager3.totalPages)">{{
+            videoId == undefined ? ">>" : ">>"
+          }}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div
+    class="table-cell {{
+      videoId == undefined ? '' : 'cell_right'
+    }} videowrapper"
+  >
+    <div
+      *ngIf="video"
+      id="slideshowcontent"
+      style="position: absolute; right: 0px"
+    >
+      <a id="player_time" class="slidebutton hidden">00:00:00</a>
+      <a
+        (click)="shuffle()"
+        title="Shuffle"
+        class="icmn-loop3 slidebutton"
+        id="shuffleSlideshowbutton"
+      ></a>
+      <a
+        (click)="startSlideshow()"
+        title="Start slideshow"
+        id="startSlideshowbutton"
+        class="icmn-play3 slidebutton"
+      ></a>
+      <a
+        (click)="stopSlideshow()"
+        title="Stop slideshow"
+        class="hidden icmn-stop slidebutton"
+        id="stopSlideshowbutton"
+      ></a>
+    </div>
+    <h4 *ngIf="video" class="title3">
+      <span id="titles">{{ video.title }}</span>
+    </h4>
+
+    <div class="wellr well-lgi2" *ngIf="videoId != undefined">
+      <h4 *ngIf="videoId == undefined" class="title2" id="player_status"></h4>
+      <video
+        #videoPlayer
+        autoplay="autoplay"
+        id="player"
+        style="width: 100%; background-color: #f1f3f4"
+        controls
+      >
+        <source #videoSource id="playersource" src="" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      <img
+        src=""
+        alt="Main image"
+        id="phoneimage"
+        #imageViewer
+        class="phonenimage"
+        style="width: 100%; border-radius: 6px 6px 0px 0px"
+      />
+      <div
+        class="bg_white info"
+        *ngIf="video !== undefined && videoId !== undefined"
+        style="margin: -6px 0px 10px 0px; border-radius: 0px 0px 6px 6px"
+      >
+        <div class="paddinger20">
+          <div
+            style="margin: -6px 0px 0px 0px"
+            *ngIf="video.objectType == '5bf9d60fe2776742d80831e5'"
+          >
+            <div class="flex-container3">
+              <div class="fifty">
+                <h4>Picture info</h4>
+                <span *ngIf="video.schemaextend[0].photocamera" class="label"
+                  >Camera</span
+                >{{ video.schemaextend[0].photocamera
+                }}<br *ngIf="video.schemaextend[0].photocamera" />
+                <span
+                  *ngIf="video.schemaextend[0].photocameramodel"
+                  class="label"
+                  >Model</span
+                >{{ video.schemaextend[0].photocameramodel
+                }}<br *ngIf="video.schemaextend[0].photocameramodel" />
+                <span
+                  *ngIf="video.schemaextend[0].photocameralens"
+                  class="label"
+                  >Lens</span
+                >{{ video.schemaextend[0].photocameralens
+                }}<br *ngIf="video.schemaextend[0].photocameralens" />
+                <span *ngIf="video.schemaextend[0].photoaperture" class="label"
+                  >Aperture</span
+                >{{ video.schemaextend[0].photoaperture
+                }}<br *ngIf="video.schemaextend[0].photoaperture" />
+                <span
+                  *ngIf="video.schemaextend[0].photoexposuretime"
+                  class="label"
+                  >Exposure Time</span
+                >{{ video.schemaextend[0].photoexposuretime
+                }}<br *ngIf="video.schemaextend[0].photoexposuretime" />
+                <span *ngIf="video.schemaextend[0].photoiso" class="label"
+                  >ISO</span
+                >{{ video.schemaextend[0].photoiso
+                }}<br *ngIf="video.schemaextend[0].photoiso" /><br
+                  *ngIf="video.schemaextend[0].photoiso"
+                />
+                <span *ngIf="video.schemaextend[0].filesiz" class="label"
+                  >Filesize</span
+                >{{ humanfilesize(video.schemaextend[0].filesiz, "MB", 2)
+                }}<br *ngIf="video.schemaextend[0].filesiz" />
+                <span *ngIf="video.schemaextend[0].width" class="label"
+                  >Resolution</span
+                >{{ video.schemaextend[0].width }} x
+                {{ video.schemaextend[0].height
+                }}<br *ngIf="video.schemaextend[0].height" />
+                <span *ngIf="video.hits" class="label">Hits</span
+                >{{ video.hits }} <br /><br />
+              </div>
+              <div class="fifty" *ngIf="video.schemaextend[0].photopersons">
+                <h4
+                  *ngIf="
+                    video.schemaextend[0].photopersons &&
+                    video.schemaextend[0].photopersons.length > 0
+                  "
+                >
+                  Persons on picture
+                </h4>
+                <div *ngFor="let person of video.schemaextend[0].photopersons">
+                  {{ personById(person._id) }}
+                </div>
+                <br />
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="video.objectType == '5c0114dc962a560534e3e576'">
+            <div class="flex-container3">
+              <div class="fifty" style="margin: 0px">
+                <h4>Movie info</h4>
+                <span class="label">Filename</span>{{ video.title }}<br />
+                <span class="label">Hits</span>{{ video.hits }}<br />
+                <span *ngIf="video.schemaextend[0].length" class="label"
+                  >Length</span
+                >{{ video.schemaextend[0].length
+                }}<br *ngIf="video.schemaextend[0].length" />
+                <span class="label">Filesize</span
+                >{{ humanfilesize(video.schemaextend[0].filesiz, "MB", 2)
+                }}<br />
+                <span class="label">Video codec</span
+                >{{ video.schemaextend[0].videocodec }}<br />
+                <span class="label">Resolution</span
+                >{{ video.schemaextend[0].videowidth }} x
+                {{ video.schemaextend[0].videoheight }}<br /><br />
+              </div>
+              <div class="fifty">
+                <div
+                  *ngIf="
+                    video.schemaextend[0].photopersons &&
+                    video.schemaextend[0].photopersons.length > 0
+                  "
+                >
+                  <h4 class="label">Persons in clip</h4>
+                  <br />
+                  <div
+                    *ngFor="let person of video.schemaextend[0].photopersons"
+                  >
+                    {{ personById(person._id) }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h4>Admin</h4>
+            <span class="label">Clip</span
+            ><a routerLink="/cms/{{ video._id }}/true">{{ video.title }}</a
+            ><br />
+            <div *ngIf="album">
+              <span class="label">Album</span
+              ><a routerLink="/cms/{{ video.parent }}/true">{{ album.title }}</a
+              ><br />
+            </div>
+          </div>
+        </div>
+        <input type="hidden" id="mediaId" value="{{ videoId }}" />
+      </div>
+      <h4
+        *ngIf="_userService.user_current"
+        style="margin: 8px 0px 0px 0px"
+        class="title_footer"
+      >
+        <a routerLink="/Media/5bd14e37f01e2a3d7c47dc56">Personal</a
+        ><a
+          class="float_r icmn-circle-up2 icontitle_show"
+          id="scrollToTop"
+          (click)="scrollToTop()"
+        ></a>
+      </h4>
+    </div>
+    <br style="clear: both" />
+    <div></div>
+  </div>
+</div>

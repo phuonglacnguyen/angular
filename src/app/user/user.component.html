@@ -1,0 +1,31 @@
+<div class="table" style="width:100%;">
+  <div class="row table-row" id="row">
+    <div id="index" class="col_left">
+      <app-user-list (editUserEvent)="showEditUs($event)" (updateUserEventt)="update($event)" (sshowNewUserEvent)="updateshowNewUserEvent($event)"></app-user-list>
+    </div>
+    <div class="col_right">
+      <div id="div_edit_page" class="border border-light rounded">
+        <div class="hidden messages" id="messagesAlert">
+          <h4>System report:</h4>
+        <div *ngFor="let message of _messageService.messages">
+            <div class="row">
+              <div (click)="_messageService.closeMessageAlert()" class="close float_r" title="Close Alert"><span class="icomoon icmn-cancel-square"></span></div>
+              <div class="alert" role="alert">{{ message }}</div>
+            </div>
+            </div>
+          </div>
+        <div>
+          <app-userstab></app-userstab>
+          <app-user-edit (updateUserEvent)="update($event)"
+                         (destroyUserEvent)="destroy($event)"
+                         [zzhowNewUser]="showNewUser"
+                         (updateNewUserEvent)="toggle_hideedit($event)"
+                         (hideEditUserEvent)="hideEditUser()"
+                         (resszeEditUserEvent)="userPasswordSet()">
+          </app-user-edit>
+        </div>
+      </div>
+    </div>
+    <br class="clear" />
+  </div>
+</div>

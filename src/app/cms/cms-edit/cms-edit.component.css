@@ -1,0 +1,168 @@
+.levela {
+    margin: 0px 0px 0px 0px;
+    position: relative;
+    list-style: none;
+    padding: 0px;
+    
+}
+
+.levela li {
+    display: inline-block;
+    margin: 0px 10px 0px 0px;
+}
+
+body .levela li a:hover, body .levela li:hover > a {
+    color: #d00000;
+
+}
+
+body  .menu li:hover > a .icmn-arrow-down5:before {
+    content: "\edc8";
+}
+
+.levelb li a:last-child{
+    border: 0px;
+}
+
+#row .levelb li, .levelb li {
+    display: block;
+    float: none;
+    position: relative;
+    border-bottom: 0px solid #999999;
+    margin: 0px 0px 0px 0px;
+}
+
+  #row .levelb li:last-child, #menu .levelb li:last-child {
+    border-bottom: 0px solid #999999;
+    border-radius: 0px 6px 6px 6px;
+  }
+
+.levelb li a {
+    display: block;
+    padding: 12px 12px 12px 12px;
+}
+
+.levelc {
+    position: absolute;
+    display: none;
+    left: 100%;
+    background-color: #ffffff;
+    margin: 0px 0px 0px 0px;
+    padding: 0px;
+    top: 0px;
+}
+
+
+.leveld {
+    position: absolute;
+    display: none;
+    left: 100%;
+    background-color: #ffffff;
+    margin: 0px 0px 0px 0px;
+    top: 0px;
+    padding: 0px;
+}
+
+.levelc li, .leveld li {
+    display: block;
+}
+.levelc li a, .leveld li a {
+    display: block;
+    min-width: 100px;
+}
+
+.menu .nav .levelc li a {
+    border-radius: 0px 0px 0px 0px; }
+
+.menu .nav .levelb li:last-child .leveb {
+    border-radius: 0px 0px 6px 6px; }
+
+.menu .nav .levelb li:first-child .leveb {
+    border-radius: 0px 6px 0px 0px; }
+
+.menu .nav .levelc li:first-child a {
+    border-radius: 0px 6px 0px 0px; }
+
+.menu .nav .levelc li:last-child .levec {
+    border-radius: 0px 0px 6px 6px; }
+
+.menu .nav .levelc li a {
+    border-radius: 0px 0px 0px 0px; }
+
+    .menu .nav a {
+    display: inline-block; }
+
+body .menu {
+    padding: 0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
+    display: inline-block;
+    z-index: 1000;
+    position: relative;
+    width: 100%;
+}
+
+ .levela li a {
+  padding: 8px 10px 6px 10px;
+  text-decoration: none;
+  text-align: left;
+  white-space: nowrap;
+  display: inline-block;
+  color: #0d60f1;
+  font-size: 1.4em;
+  background-color: #ffffff;
+  border-radius: 6px 6px 0px 0px;
+  border-left:1px solid #0d60f1;
+  border-right:1px solid #0d60f1;
+  border-top:1px solid #0d60f1;
+  border-bottom: 0px solid #ffffff;
+}
+
+.levelb {
+  display: none;
+  position: absolute;
+  z-index: 4000000;
+  margin: 0px 0px 0px 0px;
+  border-right: 0px solid #000000;
+  border-left: 0px solid #000000;
+  border-bottom: 0px solid #000000;
+  border-radius: 0px 6px 6px 6px;
+  background-color: #0d60f1; 
+}
+
+.levelb li a {
+  font-size: 0.95em;
+  color: #ffffff;
+  border-bottom: 1px inset #cccccc;
+  min-width: 120px;
+  padding: 12px 16px 12px 16px;
+  border-radius: 0px 0px 0px 0px;
+  background-color: #0d60f1;
+  display: block;
+}
+
+.menu .nav li:hover > a {
+    color: #ffffff;
+    background-color: #0d60f1;
+    border-radius: 6px 6px 0px 0px;
+}
+.menu .nav li li:hover > a {
+    background-color: #d00000;
+    border-radius: 0px;
+ }
+
+body .navbar-toggle .icon-bar {
+    display: block;
+    width: 100%;
+    height: 3px;
+    border-radius: 1px;
+    margin: 0px 0px 6px 0px;
+    background-color: #337ab7; }
+
+    .levelb li:hover > .levelc {
+        display: inline-block;
+    }
+
+
+    .levelc li:hover > .leveld {
+        display: inline-block;
+    }

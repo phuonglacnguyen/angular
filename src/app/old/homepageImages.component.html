@@ -1,0 +1,14 @@
+<div *ngIf="items[0] != undefined" class="carousel">
+  <ul class="carousel-inner">
+    <li class="carousel-item carousel-images" id="carousel-images">
+      <h2 class="center cursor">
+        <span (click)="reloadImages();" class="icmn-loop3"></span>
+        <span *ngIf="_userService.getUserLoggedIn() == true && _userService.user_current.userRole == 100" routerLink="/cms/{{ items[0]._id }}/true" class="icmn-pencil7"></span>
+        <a title="Go to Photo Albums" routerLink="/Personal/5bf9cd3ce2776742d808319c">Photo albums</a></h2>
+        <img src="/api/assets/content/{{items[0]._id}}/thumb.jpg" alt="{{items[0].title}}" (click)="fullscreen('/api/assets/content/'+ items[0]._id +'/main.jpg')" />
+        <div class="carousel-info pointer">
+         <h3 title="Go to {{ items[0].title }}" routerLink="/Personal/{{items[0].parent}}/{{items[0]._id}}">{{ items[0].title }}</h3>
+        </div>
+    </li>
+  </ul>
+</div>

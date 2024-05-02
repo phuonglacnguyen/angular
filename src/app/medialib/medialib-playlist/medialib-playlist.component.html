@@ -1,0 +1,14 @@
+﻿<div class="table-responsive">
+  <table class="table table-striped">
+    <tr>
+      <th class="col-md-6">Name</th>
+      <th class="col-md-2">Filesize</th>
+    </tr>
+    <tbody>
+      <tr class="cliprow" *ngFor="let img of _mediaService.images">
+        <td>{{img.filename}}</td>
+        <td>{{img.filesize}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

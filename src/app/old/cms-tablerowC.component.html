@@ -1,0 +1,45 @@
+    <ul cdkDropList
+        class="levelC turowlink table rowul_{{currentPage._id}}"
+        (cdkDropListDropped)="onDrop($event)"
+        >
+        <li cdkDrag *ngFor='let c = index, let cpage of ( cmsPages | filter : (_cmsService.treelevels.length == 2 &&  _filterService.filterText) | firstletter : (_cmsService.treelevels.length == 2 && _filterService.filterFirstletter) )'
+            id="rowli_{{cpage._id}}"
+            data-kids="off"
+            [attr.data-kids]="getDataKids(cpage)"
+            scope="rowC"
+            dir="{{ cpage.parent }}"
+            [cdkDragData]="cpage"
+            class="turwlink trow trow_{{ cpage.parent }} table-row {{ c%2 == 0 ? 'bg_darkgrey' : 'bg_grey' }}"
+            (onDropSuccess)="_cmsService.onMoveb(cpage, c)">
+            <div id="tabrowdl_{{cpage._id}}" class="tabrowdl {{ cpage._id == _cmsService.pageSelected._id ? 'active' : '' }} {{ _cmsService.treelevels.length > 2 && _cmsService.treelevels[2]._id == cpage._id && cpage._id != _cmsService.pageSelected._id ? 'bactive' : '' }}">
+                <span [style.display]="_userService.isUserLoggedIn == true ? '' : 'none'" class="hidden table-cell col-sm-1 dnd icon handle {{ userlogin == true && cpage.parent == _cmsService.pageSelected._id ? ' icmn-arrow-resize8' : ' icmn-arrow-resize7' }}"></span>
+                <span class="table-cell col-sm-1 Visibility icon {{ cpage.visible == true ? 'icmn-lamp8' : 'icmn-lamp7' }}" title="{{ cpage.visible == true ? 'On' : 'Off' }}" id="visibility_{{cpage._id}}"></span>
+                <span class="table-cell col-sm-1 Security hidden {{ cpage.secure == true ? 'icmn-link4' : 'icmn-unlink4' }}" id="published_{{cpage._id}}"></span>
+                <span class="table-cell col-sm-1 {{ cpage.kids > 0 || cpage.title != 'Media' ? 'icmn-arrow-right5' : 'icon' }} {{cpage.title == 'Media' ? 'icmn-arrow-down5' : ''}}" title="{{cpage.kids}}" id="rowchild_{{cpage._id}}"></span>
+                <span class="table-cell col-sm-1 hidden letter" title="C">3</span>
+                <span class="table-cell col-sm-1 Checkboxes hidden"><input class="checkbox chklevelC {{ cpage.secure == true ? 'disabled' : ''}}" type="checkbox" id="chk_{{ cpage._id }}" value="1" title="{{ cpage.title }}" /> &nbsp; </span>
+ 
+                <a (click)="_cmsService.listlink(cpage)"
+                   id="tabrowl_{{cpage._id}}"
+                   class="tabrowl table-cell mybuttonz col-sm-6 kid{{cpage.treelevel}} indent_3"
+                   title="{{ cpage.kids > 0 ? cpage.kids + ' items under ' + cpage.title : '' }}">
+
+                  {{cpage.title}}
+
+                <span *ngFor="let prop of _cmsService.filterFull;">
+                    <span class="ucfirst smalltxt">{{ cpage.schemaextend && cpage.schemaextend[0][prop.pname] != undefined ? ' | '+ cpage.schemaextend[0][prop.pname] : cpage[prop.pname] }}</span>
+                </span>
+
+                  <span class="float_r iconLetter" id="rowcell_{{cpage._id}}">{{cpage.kids > 0 ? cpage.kids : ''}}</span>
+                </a>
+
+
+            </div>
+            <app-cms-tablerowD [userlogin]="userlogin"
+                               [currentPage]="cpage"
+                               [cmsPages]="cpage.cmsSubPages"
+                               [tableLevel]="(tableLevel+1)">
+            </app-cms-tablerowD>
+        </li>
+    </ul>
+

@@ -1,0 +1,450 @@
+<div class="tabmenu">
+  <ul class="nav nav-tabs">
+    <li>
+      <a
+        id="tabtext"
+        (click)="settab('tab_1')"
+        data-id="tab_1"
+        [class.active]="_cmsService.tabEditCurrent == 'tab_1'"
+        class="txt_darkblue dropdown lli active tab"
+      >
+        <span class="icon icmn-clipboard6"></span>Fields
+        <span class="hidden more tabicomoon float_r icmn-arrow-right5"></span
+      ></a>
+      <ul class="levelA" *ngIf="_userService.isUserLoggedIn == true">
+        <li>
+          <a>Video<span class="more float_r icmn-arrow-down5"></span></a>
+          <ul class="levelB dropdown-contentB">
+            <li>
+              <a>Ffmeg<span class="more float_r icmn-arrow-down5"></span></a>
+              <ul class="levelB dropdown-contentB">
+                <li>
+                  <a (click)="getFFmpegLog()" id="ffmpeglog"
+                    >Log<span class="more float_r icmn-arrow-down5"></span
+                  ></a>
+                  <ul class="levelC dropdown-contentC">
+                    <li><a id="ffmpeg_log_res">..</a></li>
+                    <li>
+                      <a
+                        id="ffmpeg_log_duration"
+                        (click)="getVideoTimeFromLog()"
+                        >Length: {{ _cmsService.videoLength }}</a
+                      >
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a
+                    class="cmstabinput"
+                    *ngIf="
+                      _cmsService.pageSelected.objectType ==
+                      '5c0114dc962a560534e3e576'
+                    "
+                    (click)="sysreporter()"
+                    id="ffmpeglog"
+                    >AutoLog</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="cmstabinput"
+                    *ngIf="
+                      _cmsService.pageSelected.objectType ==
+                      '5c0114dc962a560534e3e576'
+                    "
+                    (click)="convertMovie(_cmsService.pageSelected)"
+                    >Convert to h265</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="cmstabinput"
+                    *ngIf="
+                      _cmsService.pageSelected.objectType ==
+                      '5c0114dc962a560534e3e576'
+                    "
+                    (click)="convertAudio(_cmsService.pageSelected)"
+                    >Convert to AAC</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="cmstabinput"
+                    *ngIf="
+                      _cmsService.pageSelected.objectType ==
+                      '5c0114dc962a560534e3e576'
+                    "
+                    (click)="autoCrop(_cmsService.pageSelected)"
+                    >Auto crop</a
+                  >
+                </li>
+                <li>
+                  <a class="cmstabinput" (click)="createThumb()"
+                    >Create thumb from movie</a
+                  >
+                </li>
+                <li
+                  *ngIf="
+                    _cmsService.pageSelected.objectType ==
+                    '5c0114dc962a560534e3e576'
+                  "
+                >
+                  <a (click)="faststart(_cmsService.pageSelected)">Faststart</a>
+                </li>
+                <li>
+                  <a
+                    *ngIf="
+                      _cmsService.pageSelected.objectType ==
+                      '5c0114dc962a560534e3e576'
+                    "
+                    (click)="getFFmpegLog()"
+                    id="ffmpeglog"
+                    >Video<span class="more float_r icmn-arrow-down5"></span
+                  ></a>
+                  <ul class="levelC dropdown-contentC">
+                    <li><a>Ultrafast</a></li>
+                    <li><a>Superfast</a></li>
+                    <li><a>Veryfast</a></li>
+                    <li><a>Faster</a></li>
+                    <li><a>Fast</a></li>
+                    <li><a>Medium</a></li>
+                    <li><a>Slow</a></li>
+                    <li><a>Slower</a></li>
+                    <li><a>VerySlow</a></li>
+                    <li><a>Placebo</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a
+                    *ngIf="
+                      _cmsService.pageSelected.objectType ==
+                      '5c0114dc962a560534e3e576'
+                    "
+                    (click)="getFFmpegLog()"
+                    id="ffmpeglog"
+                    >Quality<span class="more float_r icmn-arrow-down5"></span
+                  ></a>
+                  <ul class="levelC dropdown-contentC">
+                    <li><a>28</a></li>
+                    <li><a>27</a></li>
+                    <li><a>26</a></li>
+                    <li><a>25</a></li>
+                    <li><a>24</a></li>
+                    <li><a>23</a></li>
+                    <li><a>22</a></li>
+                    <li><a>21</a></li>
+                    <li><a>20</a></li>
+                    <li><a>19</a></li>
+                    <li><a>18</a></li>
+                    <li><a>17</a></li>
+                    <li><a>16</a></li>
+                    <li><a>15</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li>
+              <a
+                class="cmstabinput"
+                *ngIf="
+                  _cmsService.pageSelected.objectType ==
+                  '5c0114dc962a560534e3e576'
+                "
+                (click)="createImage(_cmsService.pageSelected._id)"
+                >Image from movie</a
+              >
+            </li>
+            <li>
+              <a
+                class="cmstabinput"
+                *ngIf="
+                  _cmsService.pageSelected.objectType ==
+                  '5c0114dc962a560534e3e576'
+                "
+                (click)="lengtFromMovie()"
+                >Length from movie</a
+              >
+            </li>
+            <li>
+              <a
+                class="cmstabinput"
+                *ngIf="
+                  _cmsService.pageSelected.objectType ==
+                  '5c0114dc962a560534e3e576'
+                "
+                (click)="getImdb()"
+                >Movie Imdb</a
+              >
+            </li>
+            <li>
+              <a
+                class="cmstabinput"
+                *ngIf="
+                  _cmsService.pageSelected.objectType ==
+                  '5c0114dc962a560534e3e576'
+                "
+                (click)="getMovieInfo()"
+                >Movie info</a
+              >
+            </li>
+            <li>
+              <a
+                class="cmstabinput"
+                *ngIf="
+                  _cmsService.pageSelected.objectType ==
+                  '5c0114dc962a560534e3e576'
+                "
+                (click)="createImage(_cmsService.pageSelected)"
+                >Image from movie</a
+              >
+            </li>
+            <li
+              *ngIf="
+                _cmsService.pageSelected.objectType ==
+                '5c0114dc962a560534e3e576'
+              "
+            >
+              <a
+                title="Click to check for srt subtitles"
+                (mouseover)="check_subtitle_files()"
+                >Subtitles<span class="more float_r icmn-arrow-down5"></span
+              ></a>
+              <ul class="levelB dropdown-contentB">
+                <li>
+                  <a
+                    class="cmstabinput"
+                    *ngIf="
+                      _cmsService.pageSelected.objectType ==
+                      '5c0114dc962a560534e3e576'
+                    "
+                    (click)="srtToVtt('NL')"
+                    id="subtitle_nl"
+                    >Srt to Vtt NL</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="cmstabinput"
+                    *ngIf="
+                      _cmsService.pageSelected.objectType ==
+                      '5c0114dc962a560534e3e576'
+                    "
+                    (click)="srtToVtt('GB')"
+                    id="subtitle_gb"
+                    >Srt to Vtt GB</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a>Audio<span class="more float_r icmn-arrow-down5"></span></a>
+          <ul class="levelB dropdown-contentB">
+            <li>
+              <a
+                class="cmstabinput"
+                *ngIf="
+                  _cmsService.pageSelected.objectType ==
+                    '5c5226408830db21fcc401ab' ||
+                  _cmsService.pageSelected.objectType ==
+                    '661dd36d8be488c2525f500f'
+                "
+                (click)="id3tags()"
+                >ID3</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li>
+          <a>Image<span class="more float_r icmn-arrow-down5"></span></a>
+          <ul class="levelB dropdown-contentB">
+            <li
+              *ngIf="
+                _cmsService.pageSelected.objectType ==
+                '5bf9d60fe2776742d80831e5'
+              "
+            >
+              <a
+                >Rotate main.jpg<span
+                  class="more float_r icmn-arrow-down5"
+                ></span
+              ></a>
+              <ul class="levelB dropdown-contentB">
+                <li>
+                  <a class="cmstabinput" (click)="imagerotate(0)">0</a>
+                </li>
+                <li>
+                  <a class="cmstabinput" (click)="imagerotate(90)">90</a>
+                </li>
+                <li>
+                  <a class="cmstabinput" (click)="imagerotate(-90)">-90</a>
+                </li>
+                <li>
+                  <a class="cmstabinput" (click)="imagerotate(180)">180</a>
+                </li>
+                <li>
+                  <a
+                    class="cmstabinput"
+                    *ngIf="
+                      _cmsService.pageSelected.objectType ==
+                      '5bf9d60fe2776742d80831e5'
+                    "
+                    (click)="imagerotate(-180)"
+                    >-180</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="cmstabinput"
+                    *ngIf="
+                      _cmsService.pageSelected.objectType ==
+                      '5bf9d60fe2776742d80831e5'
+                    "
+                    (click)="imagerotate(270)"
+                    >270</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="cmstabinput"
+                    *ngIf="
+                      _cmsService.pageSelected.objectType ==
+                      '5bf9d60fe2776742d80831e5'
+                    "
+                    (click)="imagerotate(-270)"
+                    >270</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li (click)="imageThumbFromImage()"><a>Thumb from Image</a></li>
+            <li>
+              <a
+                class="cmstabinput"
+                *ngIf="
+                  _cmsService.pageSelected.objectType !=
+                  '5bf9d60fe2776742d80831e5'
+                "
+                (click)="imageInfo()"
+                >Image info</a
+              >
+            </li>
+          </ul>
+        </li>
+        <li (click)="toggle_hidden()" class="hidden">
+          <a>Toggle Hidden Fields</a>
+        </li>
+        <li (click)="field_fixed()"><a>Field fixed</a></li>
+      </ul>
+    </li>
+    <li
+      [style.display]="
+        _cmsService.pagetpropertiesFull.length > 0 ? 'none' : 'none'
+      "
+    >
+      <a
+        (click)="settab('tab_3')"
+        data-id="tab_3"
+        id="moreTab3"
+        [class.active]="_cmsService.tabEditCurrent == 'tab_3'"
+        class="dropdown lli tab"
+        >More<span class="more tabicomoon float_r icmn-arrow-right5"></span
+      ></a>
+    </li>
+    <li>
+      <a
+        id="itab_2"
+        (click)="settab('tab_2')"
+        data-id="tab_2"
+        [class.active]="_cmsService.tabEditCurrent == 'tab_2'"
+        class="txt_darkblue lli tab dropdown"
+      >
+        <span class="icon icmn-file-picture2"></span>Files
+        <span class="hidden more tabicomoon float_r icmn-arrow-right5"></span>
+      </a>
+    </li>
+
+    <li>
+      <a
+        data-id="tab_8"
+        [class.active]="
+          _cmsService.tabEditCurrent == 'tab_8' ||
+          _cmsService.tabEditCurrent == 'tab_9' ||
+          _cmsService.tabEditCurrent == 'tab_10' ||
+          _cmsService.tabEditCurrent == 'tab_11' ||
+          _cmsService.tabEditCurrent == 'tab_13' ||
+          _cmsService.tabEditCurrent == 'tab_14' ||
+          _cmsService.tabEditCurrent == 'tab_15'
+        "
+        class="txt_darkblue dropdown lli tab"
+        (click)="settab('tab_8')"
+      >
+        <span class="icon icmn-cog2"></span>Systeem
+        <span class="hidden more tabicomoon float_r icmn-arrow-right5"></span>
+      </a>
+      <ul
+        *ngIf="_userService.isUserLoggedIn == true"
+        class="levelA dropdown-content"
+      >
+        <li>
+          <a>Admin<span class="more float_r icmn-arrow-down5"></span></a>
+          <ul class="levelB dropdown-contentB">
+            <li>
+              <a>Folder<span class="more float_r icmn-arrow-down5"></span></a>
+              <ul class="levelC dropdown-contentC">
+                <li (click)="checkAssetFolder('content')">
+                  <a
+                    >Check asset content folder :
+                    {{ _cmsService.chkAssetFolder }}</a
+                  >
+                </li>
+                <li
+                  [style.display]="
+                    _cmsService.chkAssetFolder == true ? 'none' : 'block'
+                  "
+                  (click)="createAssetFolder('content')"
+                >
+                  <a>Create asset content folder</a>
+                </li>
+                <li
+                  [style.display]="
+                    _cmsService.chkAssetFolder == true ? 'block' : 'none'
+                  "
+                  (click)="deleteAssetFolder('content')"
+                >
+                  <a>Delete asset content folder</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li class="dropdownB">
+          <a
+            >Json<span class="more tabicomoon float_r icmn-arrow-down5"></span
+          ></a>
+          <ul class="levelB dropdown-contentB">
+            <li (click)="settab('tab_10')" data-id="tab_10">
+              <a>pageSelected</a>
+            </li>
+            <li (click)="settab('tab_13')" data-id="tab_13">
+              <a>parentPage</a>
+            </li>
+            <li
+              *ngIf="_cmsService.selectedProperty"
+              (click)="settab('tab_14')"
+              data-id="tab_14"
+            >
+              <a>selectedProperty</a>
+            </li>
+            <li (click)="settab('tab_17')" data-id="tab_17"><a>Models</a></li>
+          </ul>
+        </li>
+        <li (click)="settab('tab_9')" data-id="tab_9"><a>Properties</a></li>
+        <li (click)="settab('tab_11')" data-id="tab_11"><a>Filters</a></li>
+        <li (click)="settab('tab_18')" data-id="tab_18"><a>Insert kids</a></li>
+        <li (click)="settab('tab_19')" data-id="tab_18"><a>Scan files</a></li>
+      </ul>
+    </li>
+  </ul>
+</div>

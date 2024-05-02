@@ -1,0 +1,9 @@
+
+<h4 class="title1">Songs checker</h4>
+<div class="bg_white">
+    <div style="padding: 10px 10px 10px 10px;">
+        <div *ngFor='let b = index, let song of  songs'>
+            <a routerLink="/cms/{{song._id}}/true">{{ song.schemaextend[0].url }}</a>
+        </div>
+    </div>
+</div>

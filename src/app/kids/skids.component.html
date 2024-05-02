@@ -1,0 +1,13 @@
+<div class="field">
+  <div class="welli well-lgi2">
+
+    <div *ngFor="let page of allItems; let b=index"
+         [style.display]="page.visible == true ? 'inline-block' : 'none'"
+         class="blok_movie {{ pageId == page._id ? 'txt_red' : ''}} {{ b%2 == 0 ? 'float_r' : 'float_l'}}">
+      <div class="info">
+        <h4><a routerLink="/{{ parentName != undefined ? parentName : page.title }}/{{page._id}}">{{page.title}} 2</a></h4>
+      </div>
+    </div>
+    <div class="stretch"></div>
+  </div>
+</div>

@@ -1,0 +1,649 @@
+<div id="PopupDiv" (click)="clearPopupDiv()"></div>
+<div id="homepage" class="row">
+  <div
+    id="index"
+    class="{{ _userService.user_current ? 'cell_left' : 'field' }}"
+  >
+    <div class="welli well-lgi2">
+      <div *ngIf="!_userService.user_current">
+        <h4 class="title6">Only for registered users</h4>
+      </div>
+      <div *ngIf="_userService.user_current">
+        <h4 class="title1">
+          <span
+            class="absolute_right icmn-circle-down2 icontitle"
+            (click)="scrollToBottom()"
+            title="Go to bottom"
+          ></span
+          ><a id="Album" routerLink="/Media/5bd13b5af01e2a3d7c47dc42"
+            >Favorite songs</a
+          >
+        </h4>
+        <div class="bg_white paddinger20b borderRadius">
+          <table
+            id="songspec"
+            [cellPadding]="0"
+            [cellSpacing]="0"
+            style="
+              font-size: 14px;
+              border: 1px;
+              border-spacing: 0px;
+              border-collapse: separate;
+              width: 100%;
+              margin: 0px 0px 10px 0px;
+            "
+            class="hidden"
+          >
+            <tr>
+              <td id="label_title" style="width: 100px"></td>
+              <td style="font-weight: bold; width: 70%" id="clip_title"></td>
+              <td rowspan="8" style="vertical-align: top; text-align: right">
+                <img
+                  id="detailimage"
+                  src=""
+                  class="hidden cursor"
+                  (click)="fullscreen()"
+                />
+              </td>
+            </tr>
+            <tr id="label_artist_tr">
+              <td id="label_artist" style="width: 100px"></td>
+              <td id="clip_artist"></td>
+            </tr>
+            <tr *ngIf="!type">
+              <td id="label_album"></td>
+              <td>
+                <a
+                  [routerLink]="albumurl"
+                  class="underline"
+                  id="clip_album"
+                ></a>
+              </td>
+            </tr>
+            <tr>
+              <td style="height: 0px"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td id="label_filesiz" style="width: 100px">Filesize</td>
+              <td id="clip_filesiz"></td>
+            </tr>
+            <tr id="label_musicgenre_tr">
+              <td id="label_musicgenre" style="width: 100px"></td>
+              <td style="width: 160px" id="clip_musicgenre"></td>
+            </tr>
+            <tr>
+              <td id="label_length" style="width: 100px"></td>
+              <td id="clip_length"></td>
+            </tr>
+            <tr id="label_bitrate_tr">
+              <td id="label_bitrate" style="width: 100px"></td>
+              <td id="clip_bitrate"></td>
+            </tr>
+          </table>
+
+          <div id="indexbutton">
+            <select
+              *ngIf="!type"
+              class="selectXSmall"
+              (change)="filterSelectGenre($event)"
+              id="filterMusicGenre"
+              title="Filter on genre"
+            >
+              <option value="" selected="selected">Genre</option>
+              <option
+                *ngFor="let pagez of _cmsService.musicGenres; let c = index"
+                value="{{ pagez.title }}"
+              >
+                {{ pagez.title }}
+              </option>
+            </select>
+
+            <div
+              title="Restore original order"
+              (click)="sortRestore()"
+              class="icmn-key-left indexbutton"
+            ></div>
+            <div
+              title="Sort by title"
+              (click)="sortByTitle()"
+              class="icmn-key-A indexbutton"
+            ></div>
+            <div
+              title="Shuffle songs"
+              (click)="shuffle()"
+              class="icmn-insert-template indexbutton"
+            ></div>
+            <div
+              title="Reverse songs"
+              (click)="sortBy()"
+              class="icmn-key-down indexbutton"
+            ></div>
+            <div
+              *ngIf="!type"
+              id="savesongs"
+              title="Save"
+              (click)="saveSongs()"
+              class="hidden icmn-strikethrough3 indexbutton"
+            ></div>
+            <div
+              *ngIf="type"
+              title="Back to singles"
+              (click)="singles()"
+              class="icmn-file-text indexbutton"
+            ></div>
+            <div
+              class="icmn-file-picture indexbutton float_r"
+              style="margin: 2px 0px 0px 8px; font-size: 28px"
+              *ngIf="
+                _userService.user_current &&
+                _userService.user_current.userRole == 100 &&
+                type
+              "
+              routerLink="/cms/{{ album._id }}/true"
+              title="Admin Album"
+            ></div>
+            <div
+              class="icmn-file-video indexbutton float_r"
+              style="margin: 2px 0px 0px 8px; font-size: 28px"
+              *ngIf="
+                _userService.user_current &&
+                _userService.user_current.userRole == 100 &&
+                (song || songs)
+              "
+              routerLink="/cms/{{
+                song ? song._id : songs[playListIndex]._id
+              }}/true"
+              title="Admin song"
+            ></div>
+          </div>
+
+          <div
+            *ngIf="!type"
+            id="scroller"
+            class="scroller"
+            style="font-size: 16px"
+          >
+            <div
+              class="songblock indexlinks {{
+                c % 2 == 0 ? 'bg_white' : 'bg_grey'
+              }} {{ playListIndex == c ? 'current' : '' }}"
+              *ngFor="
+                let pagez of _userService.user_current.songs_tmp
+                  | musicGenre : _filterService.musicGenre;
+                let c = index
+              "
+              style="cursor: pointer"
+            >
+              <span
+                class="float_l"
+                *ngIf="
+                  _userService.user_current != undefined &&
+                  _userService.user_current.userRole == 100
+                "
+              >
+                <span routerLink="/cms/{{ pagez._id }}/true">
+                  {{ c + 1 }} -&nbsp;</span
+                >
+              </span>
+              <span
+                title="Delete {{ pagez.title }}"
+                id="fav{{ pagez._id }}"
+                class="float_r icon {{
+                  _userService.user_current != undefined &&
+                  getFavByFind(pagez._id) === true
+                    ? 'icmn-minus-circle'
+                    : 'icmn-plus-circle'
+                }}"
+                (click)="toggleFavorite2(pagez)"
+                style="margin: 0px 0px 0px 10px"
+              ></span>
+              <div
+                title="{{ pagez.title }}"
+                style="white-space: nowrap; overflow: hidden"
+                id="pagez_songs{{ c }}"
+                class="blok_line"
+                (click)="
+                  loadTrack3(
+                    'api/assets/music/Albums/' +
+                      pagez.schemaextend[0].url
+                        .replace('Ballads', '')
+                        .replace('POP/', '')
+                        .replace('Rock/', '')
+                        .replace('Albums/', ''),
+                    c,
+                    pagez
+                  )
+                "
+              >
+                {{ pagez.title | slice : 0 : 24 }}
+                {{ pagez.title.length > 24 ? "..." : ""
+                }}<span class="float_r">{{ pagez.hits }}</span
+                ><span class="float_r border_r">{{
+                  pagez.schemaextend[0].filesiz
+                    ? _cmsService.humanfilesize(
+                        pagez.schemaextend[0].filesiz,
+                        "",
+                        1
+                      )
+                    : ""
+                }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div
+            *ngIf="type"
+            id="scroller"
+            class="scroller"
+            style="font-size: 16px"
+          >
+            <div
+              *ngFor="
+                let pagez of songs | musicGenre : _filterService.musicGenre;
+                let c = index
+              "
+              class="indexlinks {{ playListIndex == c ? 'current' : '' }} {{
+                c % 2 == 0 ? 'bg_white' : 'bg_grey'
+              }} {{
+                _userService.user_current && getFavByFind(pagez._id) === true
+                  ? 'bg_lightblue'
+                  : ''
+              }} {{
+                _userService.user_current != undefined &&
+                getFavByTitle(pagez.title) === true
+                  ? 'bg_lightgreen'
+                  : ''
+              }}"
+              style="cursor: pointer"
+            >
+              <span
+                class="float_l"
+                *ngIf="
+                  _userService.user_current != undefined &&
+                  _userService.user_current.userRole == 100
+                "
+              >
+                <span routerLink="/cms/{{ pagez._id }}/true">
+                  {{ c + 1 }} -&nbsp;</span
+                >
+              </span>
+              <span
+                title="{{ pagez.title }}"
+                id="fav{{ pagez._id }}"
+                class="favorites icon {{
+                  _userService.user_current != undefined &&
+                  getFavByFind(pagez._id) === true
+                    ? 'icmn-minus-circle'
+                    : 'icmn-plus-circle'
+                }}"
+                (click)="toggleFavorite2(pagez)"
+                title="{{
+                  _userService.user_current != undefined &&
+                  getFavByFind(pagez._id) === true
+                    ? 'remove ' + pagez.title + ' from favorites'
+                    : 'add ' + pagez.title + ' to favorites'
+                }}"
+              ></span>
+              <div
+                title="{{ pagez.title }}"
+                style="white-space: nowrap; overflow: hidden"
+                id="pagez_songs{{ c }}"
+                (click)="
+                  loadTrack3(
+                    pagez.time
+                      ? pagez.time
+                      : 'api/assets/music/Albums/' +
+                          pagez.schemaextend[0].url.replace('Ballads', ''),
+                    c,
+                    pagez
+                  )
+                "
+              >
+                {{ pagez.title | slice : 0 : 24 }}
+                {{ pagez.title.length > 24 ? "..." : ""
+                }}<span class="float_r">{{ pagez.hits }}</span
+                ><span class="float_r border_r">{{
+                  pagez.schemaextend[0].filesiz
+                    ? _cmsService.humanfilesize(
+                        pagez.schemaextend[0].filesiz,
+                        "",
+                        1
+                      )
+                    : ""
+                }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cell_right">
+    <div class="wellr well-lgi2">
+      <h4 *ngIf="_userService.user_current" class="title3">
+        <span id="player_status">Audio player</span>
+        <span
+          id="allItemsCount"
+          style="float: right"
+          *ngIf="_userService.user_current.songs_tmp"
+          >{{
+            this.playListIndex +
+              1 +
+              " / " +
+              _userService.user_current.songs_tmp.length
+          }}</span
+        >
+      </h4>
+      <div *ngIf="_userService.user_current">
+        <audio
+          #videoPlayer
+          autoplay="autoplay"
+          id="player"
+          style="
+            background-color: #f1f3f4;
+            width: 100%;
+            margin: 0px 0px 0px 0px;
+          "
+          preload="auto"
+          controls
+        >
+          <source #videoSource id="playersource" src="" type="audio/mpeg" />
+          Your browser does not support the audio tag.
+        </audio>
+      </div>
+      <div
+        id="video_buttons"
+        class="bg_white"
+        style="
+          border-radius: 0px 0px 6px 6px;
+          margin: -7px 0px 10px 0px;
+          text-align: center;
+          background-color: #f1f3f4;
+        "
+      >
+        <div
+          class="video_buttons"
+          [style.display]="
+            _userService.isUserLoggedIn == true ? 'flex' : 'none'
+          "
+        >
+          <span
+            *ngIf="_userService.user_current && !type"
+            style="{{
+              getFavByFind(
+                _userService.user_current.songs[playListIndex]._id
+              ) === true
+                ? 'color:#dc3545;'
+                : ''
+            }}"
+            id="player_favbutton"
+            (click)="player_fav()"
+            class="{{
+              getFavByFind(
+                _userService.user_current.songs[playListIndex]._id
+              ) === true
+                ? 'icmn-heart7'
+                : 'icmn-heart7'
+            }}"
+            title="Add/Remove favortes"
+          ></span>
+          <span
+            *ngIf="_userService.user_current && type && songsReady"
+            style="{{
+              getFavByFind(songs[playListIndex]._id) === true
+                ? 'color:#dc3545;'
+                : ''
+            }}"
+            id="player_favbutton"
+            (click)="player_fav()"
+            [class]="
+              getFavByFind(songs[playListIndex]._id) === true
+                ? 'icmn-heart7'
+                : 'icmn-heart7'
+            "
+            title="Add/Remove favortes"
+          ></span>
+          <span
+            id="player_hideshowbutton"
+            (click)="player_hideshow()"
+            class="icmn-box-remove"
+            title="Show/Hide player"
+          ></span>
+          <span
+            id="player_skipbackwardbutton"
+            (click)="player_skipbackward()"
+            class="icmn-first"
+          ></span>
+          <span
+            id="player_backwardbutton"
+            (click)="player_backward()"
+            class="icmn-backward2"
+          ></span>
+          <span
+            id="player_startbutton"
+            (click)="player_play()"
+            class="icmn-play4"
+          ></span>
+          <span
+            id="player_pausebutton"
+            (click)="player_pause()"
+            class="icmn-pause2 hidden"
+          ></span>
+          <span
+            id="player_skipbutton"
+            (click)="player_skip()"
+            class="icmn-forward3"
+          ></span>
+          <span
+            id="player_forwardbutton"
+            (click)="player_forward()"
+            class="icmn-last"
+          ></span>
+          <span
+            id="player_shufflebutton"
+            (click)="shuffle()"
+            class="icmn-shuffle"
+            title="shuffle songs"
+          ></span>
+          <span
+            id="player_volumedecrease"
+            (click)="player_volumedown()"
+            class="icmn-volume-decrease"
+            title="volume down"
+          ></span>
+          <span
+            id="player_volumeincrease"
+            (click)="player_volumeup()"
+            class="icmn-volume-increase"
+            title="volume up"
+          ></span>
+          <span
+            id="player_muteoffbutton"
+            (click)="player_mute()"
+            class="hidden icmn-volume-mute4"
+            title="volume off"
+          ></span>
+          <span
+            id="player_muteonbutton"
+            (click)="player_mute()"
+            class="icmn-volume-medium"
+            title="volume on"
+          ></span>
+        </div>
+      </div>
+
+      <div class="videowrapper">
+        <div *ngIf="_userService.user_current">
+          <h4 id="player_status" class="title2">
+            <span routerLink="/Media/5bd13b5af01e2a3d7c47dc42"
+              >Favorite Albums</span
+            ><span
+              class="absolute_right"
+              (click)="sortalbums()"
+              id="allItemsAlbumCount"
+              title="Shuffle albums"
+              >{{ _userService.user_current.musicAlbum.length }} albums</span
+            >
+          </h4>
+
+          <div id="ngpipes" class="hidden">
+            <input
+              type="text"
+              name="filterText"
+              placeholder="Keyword"
+              (change)="filterKeyword2($event)"
+              class="inputXSmall"
+              [(ngModel)]="filterText"
+              id="filterText"
+              value=""
+            />
+            <select
+              class="selectXSmall"
+              [(ngModel)]="filterFirstletter"
+              (change)="filterSelectFirstletter2($event)"
+              id="filterFirstletter"
+            >
+              <option value="" selected="selected">Letter</option>
+              <option *ngFor="let letter of items" value="{{ letter }}">
+                {{ letter }}
+              </option>
+            </select>
+            <select
+              class="selectXSmall"
+              (change)="filterSelectAlbumGenre($event)"
+              [(ngModel)]="filtermusicAlbumGenre"
+              id="filtermusicAlbumGenre"
+              title="Filter on genre"
+            >
+              <option value="" selected="selected">Genre</option>
+              <option
+                *ngFor="let pagez of _cmsService.musicGenres; let c = index"
+                value="{{ pagez.title }}"
+              >
+                {{ pagez.title }}
+              </option>
+            </select>
+            <span
+              class="icmn-key-down icon"
+              title="Reverse order"
+              (click)="sortByAlbums()"
+            ></span>
+            <span
+              class="icmn-insert-template icon"
+              title="Shuffle"
+              (click)="shuffleAlbum()"
+            ></span>
+            <span
+              class="icmn-key-A icon"
+              title="Sort by title"
+              (click)="sortByAlbum()"
+            ></span>
+          </div>
+
+          <div class="flex-container">
+            <div
+              *ngFor="
+                let pagez of _cmsService.pagedItems
+                  | filter : _filterService.filterText
+                  | firstletter : _filterService.filterFirstletter
+                  | musicGenre : _filterService.musicAlbumGenre;
+                let c = index
+              "
+              class="blok_kid {{ c % 2 == 0 ? 'float_l' : 'float_r' }} {{
+                album && album._id == pagez._id ? 'current' : ''
+              }}"
+            >
+              <span
+                style="margin: 6px 10px 0px 90px; z-index: 9999; float: right"
+                *ngIf="_userService.user_current"
+                id="fav{{ pagez._id }}"
+                class="favorites {{
+                  _userService.user_current != undefined &&
+                  getFavByFind2(pagez._id) === true
+                    ? 'icmn-heart7'
+                    : 'icmn-heart8'
+                }}"
+                (click)="toggleFavorite3(pagez)"
+              ></span>
+              <div class="image" (click)="loadSongs(pagez)">
+                <img
+                  src="{{ favalbumcover(pagez.parent, pagez.title) }}"
+                  alt=""
+                  width="90"
+                  height="90"
+                />
+              </div>
+              <h4>{{ pagez.title }}</h4>
+              <div class="info" (click)="loadSongs(pagez)">
+                <div
+                  *ngIf="pagez.schemaextend && pagez.schemaextend[0].musicgenre"
+                >
+                  Genre: {{ pagez.schemaextend[0].musicgenre }}
+                </div>
+                <div>Hits: {{ pagez.hits }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <ul
+              *ngIf="
+                _cmsService.pager &&
+                _cmsService.pager.pages &&
+                _cmsService.pager.pages.length
+              "
+              id="pagination"
+              class="pagination2"
+            >
+              <li *ngIf="_cmsService.pager.currentPage !== 1">
+                <a (click)="setPage(1)"><<</a>
+              </li>
+              <li [ngClass]="{ disabled: _cmsService.pager.currentPage === 1 }">
+                <a (click)="setPage(_cmsService.pager.currentPage - 1)">{{
+                  videoId == undefined ? "<" : "<"
+                }}</a>
+              </li>
+              <li
+                *ngFor="let page of _cmsService.pager.pages"
+                [ngClass]="{ active: _cmsService.pager.currentPage === page }"
+              >
+                <a (click)="setPage(page)">{{ page }}</a>
+              </li>
+              <li
+                [ngClass]="{
+                  disabled:
+                    _cmsService.pager.currentPage ===
+                    _cmsService.pager.totalPages
+                }"
+              >
+                <a (click)="setPage(_cmsService.pager.currentPage + 1)">{{
+                  videoId == undefined ? ">" : ">"
+                }}</a>
+              </li>
+              <li
+                [ngClass]="{
+                  disabled:
+                    _cmsService.pager.currentPage ===
+                    _cmsService.pager.totalPages
+                }"
+              >
+                <a (click)="setPage(_cmsService.pager.totalPages)">>></a>
+              </li>
+            </ul>
+
+            <h4 class="title_footer">
+              <a routerLink="/Media/5bd13b5af01e2a3d7c47dc42">Music</a
+              ><a
+                class="float_r icmn-circle-up2 icontitle"
+                id="scrollToTop"
+                (click)="scrollToTop()"
+              ></a>
+            </h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br style="clear: both" />
+</div>

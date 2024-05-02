@@ -1,0 +1,17 @@
+#listInfo {
+    margin: 0px 0px 0px 0px;
+    color: #dc3545;
+}
+
+#listInfo span {
+    margin-right: 10px
+}
+
+#listInfo span:first {
+    border-right: 1px solid #000000;
+}
+
+#listInfo {
+    padding: 10px 0px 0px 0px;
+    font-weight: bold;
+}

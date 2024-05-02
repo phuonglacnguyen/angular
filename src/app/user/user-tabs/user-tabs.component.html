@@ -1,0 +1,60 @@
+<div class="tabmenu" *ngIf="_userService.user_current != undefined">
+    <ul class="nav nav-tabs">
+        <li>
+            <a id="tabtext" (click)="settab('tab_1')" data-id="tab_1" [class.active]="_cmsService.tabEditCurrent == 'tab_1'" class="txt_darkblue dropdown lli active tab">
+            <span class="icon icmn-clipboard6"></span>Text
+            <span class="hidden more tabicomoon float_r icmn-arrow-right5"></span></a>
+        </li>
+        <li>
+            <a id="itab_2" (click)="settab('tab_2')" data-id="tab_2" [class.active]="_cmsService.tabEditCurrent == 'tab_2'" class="txt_darkblue lli tab dropdown">
+                <span class="icon icmn-address-book2"></span>Address
+            </a>
+          </li>
+          <li>
+            <a id="itab_2" (click)="settab('tab_5')" data-id="tab_5" [class.active]="_cmsService.tabEditCurrent == 'tab_5'" class="txt_darkblue lli tab dropdown">
+                <span class="icon icmn-heart5"></span>Favs
+            </a>
+          </li>
+        <li class="hidden">
+            <a id="itab_4" (click)="settab('tab_4')" data-id="tab_4" [class.active]="_cmsService.tabEditCurrent == 'tab_4'" class="txt_darkblue lli tab dropdown">
+                <span class="icon icmn-file-picture2"></span>Files
+                <span class="hidden more tabicomoon float_r icmn-arrow-right5"></span>
+            </a>
+            <ul [style.display]="_userService.isUserLoggedIn == true ? '' : 'none'" class="levelA dropdown-content">
+                <li id="buttonAddMedia"><a>Add file</a></li>
+                <li class="hidden" id="buttonHideMedia"><a>Hide file</a></li>
+                <li class="dropdownB">
+                    <a> Filemanager<span class="more icmn-arrow-down5 float_r"></span></a>
+                    <ul class="levelB dropdown-contentB">
+                        <li><a>Test</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a data-id="tab_8" [class.active]="_cmsService.tabEditCurrent == 'tab_8' || _cmsService.tabEditCurrent == 'tab_9' || _cmsService.tabEditCurrent == 'tab_10'  || _cmsService.tabEditCurrent == 'tab_11' || _cmsService.tabEditCurrent == 'tab_13'  || _cmsService.tabEditCurrent == 'tab_14'  || _cmsService.tabEditCurrent == 'tab_15'" class="txt_darkblue dropdown lli tab">
+                <span class="icon icmn-cog2"></span>System
+                <span class="hidden more tabicomoon float_r icmn-arrow-right5"></span>
+            </a>
+            <ul [style.display]="_userService.isUserLoggedIn == true ? '' : 'true'" class="levelA dropdown-content">
+              <li class="dropdownB">
+                <a>Json<span class="more tabicomoon float_r icmn-arrow-right5"></span></a>
+                <ul class="levelB dropdown-contentB">
+                  <li (click)="settab('tab_10')" data-id="tab_10"><a>userSelected</a></li>
+                 </ul>
+              </li>
+            </ul>
+        </li> 
+        <li id="itab_9" (click)="settab('tab_9')" data-id="tab_9" [class.active]="_cmsService.tabEditCurrent == 'tab_9'" class="hidden lli tab">Objects</li>
+        <li>
+            
+            <a id="itab_10" (click)="settab('tab_10')" data-id="tab_10"  [class.active]="_cmsService.tabEditCurrent == 'tab_10'" class="hidden lli tab">
+                Jsonz
+                </a>
+           
+        </li>
+        <li id="itab_11" (click)="settab('tab_11')" data-id="tab_11" [class.active]="_cmsService.tabEditCurrent == 'tab_11'" class="hidden lli tab">Pipes</li>
+        <li id="Itab_12" (click)="settab('tab_12')" data-id="tab_12" [class.active]="_cmsService.tabEditCurrent == 'tab_12'" class="hidden lli tab">SchemaExtend</li>
+    </ul>
+</div>

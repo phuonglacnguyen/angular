@@ -1,0 +1,13 @@
+<div *ngIf="_userService.user_current != undefined" class="carousel">
+  <ul class="carousel-inner">
+    <li class="carousel-item carousel-itemz">
+      <h2><a>History</a></h2>
+      <div class="containHeight" style="height: 226px;">
+        <div *ngFor="let video of _userService.user_current.urlHistory; let i = index">
+          <a title="{{ video.time }}" routerLink="{{video._id}}">{{ video.title }}</a> - <a (click)="removeHistory(i)">Delete</a><br />
+        </div>
+     </div>
+    </li>
+  </ul>
+</div>
+

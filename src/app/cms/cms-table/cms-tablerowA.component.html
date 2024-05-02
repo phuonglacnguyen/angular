@@ -1,0 +1,86 @@
+<ul class="levelA table" id="rowul5a111233aaa94d061a93e719">
+  <li
+    class="table-row trow"
+    *ngFor="let a = index; let apage; of: cmsPages"
+    id="rowli_5a111233aaa94d061a93e719"
+    data-kids="on"
+    scope="rowA"
+  >
+    <div
+      id="tabrowdl_5a111233aaa94d061a93e719"
+      class="tabrowdl {{
+        _cmsService.treelevels.length > 1 &&
+        apage._id == _cmsService.treelevels[0]._id
+          ? 'bactive'
+          : ''
+      }} {{ apage._id == _cmsService.pageSelected._id ? 'active' : '' }}"
+    >
+      <span
+        [style.display]="_userService.isUserLoggedIn == true ? '' : 'none'"
+        class="hidden table-cell col-sm-1 dnd icon icmn-arrow-resize7"
+      ></span>
+      <span
+        class="table-cell col-sm-1 Visibility icon {{
+          apage.visible == true ? 'icmn-lamp8' : 'icmn-lamp7'
+        }}"
+        title="{{ apage.visible == true ? 'On' : 'Off' }}"
+        id="visibility_{{ apage._id }}"
+      ></span>
+      <span
+        class="table-cell col-sm-1 hidden Security icon {{
+          apage.secure == true ? 'icmn-link4' : 'icmn-unlink4'
+        }}"
+        id="published_{{ apage._id }}"
+      ></span>
+      <span
+        class="table-cell col-sm-1 {{
+          apage.kids > 0 ? 'icmn-arrow-down5' : 'icmn-arrow-right5'
+        }}"
+        title="{{ apage.kids }}"
+        id="rowchild_{{ apage._id }}"
+      ></span>
+      <span class="table-cell col-sm-1 hidden letter" title="A">1</span>
+      <span
+        class="table-cell col-sm-1 Checkboxes hidden"
+        id="chkpar{{ apage._id }}"
+        title="5a111233aaa94d061a93e719"
+        ><input
+          class="checkbox chklevelA  {{
+            apage.secure == true ? 'disabled' : ''
+          }}"
+          type="checkbox"
+          id="chk_{{ apage._id }}"
+          value="1"
+          title="5a111233aaa94d061a93e719"
+        />
+        &nbsp;
+      </span>
+      <a
+        (click)="_cmsService.listlink(_cmsService.pageRoot)"
+        id="tabrowl_{{ apage._id }}"
+        class="tabrowl table-cell mybuttonz col-sm-5 kid{{
+          apage.treelevel
+        }} indent_{{ apage.treelevel }}"
+        title="{{
+          apage.kids > 0 ? apage.kids + ' items under ' + apage.title : ''
+        }}"
+      >
+        {{ apage.title }}
+        <span
+          class="float_r iconLetter {{
+            apage.kids > 0 ? 'tcell' : 'icmn-minus2'
+          }}"
+          id="rowcell_{{ apage._id }}"
+          >{{ apage.kids > 0 ? apage.kids : "" }}</span
+        >
+      </a>
+    </div>
+    <app-cms-tablerow
+      [userlogin]="userlogin"
+      [currentPage]="apage"
+      [cmsPages]="apage.cmsSubPages"
+      [tableLevel]="tableLevel + 1"
+    >
+    </app-cms-tablerow>
+  </li>
+</ul>

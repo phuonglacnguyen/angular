@@ -1,0 +1,41 @@
+<div class="carousel">
+  <ul class="carousel-inner">
+    <li class="carousel-item carousel-itemz">
+      <h2 class="center cursor">
+        <span (click)="reloadImages()" class="icmn-loop3"></span
+        ><span
+          *ngIf="
+            _userService.getUserLoggedIn() == true &&
+            _userService.user_current.userRole == 100
+          "
+          routerLink="{{ enviapiurl }}/cms/{{
+            items.length > 0 ? items[0]._id : ''
+          }}/true"
+          class="icmn-pencil7"
+        ></span
+        ><a
+          title="Go to Series"
+          routerLink="{{ enviapiurl }}/Videos/5c0d45ea64c6c530246b5690"
+          >Series</a
+        >
+      </h2>
+      <a
+        title="Go to {{ items.length > 0 && items[0].title }}"
+        routerLink="/Videos/{{ items.length > 0 ? items[0]._id : '' }}"
+        ><img
+          id="homepageseries"
+          src=""
+          alt="{{ items.length > 0 ? items[0].title : '' }}"
+          class="carousel-image"
+      /></a>
+      <div class="carousel-info pointer">
+        <h3
+          title="Go to {{ items.length > 0 ? items[0].title : '' }}"
+          routerLink="/Videos/{{ items.length > 0 ? items[0]._id : '' }}"
+        >
+          {{ items.length > 0 ? items[0].title : "" }}
+        </h3>
+      </div>
+    </li>
+  </ul>
+</div>

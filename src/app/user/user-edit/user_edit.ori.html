@@ -1,0 +1,488 @@
+﻿
+<div id="div_edit_user" class="border border-light rounded">
+
+    <ul class="nav nav-tabs">
+        <li (click)="settab($event.currentTarget, 'tab_1')" [class.active]="clicked == 'tab_1'" data-id="tab_1" class="tab active">AutoForm</li>
+        <li (click)="settab($event.currentTarget, 'tab_2')" [class.active]="clicked == 'tab_2'" data-id="tab_2" class="tab">Address</li>
+        <li (click)="settab($event.currentTarget, 'tab_4')" [class.active]="clicked == 'tab_4'" data-id="tab_4" class="tab">Media</li>
+        <li (click)="settab($event.currentTarget, 'tab_3')" [class.active]="clicked == 'tab_3'" data-id="tab_3" class="tab">Info</li>
+        <li (click)="settab($event.currentTarget, 'tab_5')" [class.active]="clicked == 'tab_5'" data-id="tab_5" class="tab">User</li>
+    </ul>
+
+
+    <div id="tabs" class="tabs">
+
+        <form [formGroup]="userForm" enctype="multipart/form-data" novalidate (ngSubmit)="onSubmit()" #f="ngForm">
+
+
+            <div class="hidden" id="tab_5">
+
+                <div>
+                    <div class="form-group well well-lg">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <label>_id</label>
+                            </div>
+                            <div class="col-sm-10">
+                                <input type="text" id="_id" readonly value="{{useredit._id}}" formControlName="_id" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2">
+                            </div>
+                            <div class="col-sm-10">
+                                <div *ngIf="first_name.invalid && (first_name.dirty || first_name.touched)" class="alert alert-danger">
+                                    <div *ngIf="first_name.errors.required">
+                                        first_name is required.
+                                    </div>
+                                    <div *ngIf="first_name.errors.minlength">
+                                        Firstname must be at least 2 characters long.
+                                    </div>
+                                    <div *ngIf="first_name.errors.forbiddenName">
+                                        Firstname cannot be Bob.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <label for="first_name">First name</label>
+                            </div>
+                            <div class="col-sm-10">
+                                <input tabindex="1" type="text" id="first_name" formControlName="first_name" class="form-control" required />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2">
+                            </div>
+                            <div class="col-sm-10">
+                                <div *ngIf="last_name.invalid && (first_name.dirty || last_name.touched)" class="alert alert-danger">
+                                    <div *ngIf="last_name.errors.required">
+                                        Lastname is required.
+                                    </div>
+                                    <div *ngIf="last_name.errors.minlength">
+                                        Lastname must be at least 2 characters long.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <label for="last_name">Last name</label>
+                            </div><div class="col-sm-10">
+                                <input tabindex="2" type="text" id="last_name" formControlName="last_name" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2">
+                            </div>
+                            <div class="col-sm-10">
+                                <div *ngIf="userForm.get('email').invalid && (userForm.get('email').dirty || userForm.get('email').touched)" class="alert alert-danger">
+                                    <div *ngIf="!userForm.get('email').valid">
+                                        email is invalid.
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <label for="email">E-mail</label>
+                            </div><div class="col-sm-10">
+                                <input tabindex="3" type="email" id="email" formControlName="email" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger">
+                            <div *ngIf="password.errors.required">
+                                Password is required.
+                            </div>
+                            <div *ngIf="password.errors.pattern">
+                                Password must contain one number, one lowercase character, one uppercase character and one special character.
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <label>Password</label>
+                            </div><div class="col-sm-10">
+                                <input tabindex="4" type="password" formControlName="password" pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,60})" class="form-control" />
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <label for="telephone">Telephone</label>
+                            </div><div class="col-sm-10">
+                                <input tabindex="5" type="text" formControlName="telephone" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <label for="userRole">User Roles</label>
+                            </div><div class="col-sm-10">
+                                <select tabindex="6" formControlName="userRole" class="form-control">
+                                    <option value="" selected="selected">Select user role</option>
+                                    <option value="0">Visitor</option>
+                                    <option value="50">Editor</option>
+                                    <option value="100">Admin</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <label for="Active">Active</label>
+                            </div>
+                            <div class="col-sm-10" style="text-align:left;">
+                                <input tabindex="7" type="checkbox" formControlName="active" class="checkbox" />
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-sm-2">
+                            </div><div class="col-sm-10">
+                                <button type="submit" id="saveUser" [disabled]="userForm.pristine" class="btn btn-success">Save</button>
+                                <button type="reset" (click)="revert()" [disabled]="userForm.pristine" class="btn btn-danger">Revert</button>
+                                <input type="button" class="btn btn-primary" id="cancelUser" (click)="close_user_edit()" value="Close" />
+                                <input type="button" class="btn btn-primary" id="deleteUser" (click)="destroy()" ng-confirm-click="Would you like to say hi?" value="Delete" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="hidden" id="tab_2">
+                <div class="well well-lg">
+                    <div class="larger">
+                        <div class="icon icmn-plus-circle" id="addAddress" title="Add an addreszs" (click)="addLair()"></div>
+                    </div>
+
+                    <div formArrayName="secretLairs">
+                        <div *ngFor="let address of secretLairs.controls; let i=index" [formGroupName]="i">
+
+                            <div class="form-group">
+
+                                <h4>Address {{ i+1 }}<span (click)="delete_address(i)" class="pull-right icmn-cancel-circle icon_red"></span></h4>
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <label for="street">Street</label>
+                                    </div><div class="col-sm-10">
+                                        <input type="text" formControlName="street" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <label for="city">City</label>
+                                    </div><div class="col-sm-10">
+                                        <input type="text" class="form-control" formControlName="city" />
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <label for="state">State</label>
+                                    </div><div class="col-sm-10">
+                                        <input type="text" class="form-control" formControlName="state" />
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <label for="postal">Postal</label>
+                                    </div><div class="col-sm-10">
+                                        <input type="text" formControlName="zip" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <label for="country">Country</label>
+                                    </div><div class="col-sm-10">
+                                        <select formControlName="country" class="form-control">
+                                            <option value="" selected="selected">Select country</option>
+                                            <option value="NL">Netherlands</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-2">
+                            </div><div class="col-sm-10">
+                                <input type="submit" class="hidden" id="saveAddress" value="Save" />
+                                <input type="button" class="hidden" id="cancelAddress" (click)="cancel_addAddress()" value="Cancel" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="hidden" id="tab_3">
+                <div class="well well-lg">
+
+                    <div class="row">
+                        <div class="col-sm-2">
+                            Date created
+                        </div><div class="col-sm-10">
+                            {{ useredit.dateCreated}}
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-2">
+                            Number of logins
+                        </div><div class="col-sm-10">
+                            {{ useredit.logins }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-2">
+                            Last login
+                        </div><div class="col-sm-10">
+                            {{ useredit.dateLast }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hidden" id="tab_4">
+                <div formArrayName="secretImages" class="well well-lg">
+
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <label for="street">Upload</label>
+                        </div><div class="col-sm-10">
+                            <input tabindex="13" name="fileInput" id="fileInput" #fileInput (change)="fileChangeEvent($event);" type="file" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-2">
+                        </div><div class="col-sm-10" id="userImageContents">
+                            <img src="" alt="" id="userImage" /><div id="TheImageContents"></div>
+                        </div>
+                    </div>
+
+
+
+                    <div *ngFor="let image of secretImages.controls; let i=index" [formGroupName]="i">
+                        <div>
+                            <h4>
+                                Image {{ i+1 }}
+                                <span (click)="delete_mediaimage(i)" class="pull-right icmn-cancel-circle icon"></span>
+                            </h4>
+                            <img src="" alt="" class="userImage" />
+
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <label for="postal">Title</label>
+                                </div><div class="col-sm-10">
+                                    <input type="text" class="form-control" #title formControlName="mediaTitle" />
+                                </div>
+                            </div>
+
+                            <div class="text_small">
+
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <label>Width</label>
+                                    </div><div class="col-sm-4">
+                                        <input type="number" readonly class="form-control" id="mediaWidth" #mwidth formControlName="mediaWidth" />
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label for="postal">Height</label>
+                                    </div><div class="col-sm-4">
+                                        <input type="number" readonly class="form-control" #mheight id="mediaHeight" formControlName="mediaHeight" />
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <label for="postal">Type</label>
+                                    </div><div class="col-sm-4">
+                                        <input type="text" readonly class="form-control" #mtype id="mediaType" formControlName="mediaType" />
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label for="postal">Extension</label>
+                                    </div><div class="col-sm-4">
+                                        <input type="text" readonly class="form-control" #mext id="mediaExtension" formControlName="mediaExtension" />
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <label for="postal">Path</label>
+                                    </div><div class="col-sm-4">
+                                        <input type="text" readonly class="form-control" #mpath id="mediaPath" formControlName="mediaPath" />
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label for="postal">Filesize</label>
+                                    </div><div class="col-sm-4">
+                                        <input type="number" readonly class="form-control" #mfsize id="mediaFilesize" formControlName="mediaFilesize" />
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <label for="postal">Last modified</label>
+                                    </div><div class="col-sm-4">
+                                        <input type="text" readonly class="form-control" #mlmod id="lastModified" formControlName="lastModified" />
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label for="postal">Date Created</label>
+                                    </div><div class="col-sm-4">
+                                        <input type="text" readonly class="form-control" #mdmod id="imageCreated" formControlName="imageCreated" />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-2">
+                        </div><div class="col-sm-10">
+                            <input type="button" id="addImageButton" class="btn btn-primary hidden" value="Add an image" (click)="addImage()" />
+                            <input type="submit" id="saveImageButton" class="btn btn-primary" value="Save" />
+                            <input type="button" id="cancelImageButton" class="no_display btn btn-primary" (click)="cancel_user_image()" value="Cancel" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+
+        <form class="pageform" novalidate (ngSubmit)="onSubmit(form.value)" [formGroup]="form">
+            <div class="show" id="tab_1">
+                <div class="wellr well-lgr">
+                    <div *ngFor="let prop of objectProps">
+                        <div class="form-group">
+                            <div class="row {{ prop.type != 'array' ? 'bg_row_white' : '' }}">
+
+
+                                <div [ngSwitch]="prop.type">
+                                    {{prop[0] }}
+                                    <div class="col-md-2 {{ prop.type != 'array' ? '' : 'hidden' }}">
+                                        <label class="label-default" [attr.for]="prop.type">{{prop.label}}</label>
+                                    </div>
+                                    <div class="{{ prop.type != 'array' ? 'col-md-10' : '' }}">
+                                        <input *ngSwitchCase="'text'"
+                                               [formControlName]="prop.key"
+                                               [id]="prop.key"
+                                               [type]="prop.type"
+                                               class="form-control">
+
+                                        <div *ngSwitchCase="'radio'">
+                                            <label *ngFor="let option of prop.options">
+                                                <input type="radio"
+                                                       [name]="prop.key"
+                                                       [formControlName]="prop.key"
+                                                       [value]="option.value"> {{option.label}}
+                                            </label>
+                                        </div>
+
+                                        <div *ngSwitchCase="'select'">
+                                            <select [formControlName]="prop.key">
+                                                <option *ngFor="let option of prop.options" [value]="option.value">
+                                                    {{ option.label }}
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <div *ngSwitchCase="'checkbox'">
+                                            <label>
+                                                <input type="checkbox"
+                                                       [name]="prop.key"
+                                                       [formControlName]="prop.key"
+                                                       [value]="prop.value"> {{ prop.label }}
+                                            </label>
+                                        </div>
+
+                                        <div *ngSwitchCase="'array'">
+                                            {{ prop.label }}
+                                            <div formArrayName="secretLairs">
+                                                <div *ngFor="let addrezz of secretLairs.controls; let b=index" [formGroupName]="b">
+                                                    <div class="form-group">
+                                                        {{ addrezz.label }}
+
+                                                        <input [formControlName]="addrezz.key"
+                                                               [id]="addrezz.key"
+                                                               [type]="addrezz.type"
+                                                               class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div *ngSwitchCase="'object'">
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                    <label class="label-default" [attr.for]="prop">{{prop.label}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="error" *ngIf="form.get(prop.key).invalid && (form.get(prop.key).dirty || form.get(prop.key).touched)">
+                                        <div *ngIf="form.get(prop.key).errors.required">
+                                            {{ prop.label }} is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row margintop20">
+                        <div class="col-md-2">
+                        </div>
+                        <div class="col-md-10">
+                            <button type="submit" class="btnsaveCms btn btn-success">Save</button>
+                        </div>
+                    </div>
+
+
+                    <hr />
+
+                    <strong>Form is valid:</strong> {{form.valid}}
+                    <pre>{{ form.value | json }}</pre>
+                </div>
+
+                <pre>{{ useredit | json }}</pre>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-2">
+                </div><div class="col-sm-10">
+
+                    <input type="hidden" name="dateCreated" id="dateCreated" />
+                </div>
+            </div>
+
+        </form>
+
+
+
+
+
+    </div>
+
+
+</div><pre>{{ _userService.user_current | json }}</pre> 

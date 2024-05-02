@@ -1,0 +1,81 @@
+  <div class="row table-row">
+
+  <div id="index" class="{{ videoId == undefined ? 'field' : 'cell_left'}} table-cell">
+
+    <div class="{{ videoId !== undefined ? '' : 'welli well-lgi2'}}">
+      <!---->
+      <h4 class="title1">Select a recipes</h4>
+      <div class="info bg_white" style="padding: 10px 20px 10px 20px;" *ngIf="video !== undefined && videoId !== undefined">
+        <div *ngIf="currentView == 'ShoppingList'">
+          <input type="text" placeholder="Insert new product name" id="productName" style="width:200px;" />&nbsp;<input class="button" type="button" value="save" (click)="AddNewProduct()" /><br /><br />
+        
+          <div>
+            <h2>Products</h2>
+            <div [style.display]="videoId  !== undefined ? 'inline-block' : 'none'">
+              <div *ngFor="let pagez of albums ; let c=index">
+                <span *ngIf="_userService.user_current != undefined && _userService.user_current.userRole == 100">
+                  <a routerLink="/cms/{{ pagez._id }}">A - </a>
+               </span>
+             <a (click)="addToCart(c,pagez)" class="cursor {{ pagez._id == currentAlbum._id ? 'active' : '' }}">{{ pagez.title }}</a>
+              </div>
+          </div>
+
+        </div><br />
+      </div>
+
+      
+      <div *ngIf="currentView == 'Recipes'">
+        <div [style.display]="videoId  !== undefined ? 'inline-block' : 'none'">
+              <div *ngFor="let pagez of albums ; let c=index">
+                <span *ngIf="_userService.user_current != undefined && _userService.user_current.userRole == 100">
+                  <a routerLink="/cms/{{ pagez._id }}">A - </a>
+               </span>
+               <a (click)="setRecipe(pagez)" class="cursor {{ pagez._id == currentAlbum._id ? 'active' : '' }}">{{ pagez.title }}</a>
+              </div>
+          </div>
+      </div>
+
+      <div id="current_title"></div>
+
+
+</div>
+    </div>
+  </div>
+
+  <div class="cell_right table-cell ">
+    <h4 class="title1">Shopping List</h4>
+    <div class="videowrapper bg_white">
+
+      <div *ngIf="currentView == 'ShoppingList'">
+        
+        <table>
+              <tr *ngFor="let page of pagedItems; let b=index"
+                   [style.display]="page.visible == true && pagedItems.indexOf(page) != -1 ? 'block' : 'none'"
+                   class="{{ videoId == page._id ? 'txt_red' : ''}}"
+                   >
+                   <td><input type="number" value="1" class="inputXXSmall" /></td><td> X </td><td>
+                  <a (click)="removeFromCart(b, page)" title="{{ page.title }}" class="{{ page._id == videoId ? 'active' : '' }}" [style.display]="videoId == undefined ? 'none' : 'block'">{{ page.title }}</a></td>
+
+              </tr>
+        </table>
+      </div>
+
+      <div *ngIf="currentView == 'Recipes' && video">
+        <div class="paddinger10" *ngIf="video && video.title != 'Recipes'">
+          <h2>{{ video.title }}</h2>
+        <img src="./api/assets/content/{{video._id}}/image.jpg" alt="Foto recipe" width="120" /><br style="clear:both;" />
+        <pre>{{ video.schemaextend[0].content }}</pre><br />
+        <div *ngIf="video.schemaextend[0].youtube">
+        <h2><a href="{{video.schemaextend[0].youtube}}" target="_blank">Watch on Youtube</a></h2>
+
+        <iframe width="560" height="315" [src]="video.schemaextend[0].youtube | safe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        
+        </div>
+      </div>
+    </div>
+
+    </div>
+  </div><br style="clear:both;" />
+
+</div>
+

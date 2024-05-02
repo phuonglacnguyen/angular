@@ -1,0 +1,136 @@
+<div class="imagemenu">
+  <ul
+    id="userlogin"
+    [style.display]="
+      _userService.isUserLoggedIn == true ? 'none' : 'inline-block'
+    "
+    class="levela nav navbar-nav navbar-right"
+    style="padding: 6px 0px 0px 0px"
+  >
+    <li class="dropdown">
+      <a
+        id="header_loginbutton"
+        (click)="dd_userlogin()"
+        title="Login with credentials"
+        class="dropdown-toggle {{
+          _userService.isUserLoggedIn == true ? ' txt_green ' : ' txt_red '
+        }} icmn-user-lock"
+      ></a>
+      <div
+        [style.display]="_userService.isUserLoggedIn == true ? 'none' : ''"
+        id="userloginform"
+        class="userlogin hidden"
+      >
+        <div
+          id="header_loginclose"
+          (click)="dd_userlogin()"
+          class="icmn-cross2"
+        ></div>
+        <h3>Login</h3>
+        <input
+          type="email"
+          #email="ngModel"
+          name="email"
+          [(ngModel)]="user.email"
+          email
+          required
+          pattern="/^[^\s@]+@[^\s@]+\.[^\s@]+$/"
+          class="formcontrol"
+        /><br />
+        <input
+          type="password"
+          pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})"
+          #password="ngModel"
+          name="password"
+          [(ngModel)]="user.password"
+          required
+          minlength="6"
+          class="formcontrol"
+          placeholder="Password"
+        /><br />
+        <button
+          type="submit"
+          (click)="user_login_form()"
+          class="btn btn-success"
+        >
+          Submit
+        </button>
+      </div>
+    </li>
+  </ul>
+
+  <ul
+    [style.display]="
+      _userService.isUserLoggedIn == true ? 'inline-block' : 'none'
+    "
+    class="levela nav navbar-nav navbar-right headerloggedin"
+  >
+    <li class="dropdown">
+      <a
+        class="dropdown-toggle {{
+          _userService.isUserLoggedIn == true ? ' txt_green ' : ' txt_red '
+        }} {{
+          _userService.isUserLoggedIn == true
+            ? ' icmn-user-lock'
+            : ' icmn-user-block'
+        }}"
+      ></a>
+      <ul class="levelb dropdown-content">
+        <li
+          [style.display]="
+            _userService.isUserLoggedIn == true ? 'block' : 'none'
+          "
+        >
+          <a
+            >Welcome
+            {{
+              _userService.isUserLoggedIn == true
+                ? _userService.user_current.first_name +
+                  " " +
+                  _userService.user_current.last_name
+                : "Dashboard"
+            }},</a
+          >
+        </li>
+        <li>
+          <a
+            [style.display]="
+              _userService.isUserLoggedIn == true ? 'none' : 'block'
+            "
+            class="leveb dropdown-toggle"
+            routerLink="/signup"
+            (click)="settab('Signup')"
+            [class.active]="activeMenu == 'Signup'"
+            >Sign up</a
+          >
+        </li>
+        <li>
+          <a
+            [style.display]="
+              _userService.isUserLoggedIn == true ? 'block' : 'none'
+            "
+            (click)="settab('Logout')"
+            [class.active]="activeMenu == 'Logout'"
+            class="leveb"
+            routerLink="/logout"
+            >Logout</a
+          >
+        </li>
+        <li>
+          <a
+            [style.display]="
+              _userService.isUserLoggedIn == false && router.url != '/login'
+                ? 'block'
+                : 'none'
+            "
+            (click)="settab('Login')"
+            [class.active]="activeMenu == 'Login'"
+            class="leveb"
+            routerLink="/login"
+            >Login</a
+          >
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>

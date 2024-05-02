@@ -1,0 +1,64 @@
+<div *ngIf="items[0] != undefined" class="carousel">
+  <ul class="carousel-inner">
+    <li class="carousel-item carousel-itemz">
+      <h2 class="center cursor">
+        <span (click)="reloadImages()" class="icmn-loop3"></span>
+        <span
+          *ngIf="
+            _userService.getUserLoggedIn() == true &&
+            _userService.user_current.userRole == 100
+          "
+          routerLink="{{ enviapiurl }}/cms/{{ items[0]._id }}/true"
+          class="icmn-pencil7"
+        ></span
+        ><a
+          title="Go to Movies"
+          routerLink="{{ enviapiurl }}/Videos/5c0d45ea64c6c530246b568a"
+          >Movies</a
+        >
+      </h2>
+      <video
+        class="video poster"
+        preload="none"
+        controls
+        poster="{{ enviapiurl }}/api/assets/content/{{
+          items[0]._id
+        }}/thumb.jpg"
+        #dashboardmoviesvplayercvm
+        id="dashboardmoviesvplayercvm"
+        title="Go to {{ items[0].title }}"
+        routerLink="{{ enviapiurl }}/Videos/5c0d45ea64c6c530246b568a/{{
+          items[0]._id
+        }}"
+      >
+        <source id="dashboardmoviesvplayercvsrc" src="" type="video/mp4" />
+        <track
+          id="enTrack"
+          src=""
+          label="English"
+          kind="subtitles"
+          srclang="en"
+          default
+        />
+        <track
+          id="nlTrack"
+          src=""
+          label="Dutch"
+          kind="subtitles"
+          srclang="nl"
+        />
+        Your browser does not support the video tag.
+      </video>
+      <div class="carousel-info pointer">
+        <h3
+          title="Go to {{ items[0].title }}"
+          routerLink="{{ enviapiurl }}/Videos/5c0d45ea64c6c530246b568a/{{
+            items[0]._id
+          }}"
+        >
+          {{ items[0].title }}
+        </h3>
+      </div>
+    </li>
+  </ul>
+</div>

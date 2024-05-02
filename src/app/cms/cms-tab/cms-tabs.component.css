@@ -1,0 +1,199 @@
+.tabmenu {
+  border-radius: 6px 6px 0px 0px;
+  margin: 0px 6px 0px 0px;
+  padding: 0px;
+  min-width: 52px;
+  text-align: left;
+  box-shadow: none;
+  border: 0px solid #cccccc;
+  font-weight: bold;
+  display: block;
+  display: inline-block;
+  height: 49px;
+}
+
+.tabmenu ul,
+.tabmenu li {
+  padding: 0px;
+  margin: 0px;
+  list-style: none;
+  text-align: left;
+}
+
+.tabmenu li {
+  margin: 0px 8px 0px 0px;
+  display: inline-block;
+}
+
+.tabmenu a {
+  border-radius: 6px 6px 0px 0px;
+  margin: 0px 0px 0px 0px;
+  padding: 11px 14px 3px 10px;
+  min-width: 30px;
+  text-align: left;
+  border-bottom: 1px solid #ffffff;
+  font-size: 1.3em;
+  font-weight: normal;
+  display: block;
+  white-space: nowrap;
+  cursor: pointer;
+  background-color: #ffffff;
+  color: #0d60f1;
+  height: 35px;
+}
+
+.tabmenu li ul a {
+  height: auto;
+}
+
+.tabmenu .levelA {
+  display: none;
+  position: absolute;
+  z-index: 300000;
+  border-radius: 0px 0px 6px 6px;
+  min-width: 146px;
+  margin: -1px 0px 0px 0px;
+  transition: border-color ease-in-out 0.55s, box-shadow ease-in-out 0.55s;
+}
+
+.tabmenu .levelB,
+.tabmenu .levelC {
+  border-right: 0px solid #cccccc;
+  border-left: 0px solid #ffffff;
+  margin: -43px 0px 0px 0px;
+  background-color: #ffffff;
+  min-width: 160px;
+  background-color: #efefef;
+}
+
+.tabmenu .levelA li {
+  float: none;
+  display: block;
+  margin: 0px 0px 0px 0px;
+}
+
+.tabmenu .levelB,
+.tabmenu .levelC {
+  display: none;
+  position: absolute;
+  left: 100%;
+  z-index: 1;
+  border-radius: 0px 0px 6px 0px;
+  transition: border-color ease-in-out 0.55s, box-shadow ease-in-out 0.55s;
+}
+
+.tabmenu .more {
+  font-size: 1.6em;
+  margin-right: -6px;
+  margin-top: -1px;
+  height: 32px;
+}
+
+.tabmenu .levelA li:hover > .levelB,
+.tabmenu .levelB li:hover > .levelC {
+  display: inline-block;
+  position: absolute;
+}
+
+.tabmenu .active > .icmn-arrow-right5:before,
+.tabmenu li:hover > a .icmn-arrow-right5:before {
+  content: "\edc9";
+}
+
+.tabmenu .levelA li:hover > a .icmn-arrow-down5:before {
+  content: "\edc8";
+}
+
+.tabmenu .nav-tabs .taboptions taboptions {
+  padding: 0px 0px 9px 0px;
+}
+
+.tabmenu .nav-tabs .hidden {
+  display: none;
+}
+
+.tabmenu .levelA li:first-child a {
+  border-radius: 0px 0px 0px 0px;
+}
+
+.tabmenu .levelA li:last-child a {
+  border-radius: 0px 0px 0px 0px;
+}
+
+.tabmenu .levelB li:first-child a {
+  border-radius: 0px 0px 0px 0px;
+}
+
+.tabmenu .levelA .levelB li:last-child a {
+  border-radius: 0px 0px 0px 0px;
+}
+
+.tabmenu .levelA li:hover > a {
+  background-color: #dc3545;
+}
+
+.tabmenu .levelA a {
+  background-color: #efefef;
+}
+
+.tabmenu li:hover > .levelA {
+  display: block;
+}
+
+.tabmenu .levelA li a {
+  border-right: 0px;
+  border-bottom: 1px solid #cccccc;
+  border-radius: 0px;
+  border-left: 0px solid #cccccc;
+  border-top: 0px solid #cccccc;
+  font-size: 0.9em;
+  padding: 11px 12px 11px 12px;
+  display: block;
+  background-color: #0d60f1;
+  color: #ffffff;
+  border-radius: 0px 0px 0px 0px;
+}
+
+.tabmenu .levelA li input {
+  border-right: 0px;
+  border-bottom: 0px solid #cccccc;
+  border-radius: 0px;
+  border-left: 0px solid #cccccc;
+  border-top: 0px solid #cccccc;
+  font-size: 0.9em;
+  padding: 11px 12px 11px 12px;
+  display: block;
+  background-color: #0d60f1;
+  color: #ffffff;
+  border-radius: 0px 0px 0px 0px;
+  height: 38px;
+}
+
+.tabmenu .levelB li input {
+  height: 37px;
+}
+
+.tabmenu .levelA li input:hover {
+  background-color: #dc3545;
+  color: #ffffff;
+}
+
+.tabmenu .levelA li input:disabled {
+  background: #666;
+  cursor: default;
+}
+
+.tabmenu a .icon {
+  margin: 3px 8px 0px 0px;
+  display: inline-block;
+}
+
+.tabmenu .active {
+  background-color: #ffffff;
+  color: #dc3545;
+}
+
+.tabmenu li:hover > a {
+  background-color: #0d60f1;
+  color: #ffffff;
+}

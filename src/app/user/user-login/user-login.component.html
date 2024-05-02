@@ -1,0 +1,52 @@
+<div class="user-login" [style.display]="_userService.isUserLoggedIn == true ? 'none' : 'block'" class="bg_white padding_20">
+  <form>
+    <div class="jumbotron marginside">
+      <div class="row">
+        <div class="col-md-12">
+          <h1>Login</h1>
+        </div>
+      </div>
+
+      <div class="row form-group">
+        <div class="col-md-2">
+          <label>E-mail</label>
+        </div>
+        <div class="col-md-10">
+          <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
+            <div *ngIf="!email?.valid">
+              email is invalid.
+            </div>
+          </div>
+          <input type="email" #email="ngModel" name="email" [(ngModel)]="user.email" email required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" class="form-control" />
+        </div>
+      </div>
+
+      <div class="row form-group">
+        <div class="col-md-2">
+          <label>Password</label>
+        </div>
+        <div class="col-md-10">
+          <div *ngIf="password.invalid && (password.dirty || password.touched)" class="alert alert-danger">
+            <div *ngIf="password.errors['required']">
+              Password is required.
+            </div>
+            <div *ngIf="password.errors['minlength']">
+              Password must be at least 6 characters long.
+            </div>
+            <div *ngIf="password.errors['pattern']">
+              Passwordd should be atleast contain one number, one lowercase character, one uppercase character and one special character.
+            </div>
+          </div>
+          <input type="password" pattern="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})" #password="ngModel" name="password" [(ngModel)]="user.password" required minlength="6" class="form-control" placeholder="Password" /><br />
+        </div>
+      </div><br />
+
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <button type="submit" (click)="user_login_form()" class="btn btn-success">Submit</button>
+        </div>
+      </div>
+    </div>
+</form>
+</div>

@@ -1,0 +1,237 @@
+.video_buttons {
+  margin: 0px 0px 0px 0px;
+  padding: 0px 20px 6px 20px;
+  color: #000000;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0px 0px 6px 6px;
+  justify-content: space-between;
+  display: flex;
+}
+
+.video_buttons span {
+  font-size: 2.5em;
+  margin: 10px 0px 10px 0px;
+  cursor: pointer;
+}
+
+.video_buttons span:hover {
+  color: #dc3545;
+}
+
+#player_favbutton {
+  font-size: 2.3em;
+}
+
+#player_hideshowbutton {
+  font-size: 2.3em;
+}
+
+body .videoplayer_buttons {
+  margin: -4px 0px 0px 0px;
+}
+
+.videoplayer_buttons .icon {
+  font-size: 2.4em;
+  text-align: center;
+  color: #337ab7;
+  cursor: pointer;
+  padding: 0px;
+  background-color: #cccccc;
+  padding: 3px 0px 4px 0px;
+  height: 38px;
+}
+
+body .videoplayer_buttons .icmn-mouse {
+  font-size: 1.9em;
+  padding: 7px 0px 5px 0px;
+  height: 38px;
+}
+
+body .videoplayer_buttons .body .col_right .nav-tabs {
+  color: #dc3545;
+}
+
+body .videoplayer_buttons .icmn-arrow-left,
+body .videoplayer_buttons .icmn-arrow-right {
+  font-size: 1.6em;
+  padding: 9px 0px 5px 0px;
+  height: 38px;
+}
+
+body .videoplayer_buttons .icmn-last,
+body .videoplayer_buttons .icmn-first {
+  font-size: 2.2em;
+  padding: 4px 0px 5px 0px;
+  height: 38px;
+}
+
+body .videoplayer_buttons .icmn-stop2 {
+  font-size: 2.2em;
+  padding: 5px 0px 5px 0px;
+  height: 38px;
+}
+
+body .videoplayer_buttons .icmn-pause2 {
+  font-size: 2.2em;
+  padding: 4px 0px 5px 3px;
+  height: 38px;
+}
+
+body .icmn-triangle3:before {
+  content: "\ee6b";
+}
+
+body .icmn-triangle3 {
+  -ms-transform: rotate(90deg); /* IE 9 */
+  -webkit-transform: rotate(90deg); /* Safari 3-8 */
+  transform: rotate(90deg);
+  font-size: 0.9em;
+}
+
+body .icmn-triangle4:before {
+  content: "\ee6b";
+}
+
+body .icmn-triangle4 {
+  -ms-transform: rotate(180deg); /* IE 9 */
+  -webkit-transform: rotate(180deg); /* Safari 3-8 */
+  transform: rotate(180deg);
+  font-size: 0.9em;
+}
+
+body .videoplayer_buttons .icmn-play4 {
+  font-size: 2.2em;
+  padding: 4px 0px 5px 3px;
+  height: 38px;
+}
+
+body .videoplayer_buttons .icmn-enlarge {
+  font-size: 1.5em;
+  padding: 8px 0px 5px 0px;
+  height: 38px;
+}
+
+body .videoplayer_buttons .icmn-heart5 {
+  font-size: 1.72em;
+  padding: 8px 0px 5px 0px;
+  height: 38px;
+}
+
+.videoplayer_buttons .icmn-volume-increase,
+.videoplayer_buttons .icmn-volume-decrease,
+.videoplayer_buttons .icmn-volume-mute2,
+.videoplayer_buttons .icmn-volume-mute5,
+.videoplayer_buttons .icmn-volume-medium {
+  font-size: 1.9em;
+  padding: 6px 0px 5px 0px;
+  height: 38px;
+}
+
+.videoplayer_buttons .icon_smaller {
+  font-size: 1.9em;
+  color: #337ab7;
+  margin: 0px 0px 0px 0px;
+  text-align: center;
+  background-color: #cccccc;
+  padding: 6px 0px 8px 0px;
+  height: 38px;
+}
+
+.videoplayer_buttons .icon:hover,
+.videoplayer_buttons .icon_smaller:hover {
+  color: #dc3545;
+  cursor: pointer;
+  background-color: #ffffff;
+}
+
+body .mediaInfo,
+body .deleteMediaImg,
+body .mediaFav,
+body .mediaMenu {
+  margin: -38px 0px 0px 0px;
+}
+
+#indexbutton {
+  height: 48px;
+  margin: 0px 0px 10px 0px;
+}
+
+#indexbutton div:hover {
+  color: #dc3545;
+}
+
+.indexbutton {
+  font-size: 36px;
+  float: left;
+  margin: 0px 10px 10px 0px;
+  cursor: pointer;
+}
+#indexbutton {
+  height: 48px;
+  margin: 0px 0px 10px 0px;
+}
+.indexbutton {
+  font-size: 36px;
+  float: left;
+  margin: 5px 10px 0px 0px;
+  cursor: pointer;
+  color: #000000;
+}
+.video_buttons span {
+  font-size: 2.5em;
+  margin: 10px 20px 10px 0px;
+  cursor: pointer;
+  color: #000000;
+}
+
+#player_favbutton {
+  font-size: 2.3em;
+}
+#player_volumedecrease,
+#player_volumeincrease {
+  display: none;
+}
+@media screen and (max-device-width: 1000px) {
+  .video_buttons span {
+    font-size: 2.1em;
+    margin: 10px 14px 10px 14px;
+    padding: 10px 0px 10px 0px;
+    cursor: pointer;
+  }
+  #label_bitrate_tr {
+    display: none;
+  }
+  #player_favbutton {
+    font-size: 1.7em;
+  }
+  #player_shufflebutton {
+    font-size: 1.9em;
+  }
+  .video_buttons {
+    margin: -2px 0px 0px 0px;
+    padding: 0px 0px 8px 0px;
+    text-align: center;
+  }
+  #player_hideshowbutton,
+  #player_volumedecrease,
+  #player_volumeincrease,
+  #player_muteonbutton,
+  #label_bitrate_tr {
+    display: none;
+  }
+
+  .button2 {
+    margin: 0px 5px 10px 0px;
+  }
+
+  .blok_music img {
+    width: 110px;
+    height: 110px;
+  }
+  .blok_music {
+    width: 110px;
+    height: 140px;
+  }
+}

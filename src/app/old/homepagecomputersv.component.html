@@ -1,0 +1,43 @@
+<div class="carousel">
+  <ul class="carousel-inner">
+    <li *ngFor="let item of items" class="carousel-item carousel-itemz">
+      <h2 class="center cursor">
+        <span (click)="reloadImages()" class="icmn-loop3"></span
+        ><span
+          *ngIf="
+            _userService.getUserLoggedIn() == true &&
+            _userService.user_current.userRole == 100
+          "
+          routerLink="{{ enviapiurl }}/cms/{{ items[0]._id }}/true"
+          class="icmn-pencil7"
+        ></span
+        ><a
+          title="Go to Computer videos"
+          routerLink="{{ enviapiurl }}/Videos/5c0d45ea64c6c530246b568f"
+          >{{ parent[0].title }}</a
+        >
+      </h2>
+      <video
+        class="video poster"
+        preload="none"
+        poster="{{ enviapiurl }}/api/assets/content/{{ item._id }}/thumb.jpg"
+        width="100%"
+        controls
+        id="dashboardcomputerplayercv"
+        title="Go to {{ items[0].title }}"
+      >
+        <source id="dashboardcomputerplayercvsrc" src="" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      <div class="carousel-info">
+        <h3
+          class="pointer"
+          title="Go to {{ item.title }}"
+          routerLink="/Videos/{{ item.parent }}/{{ item._id }}"
+        >
+          {{ item.title }}
+        </h3>
+      </div>
+    </li>
+  </ul>
+</div>

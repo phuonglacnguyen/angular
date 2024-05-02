@@ -1,0 +1,135 @@
+<div id="menu">
+  <nav class="navbar">
+    <div class="navbar navbar-default">
+      <div class="collapse navbar-collapse" id="navbar">
+        <div class="menu">
+          <ul class="levela nav navbar-nav">
+            <li><a routerLink="/homepage">Home</a></li>
+            <li
+              *ngFor="let page of _cmsService.menuList; let b = index"
+              [style.display]="page.visible == true ? 'inline-block' : 'none'"
+              (mouseenter)="_cmsService.menuSubLink(page)"
+              [class.active]="activeMenu == page.title"
+              class="dropdown"
+            >
+              <a
+                (click)="settabc(page.title, page._id)"
+                class="dropdown-toggle {{
+                  _cmsService.treelevels[2] != undefined &&
+                  _cmsService.treelevels[2]._id == page._id
+                    ? 'current'
+                    : ''
+                }}"
+                routerLink="/Kids/{{ page.title }}/{{ page._id }}"
+                >{{ page.title }}</a
+              >
+              <ul class="levelb dropdown-content">
+                <li
+                  *ngFor="let spage of page.cmsSubPages"
+                  [style.display]="spage.visible == true ? 'block' : 'none'"
+                  (mouseenter)="_cmsService.menuSubLink(spage)"
+                  class="dropdown"
+                >
+                  <a
+                    class="{{
+                      (_cmsService.treelevels[3] != undefined &&
+                        _cmsService.treelevels[3]._id == spage._id) ||
+                      activeMenu == spage.title
+                        ? 'current'
+                        : ''
+                    }}"
+                    routerLink="/{{ page.title }}/{{ spage._id }}"
+                    (click)="settabc(spage.title, spage._id)"
+                    >{{ spage.title }}
+                    <span class="icmn-arrow-down5 float_r"></span>
+                  </a>
+                  <ul class="levelc">
+                    <li
+                      class="dropdown"
+                      *ngFor="let qpage of spage.cmsSubPages"
+                      (click)="settabc(qpage.title, qpage._id)"
+                    >
+                      <a
+                        class="{{
+                          _cmsService.treelevels[4] &&
+                          _cmsService.treelevels[4]._id == qpage._id
+                            ? 'current'
+                            : ''
+                        }}"
+                        routerLink="/{{ spage.title }}/{{ qpage._id }}"
+                        >{{ qpage.title }}</a
+                      >
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+
+            <li
+              class="dropdown"
+              *ngIf="
+                _userService.isUserLoggedIn &&
+                _userService.user_current.userRole == 100
+              "
+            >
+              <a
+                class="dropdown-toggle"
+                routerLink="/cms"
+                (click)="settab('Cms', '5a111233aaa94d061a93e719')"
+                [class.active]="
+                  activeMenu == 'Login' ||
+                  activeMenu == 'Users' ||
+                  activeMenu == 'System' ||
+                  activeMenu == 'Cms' ||
+                  activeMenu == 'Admin'
+                "
+                >Back-end</a
+              >
+              <ul class="levelb dropdown-content hidden">
+                <li>
+                  <a
+                    class="dropdown-toggle"
+                    routerLink="/songs"
+                    (click)="settab('Songs', '5a11ca02aaa94d061a93e71c')"
+                    [class.active]="activeMenu == 'Songs'"
+                    >Song checker</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-toggle"
+                    routerLink="/folder_id_check"
+                    (click)="settab('Foldercheck', '5a11ca02aaa94d061a93e71c')"
+                    [class.active]="activeMenu == 'Foldercheck'"
+                    >Folder check</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-toggle"
+                    routerLink="/medialib"
+                    (click)="settab('Media', '5a11ca02aaa94d061a93e71c')"
+                    [class.active]="activeMenu == 'Media'"
+                    >Media libaray</a
+                  >
+                </li>
+                <li>
+                  <a
+                    class="dropdown-toggle"
+                    routerLink="/users"
+                    (click)="settab('Users', '5a44e48d62a3a12810e8b634')"
+                    [class.active]="activeMenu == 'Users'"
+                    >Users</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <!-- /.menu -->
+      </div>
+      <!-- /.navbar-collapse -->
+    </div>
+    <!-- navbar navbar-default -->
+  </nav>
+</div>

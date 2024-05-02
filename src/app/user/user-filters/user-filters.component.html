@@ -1,0 +1,271 @@
+<div id="ngpipes" class="cms-filters hidden">
+    <div class="welli">
+        <table class="table table-responsive">
+            <tr>
+
+                <td class="col-md-1">
+                    <input type="text" name="filterText" placeholder="Keyword" (change)="filterKeyword($event)" class="inputXSmall" [(ngModel)]="filterText" id="filterText" value="" />
+                </td>
+ 
+                <td class="col-md-1">
+                    <select class="selectXSmall" [(ngModel)]="filterFirstletter" (change)="filterSelectFirstletter($event)" id="filterFirstletter">
+                        <option value="" selected="selected">1st letter</option>
+                        <option *ngFor="let letter of items" value="{{letter}}">{{ letter }}</option>
+                    </select>
+                </td>
+                
+                <td class="col-md-1 hidden">
+                    <select (change)="SelectParent($event)" [(ngModel)]="filterParent" class="selectXSmall" id="filterParent">
+                        <option value="" selected="selected">Parent</option>
+                        <option *ngFor="let letter of filterParentList" value="{{letter._id}}">{{ letter.title }}</option>
+                    </select>
+                </td>
+
+       
+                    <td class="form-group" *ngFor="let prop of _cmsService.currentCmsFilters; let i = index">
+                        <div class="row" *ngIf="prop.inputtype !== 'Object'">
+                            <div class="col-sm-12">
+                                <textarea *ngIf="prop.inputtype === 'Textarea'" id="{{prop.pname}}" matInput class="groupzi inputXSmall ng-untouched ng-pristine ng-valid">Textarea</textarea>
+                                <input *ngIf="prop.inputtype === 'Text'" placeholder="{{ prop.title }}" id="{{prop.pname}}" type="text" class=" groupzi inputXSmall" />
+
+                                <div *ngIf="prop.inputtype === 'File'">
+                                    <input #file (change)="fileCheck($event)"
+                                           id="{{prop.pname}}"
+                                           type="file"
+                                           [multiple]="(maxFiles > 1)"
+                                           class="groupzi form-control"  placeholder="{{ prop.title }}"
+                                           title="{{prop.values}}" />
+                                    <div class="form-control4">
+                                        <span (click)="deletemedia(prop.values+'_'+_cmsService.pageSelected._id+'.'+_cmsService.pageSelected.schemaextend[0].user_image)" class="{{prop.pname}} float_r icomoon icmn-cancel-circle"></span>
+                                        <div id="content_{{prop.pname}}">
+                                            <img src="/api/images/filetypeicons/blank.png" (load)="setrImages()" alt="" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="prop.inputtype === 'Checkbox'">
+                                    <mat-checkbox (click)="toggleCheckbox(prop.pname)"></mat-checkbox>
+                                    <input [(ngModel)]="cmsFilterBoolean" type="checkbox" name="{{prop.pname}}" id="{{prop.pname}}" class="hidden" value="1" />
+                                </div>
+
+                                <div *ngIf="prop.inputtype === 'Password'">
+                                    <input *ngIf="prop.inputtype === 'Password'" id="{{prop.pname}}" value="Password" type="password" class="groupzi inputXSmall" />
+                                </div>
+
+                                <div *ngIf="prop.inputtype === 'Color'">
+                                    <input *ngIf="prop.inputtype === 'Color'" id="{{prop.pname}}" value="" matInput type="color" class="groupzi inputXSmall ng-untouched ng-pristine ng-valid" />
+                                </div>
+
+                                <div *ngIf="prop.inputtype === 'Email'">
+                                    <input *ngIf="prop.inputtype === 'Email'" id="{{prop.pname}}" value="" matInput type="email" class="groupzi inputXSmall ng-untouched ng-pristine ng-valid" />
+                                </div>
+
+                                <div *ngIf="prop.inputtype === 'Number'">
+                                    <input *ngIf="prop.inputtype === 'Number'" id="{{prop.pname}}" value="" matInput type="number" class="groupzi inputXSmall ng-untouched ng-pristine ng-valid" />
+                                </div>
+
+                                <div *ngIf="prop.inputtype === 'Range'" class="form-control4">
+                                    <input (click)="rangeShowValue($event)" id="{{prop.pname}}" value="" type="range" min="0" max="10" class="groupzi inputXSmall" />
+                                </div>
+
+                                <div *ngIf="prop.inputtype === 'Time'">
+                                    <input id="{{prop.pname}}" value="" matInput type="time" class="groupzi inputXSmall" />
+                                </div>
+
+                                <div *ngIf="prop.inputtype === 'URL'">
+                                    <input id="{{prop.pname}}" value="" matInput type="url" class="groupzi inputXSmall" />
+                                </div>
+
+                                <div *ngIf="prop.inputtype === 'Search'">
+                                    <input id="{{prop.pname}}" value="" matInput type="search" class="groupzi inputXSmall" />
+                                </div>
+
+                                <div *ngIf="prop.inputtype === 'Telephone'">
+                                    <input id="{{prop.pname}}" value="" matInput type="tel" class="groupzi inputXSmall" />
+                                </div>
+                                
+                                <div *ngIf="prop.inputtype === 'Radio'" title="{{prop.pname}}">
+                                    <select (change)="setFilter($event, prop.pname)" id="{{prop.pname}}" name="{{prop.pname}}" class="filterInput selectXSmall" placeholder="Select preview">
+                                        <option value="" selected="selected">{{prop.title}}</option>
+                                        <option *ngFor="let season of prop.valuesarr ; let e=index" value="{{ prop.valuesarr[e] }}">{{ prop.valuesarr[e] }}</option>
+                                    </select>
+                                </div>
+
+                                <div *ngIf="prop.inputtype === 'Select'">
+                                    <select id="{{prop.pname}}" class="groupzi inputXSmall" placeholder="Select preview">
+                                        <option value="" selected="selected">{{prop.title}}</option>
+                                        <option value="test 1" selected="selected">test 1</option>
+                                        <option value="test 2">test 2</option>
+                                    </select>
+                                </div>
+
+                                <div *ngIf="prop.inputtype === 'SelectWithEmpty'">
+                                    <select id="{{prop.pname}}" class="groupzi form-c inputXSmall" placeholder="Select preview">
+                                        <option value="" selected="selected">{{prop.title}}</option>
+                                        <option value="{{season}}" *ngFor="let season of prop.valuesarr; let e=index"> {{prop.labelsarr[e]}} </option>
+                                    </select>
+                                </div>
+
+                                <div *ngIf="prop.inputtype === 'SelectMulti'">
+                                    1<select id="{{prop.pname}}" multiple class="groupzi inputXSmall" placeholder="Select preview">
+                                        <option value="" selected="selected">{{prop.title}}</option>
+                                        <option value="test 1">test 1</option>
+                                        <option value="test 2">test 2</option>
+                                    </select>
+                                </div>
+
+                                <div *ngIf="prop.inputtype === 'Slider'" id="{{prop.pname}}" class="groupzi inputXSmall4">
+                                    <mat-slider class="ng-untouched ng-pristine ng-valid"></mat-slider>
+                                </div>
+
+                                <div *ngIf="prop.inputtype === 'SliderToggle'" id="{{prop.pname}}" class="groupzi inputXSmall4">
+                                    <mat-slide-toggle></mat-slide-toggle>
+                                </div>
+
+                                <div *ngIf="prop.inputtype === 'DateTime'" class="">
+                                    <input type="hidden" placeholder="{{ prop.title }}" class="groupzi form-control ng-pristine ng-valid ng-touched" required />
+                                    <mat-datepicker-toggle matSuffix [for]="pickerz"></mat-datepicker-toggle>
+                                    <mat-datepicker #pickerz></mat-datepicker>
+                                    <input id="{{prop.pname}}" placeholder="{{prop.title}}" matInput (dateInput)="addEvent('input', $event, prop.pname)" (dateChange)="addEvent('change', $event, prop.pname)" [matDatepicker]="pickerz" class="inputXSmall">
+                                </div>
+
+                                <div *ngIf="prop.inputtype === 'Datepicker'" class="">
+                                     <input placeholder="{{ prop.title }}" id="{{prop.pname}}" matInput (dateInput)="addEvent('input', $event, prop.pname)" (dateChange)="addEvent('change', $event, prop.pname)" [matDatepicker]="picker" class="inputXSmall">
+                                   <mat-datepicker #picker></mat-datepicker>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                </div>
+
+                            </div>
+
+                            <div *ngIf="prop.inputtype === 'File'">
+                                <div class="hidden row">
+                                    <div class="col-sm-2">
+                                        File extension
+                                    </div><div class="col-sm-10">
+                                        <div class="">
+                                            <input id="{{prop.pname}}_extension" formControlName="{{prop.pname}}_extension" type="text" class="groupzi filter-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </td>
+
+                <td class="hidden col-md-1 center">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+
+                    <mat-datepicker-toggle matSuffix [for]="pickerstart"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerstart></mat-datepicker>
+
+                    <mat-datepicker-toggle matSuffix [for]="pickerend"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerend></mat-datepicker>
+
+                    <input type="hidden" placeholder="Title" #cmsFilterTitle id="cmsFilterTitle" class="hidden inputXSmall" value="" />
+                </td>
+                <td class="hidden col-md-1 center">
+                    <select class="selectXSmall" #cmsFilterCreatedBy id="cmsFilterCreatedBy">
+                        <option value="" selected="selected">Owner</option>
+                        <option *ngFor="let letter of filterUsersList" value="{{letter._id}}">{{ letter.title }}</option>
+                    </select>
+                </td>
+                <td class="hidden col-md-1 center">
+                    <select class="selectXSmall" [(ngModel)]="filterMediaList" id="filterMediaList">
+                        <option value="" selected="selected">Media</option>
+                        <option *ngFor="let letter of MediaList" value="{{letter._id}}">{{ letter.filename }}</option>
+                    </select>
+                </td>
+
+                <td class="hidden col-md-1 center">
+                    <select class="selectXSmall" [(ngModel)]="filterKidsList" id="filterKidsList">
+                        <option value="" selected="selected">Kids</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </td>
+
+                <td class="hidden col-md-1 center">
+                    <select class="selectXSmall" [(ngModel)]="filterPropertiesList" id="filterPropertiesList">
+                        <option value="" selected="selected">Properties</option>
+                        <option *ngFor="let letter of _cmsService.properties" value="{{letter._id}}">{{ letter.title }}</option>
+                    </select>
+                </td>
+
+                <td class="hidden col-md-1 center">
+                    <select class="selectXSmall" [(ngModel)]="filterFilterList" id="filterFilterList">
+                        <option value="" selected="selected">Filters</option>
+                        <option *ngFor="let letter of _cmsService.cmsFields" value="{{letter}}">{{ letter }}</option>
+                    </select>
+                </td>
+
+                <td class="hidden col-md-1 center">
+                    <div class="lstmenu">
+                        <ul class="">
+                            <li class="dropdown">
+                                <a>Opties<span class="more tabicomoon float_r icmn-arrow-right5"></span></a>
+                                <ul class="levelA">
+                                    <li>
+                                        <a class="dropdown">Visible {{ cmsFilterVisible.value == 1 ? 'Yes' : ''}} {{ cmsFilterVisible.value == -1 ? 'No' : ''}} {{ cmsFilterVisible.value == 0 ? 'Off' : ''}}<span class="more float_r icmn-arrow-down5"></span></a>
+                                        <input placeholder="Visible" type="text" #cmsFilterVisible id="cmsFilterVisible" class="inputXSmall button_hide hidden" value="0" />
+                                        <ul class="levelB dropdown-contentB">
+                                            <li><a [class.active]="cmsFilterVisible.value == 1" (click)="setcmsFilterVisible('1')">Yes</a></li>
+                                            <li><a [class.active]="cmsFilterVisible.value == 0" (click)="setcmsFilterVisible('0')">Off</a></li>
+                                            <li><a [class.active]="cmsFilterVisible.value == -1" (click)="setcmsFilterVisible('-1')">No</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown">Secure {{ cmsFilterSecure.value == 1 ? 'Yes' : ''}} {{ cmsFilterSecure.value == -1 ? 'No' : ''}} {{ cmsFilterSecure.value == 0 ? 'Off' : ''}}<span class="more float_r icmn-arrow-down5"></span></a>
+                                        <input placeholder="Secure" type="text" #cmsFilterSecure id="cmsFilterSecure" class="inputXSmall button_hide hidden" value="0" />
+                                        <ul class="levelB dropdown-contentB">
+                                            <li><a [class.active]="cmsFilterSecure.value == 1" (click)="setcmsFilterSecure('1')">Yes</a></li>
+                                            <li><a [class.active]="cmsFilterSecure.value == 0" (click)="setcmsFilterSecure('0')">Off</a></li>
+                                            <li><a [class.active]="cmsFilterSecure.value == -1" (click)="setcmsFilterSecure('-1')">No</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown">Date Created<span class="more float_r icmn-arrow-down5"></span></a>
+                                        <ul class="levelB dropdown-contentB">
+                                            <li class="{{ cmsFilterdateCreated.value != '' ? 'hidden' : ''}}">
+                                                <a (click)="setcmsFilterDateCreated('1')">Set Today</a>
+                                            </li>
+                                            <li>
+                                                <a title="Set date" (click)="picker.open()">Set date</a>
+                                                <input type="datetime" placeholder="Date Created" matInput #cmsFilterDateCreated [matDatepicker]="picker" #cmsFilterdateCreated id="cmsFilterdateCreated" class="hidden inputXSmallHidden button_hide" value="" />
+                                            </li>
+                                            <li>
+                                                <a class="dropdown" title="Set start date">Set start and end date<span class="more float_r icmn-arrow-down5"></span></a>
+                                                <ul class="levelB dropdown-contentB">
+                                                    <li>
+                                                        <a title="Set start date" (click)="pickerstart.open()">Set start date {{cmsFilterStartdate.value}}</a>
+                                                        <input type="datetime" placeholder="Set start date" matInput [matDatepicker]="pickerstart" #cmsFilterStartdate id="cmsFilterStartdate" class="inputXSmallHidden button_hide hidden" value="" />
+                                                    </li>
+                                                    <li>
+                                                        <a title="Set end date" (click)="pickerend.open()">Set end date{{cmsFilterEnddate.value}}</a>
+                                                        <input type="datetime" placeholder="Set end date" matInput [matDatepicker]="pickerend" #cmsFilterEnddate id="cmsFilterEnddate" class="inputXSmallHidden button_hide hidden" value="" />
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="{{ cmsFilterdateCreated.value == '' ? 'hidden' : ''}}"><a [class.active]="cmsFilterdateCreated.value == ''" (click)="setcmsFilterDateCreated('0')">Clear</a></li>
+                                            <li class="{{ cmsFilterdateCreated.value == '' ? 'hidden' : ''}}"><a [class.active]="cmsFilterdateCreated.value != ''" (click)="setcmsFilterDateCreated('1')">{{ cmsFilterdateCreated.value }}</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+                <td><div id="cmsFilterTable"></div></td>
+            </tr>
+        </table>
+    </div>
+</div>

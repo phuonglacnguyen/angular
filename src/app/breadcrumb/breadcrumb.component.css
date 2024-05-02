@@ -1,0 +1,38 @@
+.breadcrumb {
+    margin: 34px 0px 0px 20px;
+    padding: 0px 0px 0px 0px;
+    text-align: right;
+    background-color: transparent;
+    color: #efefef;
+    position: absolute;
+    right: 20px;
+    z-index: 777;
+    top: 48px;
+    font-size: 1.0em; }
+
+
+body .header .breadcrumb .current {
+    color: #2fb8f1;
+}
+
+
+.breadcrumb span {
+  border-left: 0px solid #666666;
+  padding: 0px 0px 0px 0px;
+  margin: 6px 0px 0px 3px;
+  color: #ffffff;
+}
+
+.breadcrumb span:first-child {
+    border-left: 0px;
+    padding: 0px 0px 0px 0px; }
+
+@media screen and (max-device-width: 1000px) {
+  
+    .breadcrumb {
+       margin: -46px 0px 0px 0px;
+       display: none;
+    }
+
+
+}

@@ -1,0 +1,2570 @@
+<div id="tabs" class="tabs">
+  <form *ngIf="_cmsService.pageSelected" [formGroup]="pageForm">
+    <div class="tabfield show" id="tab_1">
+      <div class="wellr well-lgr">
+        <div class="form-group">
+          <div>
+            <div class="row">
+              <div class="col-sm-2">
+                <label for="_id">Id</label>
+              </div>
+              <div class="col-sm-10">
+                <input
+                  type="text"
+                  id="_id"
+                  readonly="readonly"
+                  formControlName="_id"
+                  class="readonly form-control"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-2">
+              <label for="parent">Parent</label>
+            </div>
+            <div class="col-sm-10">
+              <select
+                id="parent"
+                formControlName="parent"
+                class="form-c form-controls"
+              >
+                <option value=""></option>
+                <option
+                  value="{{ moddel._id }}"
+                  *ngFor="let moddel of _cmsService.parents"
+                >
+                  {{ moddel.title }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-2">
+              <label for="title">Title</label>
+            </div>
+            <div class="col-sm-10">
+              <input
+                type="text"
+                id="title"
+                name="title"
+                formControlName="title"
+                required
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-2">
+              <label for="objectType">Object</label>
+            </div>
+            <div class="col-sm-10">
+              <select
+                (change)="objectChanged()"
+                id="objectType"
+                formControlName="objectType"
+                class="groupzi form-c form-controls"
+                placeholder="Select preview"
+              >
+                <option value="">Select object</option>
+                <option
+                  value="{{ season._id }}"
+                  *ngFor="let season of _cmsService.sysObjects; let e = index"
+                >
+                  {{ season.title }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div
+            class="row cmsbuttons"
+            *ngIf="_cmsService.pagetpropertiesFull.length > 3"
+          >
+            <div class="col-sm-2"></div>
+            <div class="col-sm-10">
+              <button
+                type="button"
+                [disabled]="
+                  _userService.isUserLoggedIn == false || pageForm.pristine
+                "
+                (click)="onSubmit()"
+                class="btnsaveCms btn btn-success"
+              >
+                Save
+              </button>
+              <button
+                type="button"
+                [disabled]="pageForm.pristine"
+                class="hidden btn"
+                title="btnsaveCmsNew"
+              >
+                Save new
+              </button>
+              <button type="button" (click)="GgetLists()" class="hidden">
+                GetList
+              </button>
+              <button
+                type="reset"
+                (click)="pagerevert()"
+                [style.display]="pageForm.pristine ? 'none' : 'inline-block'"
+                class="btn btn-warning btn_r btnrevertPage"
+              >
+                Revert
+              </button>
+              <button
+                type="button"
+                [disabled]="
+                  _userService.isUserLoggedIn == false ||
+                  _cmsService.pageSelected.title == 'Root' ||
+                  _cmsService.pageSelected.secure == true
+                "
+                (click)="destroy()"
+                class="btn btn-danger btndeletePage"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-2">
+                <label for="visible">Visible</label>
+              </div>
+              <div class="col-sm-10">
+                <div class="form-controlg bg_lightgreen">
+                  <input
+                    type="checkbox"
+                    formControlName="visible"
+                    id="visible"
+                    value="true"
+                    class="checkbox2"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-2">
+              <label for="secure">Secure</label>
+            </div>
+            <div class="col-sm-10">
+              <div class="form-controlg bg_lightgreen">
+                <input
+                  type="checkbox"
+                  (change)="checkDeleteButtons()"
+                  formControlName="secure"
+                  id="secure"
+                  value="true"
+                  class="checkbox2"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row marginBottom20">
+            <div class="col-sm-2">
+              <label for="listItem">List item</label>
+            </div>
+            <div class="col-sm-10">
+              <div class="form-controlg bg_lightgreen">
+                <input
+                  type="checkbox"
+                  formControlName="listItem"
+                  id="listItem"
+                  value="true"
+                  class="checkbox2"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div
+            formGroupName="schemaextend"
+            *ngIf="_cmsService.pagetpropertiesFull.length > 0"
+          >
+            <div
+              *ngFor="
+                let prop of _cmsService.pagetpropertiesFull;
+                let i = index
+              "
+            >
+              <div class="row" *ngIf="prop.inputtype !== 'Object'">
+                <div class="col-sm-2" title="">
+                  <label title="{{ prop.type }}" for="{{ prop.pname }}"
+                    >{{ prop.title
+                    }}<span id="propvalpreview_{{ prop.pname }}"></span
+                  ></label>
+                </div>
+                <div class="col-sm-10">
+                  <textarea
+                    *ngIf="prop.inputtype === 'Textarea'"
+                    required="{{ prop.required == true ? 'true' : 'false' }}"
+                    rows="{{ prop.pname == 'content' ? '6' : '3' }}"
+                    id="{{ prop.pname }}"
+                    formControlName="{{ prop.pname }}"
+                    class="form-controltextarea"
+                    >{{
+                      _cmsService.pagetpropertiesFull[i][prop.pname]
+                    }}</textarea
+                  >
+
+                  <div *ngIf="prop.inputtype === 'Rtf'">
+                    <textarea
+                      rows="{{ prop.pname == 'content' ? '6' : '3' }}"
+                      required="{{ prop.required == true ? 'true' : 'false' }}"
+                      id="{{ prop.pname }}"
+                      formControlName="{{ prop.pname }}"
+                      class="form-controltextarea"
+                    ></textarea>
+                    <!--<editor  (change)="onChange($event)" apiKey="rgq6ipbu1llkeg0gc66p0kgzcypxsypohrsfoa6487mz01r4" [init]="{ plugins: 'lists link image table code help wordcount' }" formControlName="{{prop.pname}}"></editor>-->
+                  </div>
+
+                  <input
+                    title="{{ prop.title }}"
+                    *ngIf="prop.inputtype === 'Text'"
+                    required="{{ prop.required == true ? 'true' : 'false' }}"
+                    id="{{ prop.pname }}"
+                    formControlName="{{ prop.pname }}"
+                    type="text"
+                    class="groupzi form-control"
+                  />
+
+                  <div
+                    *ngIf="
+                      prop.title == 'Url' &&
+                      _cmsService.pageSelected.schemaextend[0] &&
+                      _cmsService.pageSelected.schemaextend[0].url
+                    "
+                  >
+                    <audio
+                      #videoPlayer
+                      id="player"
+                      style="
+                        background-color: #f1f3f4;
+                        width: 100%;
+                        border-radius: 0px;
+                        margin: 0px 0px 0px 0px;
+                      "
+                      preload="auto"
+                      controls
+                    >
+                      <source
+                        #videoSource
+                        id="playersource"
+                        src="/api/assets/music/Albums/{{
+                          _cmsService.pageSelected.schemaextend[0].url
+                        }}"
+                        type="audio/mpeg"
+                      />
+                      Your browser does not support the audio tag.
+                    </audio>
+                  </div>
+
+                  <div *ngIf="prop.inputtype === 'File'" class="">
+                    <input
+                      (change)="fileCheck($event)"
+                      id="{{ prop.pname }}"
+                      formControlName="{{ prop.pname }}"
+                      type="file"
+                      data-dir="{{ _cmsService.pageSelected._id }}"
+                      class="groupzi fileUpload contentFileUpload fileUpload_{{
+                        prop.pname
+                      }} grz_{{ prop.pname }} form-control"
+                      title="{{ prop.values }}"
+                      required="{{ prop.required == true ? 'true' : 'false' }}"
+                    />
+
+                    <button
+                      [disabled]="_userService.isUserLoggedIn == false"
+                      type="button"
+                      id="button_{{ prop.pname }}"
+                      class="hidden btn-success btn upload grp_{{ prop.pname }}"
+                      (click)="fileUpload(prop.values, prop.pname)"
+                    >
+                      Upload
+                    </button>
+
+                    <div
+                      class="form-controlmediaview filetypei {{
+                        prop.pname == 'image' ||
+                        prop.pname == 'file' ||
+                        prop.pname == 'logo'
+                          ? ''
+                          : ''
+                      }} hidden"
+                      id="filetypei{{ prop.pname }}"
+                    >
+                      <input
+                        title="{{ prop.pname }}"
+                        style="
+                          margin: 0px 12px 0px 0px;
+                          position: absolute;
+                          z-index: 999999;
+                        "
+                        *ngIf="
+                          _userService.isUserLoggedIn == true &&
+                          prop.pname != 'subtitlenl' &&
+                          prop.pname == 'image'
+                        "
+                        type="button"
+                        value="Create thumb"
+                        (click)="createThumb()"
+                        class="btn-success btn {{
+                          _userService.isUserLoggedIn == false
+                            ? 'hidden'
+                            : 'hidden'
+                        }}"
+                      />
+                      <input
+                        style="
+                          margin: 0px 0px 0px 0px;
+                          position: absolute;
+                          z-index: 999999;
+                        "
+                        *ngIf="
+                          _userService.isUserLoggedIn == true &&
+                          prop.pname != 'subtitlenl' &&
+                          prop.pname != 'subtitlegb'
+                        "
+                        [disabled]="
+                          _userService.isUserLoggedIn == false ||
+                          prop.pname == 'subtitlenl' ||
+                          prop.pname == 'subtitlegb'
+                        "
+                        value="Image from movie"
+                        (click)="createImage(_cmsService.pageSelected)"
+                        class="btn-success btn {{
+                          _userService.isUserLoggedIn == false ||
+                          prop.pname == 'image'
+                            ? 'hidden'
+                            : 'hidden'
+                        }}"
+                      />
+                      <input
+                        style="
+                          margin: 0px 0px 0px 150px;
+                          position: absolute;
+                          z-index: 999999;
+                        "
+                        *ngIf="
+                          _userService.isUserLoggedIn == true &&
+                          prop.pname != 'subtitlenl' &&
+                          prop.pname != 'subtitlegb'
+                        "
+                        [disabled]="_userService.isUserLoggedIn == false"
+                        value="Length from movie"
+                        (click)="lengtFromMovie()"
+                        class="btn-success btn {{
+                          _userService.isUserLoggedIn == false ||
+                          prop.pname == 'image'
+                            ? 'hidden'
+                            : 'hidden'
+                        }}"
+                      />
+                      <input
+                        style="
+                          margin: 0px 0px 0px 300px;
+                          position: absolute;
+                          z-index: 999999;
+                        "
+                        *ngIf="
+                          _userService.isUserLoggedIn == true &&
+                          prop.pname != 'subtitlenl' &&
+                          prop.pname != 'subtitlegb'
+                        "
+                        [disabled]="_userService.isUserLoggedIn == false"
+                        type="button"
+                        value="Convert to H265"
+                        (click)="convertMovie(_cmsService.pageSelected)"
+                        class="btn-success btn hidden"
+                      />
+                      <input
+                        title="{{ prop.pname }}"
+                        style="
+                          right: 0;
+                          width: 70px;
+                          padding: 4px 12px 6px 12px;
+                          margin: 0px 1px 0px 0px;
+                          position: absolute;
+                        "
+                        id="filetypei{{ prop.pname }}"
+                        [disabled]="_userService.isUserLoggedIn == false"
+                        type="button"
+                        value="Delete"
+                        (click)="deleteFile(prop.values, prop.pname)"
+                        class="btn-danger btn float_r {{
+                          _userService.isUserLoggedIn == false ? 'hidden' : ''
+                        }}"
+                      />
+
+                      <div
+                        title="{{ prop.values }}"
+                        id="content_{{ prop.pname }}"
+                      ></div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="form-control4"
+                    *ngIf="prop.inputtype === 'Checkbox'"
+                  >
+                    <input
+                      type="checkbox"
+                      formControlName="{{ prop.pname }}"
+                      id="{{ prop.pname }}"
+                      class="checkbox2"
+                      value="true"
+                    />
+                  </div>
+
+                  <div *ngIf="prop.inputtype === 'Password'">
+                    <input
+                      *ngIf="prop.inputtype === 'Password'"
+                      required="{{ prop.required == true ? 'true' : 'false' }}"
+                      id="{{ prop.pname }}"
+                      formControlName="{{ prop.pname }}"
+                      value="Password"
+                      type="password"
+                      class="groupzi form-control"
+                    />
+                  </div>
+
+                  <div *ngIf="prop.inputtype === 'Color'">
+                    <input
+                      *ngIf="prop.inputtype === 'Color'"
+                      required="{{ prop.required == true ? 'true' : 'false' }}"
+                      id="{{ prop.pname }}"
+                      formControlName="{{ prop.pname }}"
+                      value=""
+                      matInput
+                      type="color"
+                      class="groupzi form-control ng-untouched ng-pristine ng-valid"
+                    />
+                  </div>
+
+                  <div *ngIf="prop.inputtype === 'Email'">
+                    <input
+                      *ngIf="prop.inputtype === 'Email'"
+                      required="{{ prop.required == true ? 'true' : 'false' }}"
+                      id="{{ prop.pname }}"
+                      formControlName="{{ prop.pname }}"
+                      value=""
+                      matInput
+                      type="email"
+                      class="groupzi form-control ng-untouched ng-pristine ng-valid"
+                    />
+                  </div>
+
+                  <div *ngIf="prop.inputtype === 'Number'">
+                    <input
+                      *ngIf="prop.inputtype === 'Number'"
+                      required="{{ prop.required == true ? 'true' : 'false' }}"
+                      id="{{ prop.pname }}"
+                      formControlName="{{ prop.pname }}"
+                      value=""
+                      type="number"
+                      class="groupzi form-control"
+                    />
+                  </div>
+
+                  <div *ngIf="prop.inputtype === 'Range'" class="form-control4">
+                    <input
+                      (click)="rangeShowValue($event)"
+                      required="{{ prop.required == true ? 'true' : 'false' }}"
+                      id="{{ prop.pname }}"
+                      formControlName="{{ prop.pname }}"
+                      value=""
+                      type="range"
+                      min="0"
+                      max="10"
+                      class="groupzi form-control"
+                    />
+                  </div>
+
+                  <div *ngIf="prop.inputtype === 'Time'">
+                    <input
+                      id="{{ prop.pname }}"
+                      required="{{ prop.required == true ? 'true' : 'false' }}"
+                      formControlName="{{ prop.pname }}"
+                      value="{{ prop.values }}"
+                      matInput
+                      type="time"
+                      class="groupzi form-control"
+                    />
+                  </div>
+
+                  <div *ngIf="prop.inputtype === 'URL'">
+                    <input
+                      id="{{ prop.pname }}"
+                      required="{{ prop.required == true ? 'true' : 'false' }}"
+                      formControlName="{{ prop.pname }}"
+                      value=""
+                      matInput
+                      type="url"
+                      class="groupzi form-control"
+                    />
+                  </div>
+
+                  <div *ngIf="prop.inputtype === 'Search'">
+                    <input
+                      id="{{ prop.pname }}"
+                      required="{{ prop.required == true ? 'true' : 'false' }}"
+                      formControlName="{{ prop.pname }}"
+                      value=""
+                      matInput
+                      type="search"
+                      class="groupzi form-control"
+                    />
+                  </div>
+
+                  <div *ngIf="prop.inputtype === 'Telephone'">
+                    <input
+                      required="{{ prop.required == true ? 'true' : 'false' }}"
+                      id="{{ prop.pname }}"
+                      formControlName="{{ prop.pname }}"
+                      value=""
+                      matInput
+                      type="tel"
+                      class="groupzi form-control"
+                    />
+                  </div>
+
+                  <div *ngIf="prop.inputtype === 'Radio'" class="form-control4">
+                    <span *ngFor="let season of prop.labelsarr; let e = index">
+                      <input
+                        (click)="passchk(prop.pname, prop.valuesarr[e])"
+                        type="radio"
+                        id="prop{{ prop.valuesarr[e] }}"
+                        name="{{ prop.pname }}"
+                        value="{{ prop.valuesarr[e] }}"
+                        formControlName="{{ prop.pname }}"
+                        checked=""
+                      />&nbsp;
+                      <label for="prop{{ prop.valuesarr[e] }}"
+                        >{{ season }}
+                      </label>
+                      &nbsp;
+                    </span>
+                    <input
+                      type="hidden"
+                      required="{{ prop.required == true ? 'true' : 'false' }}"
+                      id="{{ prop.pname }}"
+                      formControlName="{{ prop.pname }}"
+                      class="button_hide form-control"
+                    />
+                  </div>
+
+                  <div *ngIf="prop.inputtype === 'Select'">
+                    <select
+                      required="{{ prop.required == true ? 'true' : 'false' }}"
+                      id="{{ prop.pname }}"
+                      formControlName="{{ prop.pname }}"
+                      class="groupzi form-c form-controls select"
+                      placeholder="Select preview"
+                    >
+                      <option
+                        *ngFor="let season of prop.valuesarr; let e = index"
+                        [selected]="prop.labelsarr[e] == prop.valuesarr[e]"
+                        value="{{ prop.valuesarr[e] }}"
+                        (click)="multiins(prop.pname)"
+                      >
+                        {{ prop.labelsarr[e] }}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div *ngIf="prop.inputtype === 'SelectWithEmpty'">
+                    <select
+                      required="{{ prop.required == true ? 'true' : 'false' }}"
+                      id="{{ prop.pname }}"
+                      formControlName="{{ prop.pname }}"
+                      class="groupzi form-c form-controls select"
+                      placeholder="Select preview"
+                    >
+                      <option value="">Select value</option>
+                      <option
+                        value="{{ season }}"
+                        [selected]="prop.labelsarr[e] == prop.valuesarr[e]"
+                        *ngFor="let season of prop.valuesarr; let e = index"
+                      >
+                        {{ prop.labelsarr[e] }}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div *ngIf="prop.inputtype === 'SelectMulti'">
+                    <select
+                      required="{{ prop.required == true ? 'true' : 'false' }}"
+                      name="{{ prop.pname }}"
+                      id="{{ prop.pname }}"
+                      formControlName="{{ prop.pname }}"
+                      class="groupzi form-control multiselect"
+                      placeholder="Select preview"
+                      multiple
+                    >
+                      <option
+                        *ngFor="let season of prop.valuesarr; let e = index"
+                        value="{{ filterIndexFromArray(prop.valuesarr[e]) }}"
+                        (click)="multiins(prop.pname)"
+                      >
+                        {{ prop.labelsarr[e] }}
+                      </option>
+                    </select>
+                  </div>
+
+                  <div *ngIf="prop.inputtype === 'SelectAdd'">
+                    <select
+                      id="{{ prop.pname }}"
+                      formControlName="{{ prop.pname }}"
+                      class="groupzi form-control bg_lightgreen"
+                    >
+                      <option
+                        *ngFor="let season of prop.valuesarr; let e = index"
+                        value="{{ season }}"
+                      >
+                        {{ prop.labelsarr[e] }}
+                      </option>
+                    </select>
+                    <div class="padding_20">
+                      <div
+                        *ngFor="let season of prop.valuesarr; let e = index"
+                        class=""
+                      >
+                        <div>
+                          {{ prop.labelsarr[e] }}
+                          <div class="float_r icmn-cross3"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    *ngIf="prop.inputtype === 'Slider'"
+                    class="groupzi form-control4"
+                  >
+                    <input
+                      style="width: 100%"
+                      type="range"
+                      formControlName="{{ prop.pname }}"
+                      id="{{ prop.pname }}"
+                      min="0"
+                      max="100"
+                      value="90"
+                      step="10"
+                    />
+                  </div>
+
+                  <div
+                    *ngIf="prop.inputtype === 'SliderToggle'"
+                    id="{{ prop.pname }}"
+                    formControlName="{{ prop.pname }}"
+                    class="groupzi form-control4"
+                  ></div>
+
+                  <div *ngIf="prop.inputtype === 'Month'" class="">
+                    <input
+                      type="month"
+                      id="{{ prop.pname }}"
+                      formControlName="{{ prop.pname }}"
+                      class="form-controlsb"
+                    />
+                  </div>
+
+                  <div *ngIf="prop.inputtype === 'DateTime'" class="">
+                    <input
+                      type="datetime-local"
+                      id="{{ prop.pname }}"
+                      formControlName="{{ prop.pname }}"
+                      class="form-controlsb"
+                    />
+                    <input
+                      required="{{ prop.required == true ? 'true' : 'false' }}"
+                      id="bid_{{ prop.pname }}"
+                      formControlName="bid_{{ prop.pname }}"
+                      class="hidden"
+                    />
+                  </div>
+
+                  <div *ngIf="prop.inputtype === 'Datepicker'" class="">
+                    <input
+                      type="date"
+                      id="{{ prop.pname }}"
+                      formControlName="{{ prop.pname }}"
+                      class="form-controlsb"
+                    />
+                    <input
+                      required="{{ prop.required == true ? 'true' : 'false' }}"
+                      id="bid_{{ prop.pname }}"
+                      formControlName="bid_{{ prop.pname }}"
+                      class="hidden"
+                    />
+                  </div>
+
+                  <div *ngIf="prop.inputtype === 'Date'" class="">
+                    <input matInput class="form-control5" />
+                    <input
+                      type="date"
+                      id="{{ prop.pname }}"
+                      formControlName="{{ prop.pname }}"
+                      class="form-control"
+                    />
+                    <input
+                      required="{{ prop.required == true ? 'true' : 'false' }}"
+                      id="bid_{{ prop.pname }}"
+                      formControlName="bid_{{ prop.pname }}"
+                      class="hidden"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="prop.pname === 'moviegenre'" class="object">
+                <div
+                  class="float_r icomoon icmn-plus-circle {{
+                    _userService.isUserLoggedIn == false ? 'hidden' : ''
+                  }}"
+                  title="Add an genre"
+                  (click)="addMovieGenre()"
+                ></div>
+                <div class="">
+                  <div class="col-sm-2">
+                    <h4>Genre</h4>
+                  </div>
+                  <div class="col-sm-10"></div>
+                </div>
+                <div formArrayName="secretMovieGenre">
+                  <div
+                    *ngFor="let proz of secretMovieGenre.controls; index as b"
+                    [formGroupName]="b"
+                  >
+                    <div class="form-group">
+                      <div class="row">
+                        <div class="col-sm-2">
+                          <span
+                            class="hidden icomoon icmn-cancel-circle2 {{
+                              _userService.isUserLoggedIn == false ||
+                              secretMovieGenre.length == 0
+                                ? 'hidden'
+                                : ''
+                            }}"
+                            (click)="delete_moviegenre(b)"
+                          ></span>
+                          <label (click)="delete_moviegenre(b)"
+                            >Genre {{ b + 1 }}</label
+                          >
+                        </div>
+                        <div class="col-sm-10">
+                          <select
+                            formControlName="genreId"
+                            (change)="showhideButton($event)"
+                            class="form-control4"
+                            required="{{
+                              prop.required == true ? 'true' : 'false'
+                            }}"
+                          >
+                            <option value="">Select genre</option>
+                            <option
+                              value="{{ season._id }}"
+                              *ngFor="
+                                let season of _cmsService.movieGenres;
+                                let e = index
+                              "
+                            >
+                              {{ season.title }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="row hidden" id="genrebutton">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-10">
+                          <input
+                            type="button"
+                            [disabled]="_userService.isUserLoggedIn == false"
+                            (click)="save_moviegenre()"
+                            class="btn btn-primary"
+                            value="Save"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="prop.pname === 'photopersons'" class="object">
+                <div class="col-sm-2">
+                  <h4>Persons</h4>
+                </div>
+                <div class="col-sm-10">
+                  <div class="form-control4 bg_lightgreen">
+                    <div
+                      class="objectPlus icomoon icmn-plus-circle {{
+                        _userService.isUserLoggedIn == false ? 'hidden' : ''
+                      }}"
+                      title="Add a person"
+                      (click)="addMPhotoPerson()"
+                    ></div>
+                    <div
+                      *ngIf="photopersonz.length > 0"
+                      class="float_r icomoon icmn-minus-circle {{
+                        _userService.isUserLoggedIn == false ? 'hidden' : ''
+                      }}"
+                      title="Delete all persons"
+                      (click)="deleteAllPhotoPerson()"
+                      style="margin: 0px 10px 0px 0px"
+                    ></div>
+                  </div>
+                </div>
+                <div
+                  *ngIf="secretPhotoPerson"
+                  formArrayName="secretPhotoPerson"
+                >
+                  <div
+                    *ngFor="let pros of secretPhotoPerson.controls; index as d"
+                    [formGroupName]="d"
+                  >
+                    <div class="form-group">
+                      <div class="row">
+                        <div class="col-sm-2">
+                          <span *ngIf="_userService.isUserLoggedIn == true">
+                            <h5
+                              (click)="delete_person(d)"
+                              title="Click to delete person"
+                            >
+                              Person {{ d + 1 }}
+                            </h5>
+                          </span>
+                          <span *ngIf="_userService.isUserLoggedIn == false">
+                            <h5>Person {{ d + 1 }}</h5>
+                          </span>
+                        </div>
+                        <div class="col-sm-10">
+                          <select formControlName="_id" class="form-controlf">
+                            <option value="">Select Person</option>
+                            <option
+                              value="{{ season._id }}"
+                              *ngFor="
+                                let season of _cmsService.photopersons;
+                                let e = index
+                              "
+                            >
+                              {{ season.title }}
+                            </option></select
+                          ><input
+                            type="button"
+                            [disabled]="_userService.isUserLoggedIn == false"
+                            (click)="save_photoperson()"
+                            class="btn btn-primary float_r"
+                            style="width: 70px; margin: 2px 0px 0px 0px"
+                            value="Save"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="prop.pname === 'subtitles'" class="object">
+                <div>
+                  <div class="col-sm-2"><h4>Subtitles</h4></div>
+                  <div class="col-sm-10">
+                    <div class="form-control4 bg_lightgreen">
+                      <div
+                        class="objectPlus icomoon icmn-plus-circle {{
+                          _userService.isUserLoggedIn == false ? 'hidden' : ''
+                        }}"
+                        title="Add a subtitle"
+                        (click)="addSubtitle()"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div formArrayName="secretSubtitle" *ngIf="secretSubtitle">
+                  <div
+                    *ngFor="let proz of secretSubtitle.controls; index as c"
+                    [formGroupName]="c"
+                  >
+                    <div class="form-group">
+                      <div class="row">
+                        <div class="col-sm-2">
+                          <span
+                            class="hidden icomoon icmn-cancel-circle2 {{
+                              _userService.isUserLoggedIn == false
+                                ? 'hidden'
+                                : ''
+                            }}"
+                            (click)="delete_subtitle(c)"
+                          ></span>
+                          <span *ngIf="_userService.isUserLoggedIn == true">
+                            <h5
+                              (click)="delete_subtitle(c)"
+                              title="Click to delete subtitle"
+                            >
+                              Subtitle {{ c + 1 }}
+                            </h5>
+                          </span>
+                          <span *ngIf="_userService.isUserLoggedIn == false">
+                            <label>Subtitle {{ c + 1 }} </label>
+                          </span>
+                        </div>
+                        <div class="col-sm-10">
+                          <select
+                            formControlName="ISO"
+                            (change)="showhideButtonC($event)"
+                            class="form-controlf"
+                            required="{{
+                              prop.required == true ? 'true' : 'false'
+                            }}"
+                          >
+                            <option value="">Select country</option>
+                            <option
+                              value="{{ season.schemaextend[0]['ISO'] }}"
+                              *ngFor="
+                                let season of _cmsService.countries;
+                                let e = index
+                              "
+                            >
+                              {{ season.title }}
+                              {{ season.schemaextend[0]["ISO"] }}
+                            </option>
+                          </select>
+                          <input
+                            type="button"
+                            [disabled]="_userService.isUserLoggedIn == false"
+                            (click)="save_subtitle()"
+                            style="width: 70px; margin: 2px 0px 0px 0px"
+                            class="btn btn-primary float_r"
+                            value="Save"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="prop.pname === 'addresses'" class="object">
+                <div>
+                  <div class="col-sm-2"><h4>Addresses</h4></div>
+                  <div class="col-sm-10">
+                    <div class="form-control4 bg_lightgreen">
+                      <div
+                        class="objectPlus icomoon icmn-plus-circle {{
+                          _userService.isUserLoggedIn == false ? 'hidden' : ''
+                        }}"
+                        title="Add an address"
+                        (click)="addLair()"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div formArrayName="secretLairs">
+                  <div *ngIf="secretLairs">
+                    <div
+                      *ngFor="let proz of secretLairs.controls; let a = index"
+                      [formGroupName]="a"
+                    >
+                      <div class="form-group">
+                        <div class="row">
+                          <div class="col-sm-2">
+                            <h5
+                              (click)="delete_address(a)"
+                              title="Click to delete address"
+                            >
+                              Address {{ a + 1 }}
+                            </h5>
+                          </div>
+                          <div class="col-sm-10">
+                            <div class="form-controlg bg_lightgreen">
+                              <div
+                                class="objectPlus icomoon icmn-minus-circle  {{
+                                  _userService.isUserLoggedIn == false
+                                    ? 'hidden'
+                                    : ''
+                                }}"
+                                style="margin: -3px -21px 0px 0px"
+                                title="Delete address"
+                                (click)="delete_address(a)"
+                              ></div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-sm-2">
+                            <label for="street{{ a }}">Street</label>
+                          </div>
+                          <div class="col-sm-10">
+                            <input
+                              type="text"
+                              id="street{{ a }}"
+                              formControlName="street"
+                              class="form-control"
+                            />
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-sm-2">
+                            <label for="city{{ a }}">City</label>
+                          </div>
+                          <div class="col-sm-10">
+                            <input
+                              type="text"
+                              class="form-control"
+                              formControlName="city"
+                              id="city{{ a }}"
+                            />
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-sm-2">
+                            <label for="state{{ a }}">State</label>
+                          </div>
+                          <div class="col-sm-10">
+                            <input
+                              type="text"
+                              class="form-control"
+                              formControlName="state"
+                              id="state{{ a }}"
+                            />
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-sm-2">
+                            <label for="zip{{ a }}">Postal</label>
+                          </div>
+                          <div class="col-sm-10">
+                            <input
+                              type="text"
+                              formControlName="zip"
+                              id="zip{{ a }}"
+                              class="form-control"
+                            />
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="col-sm-2">
+                            <label for="country{{ a }}">Country</label>
+                          </div>
+                          <div class="col-sm-10">
+                            <select
+                              formControlName="country"
+                              id="country{{ a }}"
+                              class="form-controlf"
+                            >
+                              <option value="" selected="selected">
+                                Select country
+                              </option>
+                              <option
+                                value="{{ season.schemaextend[0]['ISO'] }}"
+                                *ngFor="
+                                  let season of _cmsService.countries;
+                                  let e = index
+                                "
+                              >
+                                {{ season.title }}
+                                {{ season.schemaextend[0]["ISO"] }}
+                              </option>
+                            </select>
+                            <input
+                              type="button"
+                              [disabled]="_userService.isUserLoggedIn == false"
+                              (click)="save_addAddress()"
+                              class="btn btn-primary float_r"
+                              style="width: 70px; margin: 2px 0px 0px 0px"
+                              value="Save"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                *ngIf="
+                  prop.inputtype === 'Object' &&
+                  prop.pname !== 'addresses' &&
+                  prop.pname !== 'moviegenre' &&
+                  prop.pname !== 'subtitles' &&
+                  prop.pname !== 'photopersons'
+                "
+                class="object"
+              >
+                <div>
+                  {{ prop.pname }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="row marginTop20">
+              <div class="col-sm-2">
+                <label for="dateCreated">Date created</label>
+              </div>
+              <div class="col-sm-10">
+                <input
+                  readonly
+                  type="datetime-local"
+                  id="dateCreated"
+                  formControlName="dateCreated"
+                  class="readonly form-control"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-2">
+                <label for="dateLast">Last modified</label>
+              </div>
+              <div class="col-sm-10">
+                <input
+                  readonly
+                  type="datetime-local"
+                  id="dateLast"
+                  formControlName="dateLast"
+                  class="readonly form-control"
+                />
+              </div>
+            </div>
+            <div>
+              <div class="col-sm-2">
+                <label for="createdBy">Created by</label>
+              </div>
+              <div class="col-sm-10">
+                <select
+                  id="createdBy"
+                  formControlName="createdBy"
+                  class="form-c form-controls"
+                >
+                  <option></option>
+                  <option
+                    *ngFor="let a = index; let user; of: _userService.users"
+                    value="{{ user._id }}"
+                  >
+                    {{ user.last_name }}, {{ user.first_name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-2">
+                <label for="hits">Hits</label>
+              </div>
+              <div class="col-sm-10">
+                <input
+                  type="number"
+                  id="hits"
+                  formControlName="hits"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-2">
+                <label for="kids">Kids</label>
+              </div>
+              <div class="col-sm-10">
+                <input
+                  type="number"
+                  id="kids"
+                  formControlName="kids"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-2">
+                <label for="treelevel">Tree level</label>
+              </div>
+              <div class="col-sm-10">
+                <input
+                  type="number"
+                  id="treelevel"
+                  formControlName="treelevel"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-2">
+                <label for="pickorder">Pickorder</label>
+              </div>
+              <div class="col-sm-10">
+                <input
+                  type="number"
+                  id="pickorder"
+                  formControlName="pickorder"
+                  class="form-control ng-valid"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="row cmsbuttons">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-10">
+              <button
+                type="button"
+                [disabled]="
+                  _userService.isUserLoggedIn == false || pageForm.pristine
+                "
+                (click)="onSubmit()"
+                class="btnsaveCms btn btn-success"
+              >
+                Save
+              </button>
+              <button
+                type="button"
+                [disabled]="pageForm.pristine"
+                class="hidden btn"
+                title="btnsaveCmsNew"
+              >
+                Save new
+              </button>
+              <button type="button" (click)="GgetLists()" class="hidden">
+                GetList
+              </button>
+              <button
+                type="reset"
+                (click)="pagerevert()"
+                [style.display]="pageForm.pristine ? 'none' : 'inline-block'"
+                class="btn btn-warning btn_r btnrevertPage"
+              >
+                Revert
+              </button>
+              <button
+                type="button"
+                [disabled]="
+                  _userService.isUserLoggedIn == false ||
+                  _cmsService.pageSelected.title == 'Root' ||
+                  _cmsService.pageSelected.secure == true
+                "
+                (click)="destroy()"
+                ng-confirm-click="Delete item?"
+                class="btn btn-danger btndeletePage"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tabfield hidden" id="tab_3">
+      <div class="wellr well-lgr">
+        <div id="userImageContentsLL"></div>
+        <br />
+        <div class="row">
+          <div class="col-sm-2"></div>
+          <div class="col-sm-10">
+            <button
+              type="button"
+              [disabled]="!pageForm.valid"
+              (click)="onSubmit()"
+              class="btnsaveCms btn btn-success"
+            >
+              Save
+            </button>
+            <input
+              type="button"
+              (click)="destroy()"
+              class="hidden btndeletePage btn btn-danger"
+              ng-confirm-click="Would you like to say hi?"
+              value="Delete"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="tabfield hidden" id="tab_4"></div>
+
+  <div class="tabfield hidden" id="tab_2">
+    <div class="wellr well-lgr">
+      <div
+        [style.display]="_userService.isUserLoggedIn == true ? 'none' : 'block'"
+        class="row"
+      >
+        You are not authorized for this tab
+      </div>
+      <div
+        [style.display]="_userService.isUserLoggedIn == true ? 'block' : 'none'"
+        class="row"
+      >
+        <app-medialib-list></app-medialib-list>
+
+        <div
+          [style.display]="
+            _userService.isUserLoggedIn == true ? 'block' : 'none'
+          "
+        >
+          <button
+            *ngIf="
+              _cmsService.pageSelected.media &&
+              _cmsService.pageSelected.media.length > 0
+            "
+            (click)="removeAllMediaFromPage()"
+            style="position: absolute; right: -10px; margin: -6px 10px 0px 0px"
+            class="btn btn-danger"
+          >
+            Remove all files from page
+          </button>
+
+          <h4
+            *ngIf="
+              _cmsService.pageSelected.media &&
+              _cmsService.pageSelected.media.length > 0
+            "
+          >
+            Files on {{ _cmsService.pageSelected.title }} ({{
+              _cmsService.pageSelected.media.length
+            }})
+          </h4>
+          <div class="flex-container4">
+            <div
+              *ngFor="let img of _cmsService.pageSelected.media; let x = index"
+              class="cmsrow"
+              [style.display]="
+                _cmsService.pageSelected.media &&
+                _cmsService.pageSelected.media.indexOf(img) !== -1
+                  ? 'inline-block'
+                  : 'none'
+              "
+            >
+              <div class="menu">
+                <ul class="levela nav navbar-nav">
+                  <li class="dropdown">
+                    <a
+                      (click)="media_menu(img)"
+                      class="dropdown-toggle icon_large icmn-paragraph-justify2"
+                    ></a>
+                    <ul
+                      class="levelb dropdown-content"
+                      id="mediaMenu_{{ img }}"
+                    >
+                      <li class="dropdown">
+                        <a class="dropdown-toggle"
+                          >Admin<span class="float_r icmn-arrow-down5"></span
+                        ></a>
+                        <ul class="levelc">
+                          <li><a (click)="deleteMedia(img)">Delete clip</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+
+                  <li>
+                    <a
+                      (click)="
+                        deleteMediafromPage(
+                          _cmsService.pageSelected.media.indexOf(img)
+                        )
+                      "
+                      class="icon_large icmn-minus-circle"
+                    ></a>
+                  </li>
+                </ul>
+                <div class="blok">
+                  <img src="/api/assets/media/{{ img }}" alt="media" />
+                </div>
+              </div>
+
+              <div
+                *ngIf="
+                  _cmsService.pageSelected.media &&
+                  _cmsService.pageSelected.media.indexOf(img._id) !== -1
+                "
+                fileViewer
+                class="text"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabfield hidden" id="tab_5">
+    <div class="wellr well-lgr"></div>
+  </div>
+
+  <div class="tabfield hidden" id="tab_6">
+    <div class="wellr well-lgr"></div>
+  </div>
+
+  <div class="tabfield" id="tab_7">
+    <div class="wellr well-lgr">
+      <div *ngFor="let prop of objectProps">
+        <div class="form-group row">
+          <div class="col-md-2">
+            <label class="label-default" [attr.for]="prop">{{
+              prop.label
+            }}</label>
+          </div>
+          <div class="col-md-10">
+            <div [ngSwitch]="prop.type">
+              <input
+                *ngSwitchCase="'text'"
+                [formControlName]="prop.key"
+                [id]="prop.pname"
+                [type]="prop.type"
+                class="form-control"
+              />
+              <div *ngSwitchCase="'radio'">
+                <label *ngFor="let option of prop.options">
+                  <input
+                    type="radio"
+                    [name]="prop.key"
+                    [formControlName]="prop.key"
+                    [value]="option.value"
+                    class="form-control"
+                  />
+                  {{ option.label }}
+                </label>
+              </div>
+              <div *ngSwitchCase="'textarea'">
+                <textarea
+                  rows="4"
+                  class="form-control"
+                  [id]="prop.key"
+                  [formControlName]="prop.key"
+                  >{{ prop.value }} </textarea
+                >
+              </div>
+              <div *ngSwitchCase="'select'">
+                <select class="form-control" [formControlName]="prop.key">
+                  <option
+                    *ngFor="let option of prop.options"
+                    [selected]="option.label == option.value"
+                    [value]="option.value"
+                  >
+                    {{ option.label }}
+                  </option>
+                </select>
+              </div>
+              <div *ngSwitchCase="'checkbox'">
+                <label>
+                  <input
+                    type="checkbox"
+                    [name]="prop.key"
+                    [id]="prop.key"
+                    [formControlName]="prop.key"
+                    [value]="prop.value"
+                    style="font-size: 1.5em; width: 24px; height: 24px"
+                    (click)="toggle_checkbox_class(prop.key)"
+                  />
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabfield hidden" id="tab_8">
+    <div class="wellr well-lgr">
+      <div
+        [style.display]="_userService.isUserLoggedIn == true ? 'none' : 'block'"
+        class="row"
+      >
+        You are not authorized for this tab
+      </div>
+
+      <form
+        [style.display]="_userService.isUserLoggedIn == true ? 'block' : 'none'"
+        class="row"
+      >
+        <div class="col-sm-10">
+          <div
+            [style.display]="
+              _cmsService.cmsFields.length > 0 ? 'inline-block' : 'hidden'
+            "
+          >
+            <h4>Fields:</h4>
+            <div id="tab_6_res"></div>
+            <select
+              id="mySelect"
+              class="form-c form-controls ng-valid ng-dirty ng-touched"
+            >
+              <option *ngFor="let property of _cmsService.cmsFields">
+                {{ property }}
+              </option></select
+            ><br /><br />
+
+            <input
+              class="btn btn-primary button"
+              type="button"
+              value="insert Page"
+              (click)="insert_field2()"
+            />
+            <hr />
+            <input
+              class="groupzi form-control ng-untouched ng-pristine ng-valid"
+              type="text"
+              id="insertFieldNewvalue"
+              value=""
+              placeholder="Add new field"
+            />
+            <input
+              class="groupzi form-control ng-untouched ng-pristine ng-valid"
+              type="text"
+              id="insertFieldvalue"
+              value=""
+              placeholder="Field value"
+            /><br /><br />
+            <input
+              class="btn btn-primary button"
+              type="button"
+              value="insert Schemaextend"
+              (click)="insert_newfield()"
+            />
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <form [formGroup]="propForm" enctype="multipart/form-data" novalidate>
+    <div
+      class="tabfield hidden"
+      id="tab_9"
+      *ngIf="_cmsService.pageSelected.parent == '5a3cf9378e89191f15ed348f'"
+    >
+      <div class="wellr well-lgr">
+        <h4>Properties</h4>
+        <div class="form-group">
+          <div class="row button_hide hidden">
+            <div class="col-sm-2">
+              <label for="prop_id">ID</label>
+            </div>
+            <div class="col-sm-10">
+              <input
+                type="text"
+                id="prop_id"
+                formControlName="_id"
+                class="form-control"
+                value=""
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-2">
+            <label for="property">Add</label>
+          </div>
+          <div class="col-sm-10">
+            <select
+              id="propertyselect"
+              #propertyselect
+              (change)="showSelectValue($event)"
+              class="form-c form-controls ng-valid ng-dirty ng-touched"
+            >
+              <option value="">Select an Property or create one</option>
+              <option value="0">New property</option>
+              <option
+                value="{{ prop._id }}"
+                *ngFor="let prop of _cmsService.properties"
+                [selected]="
+                  _cmsService.propset == true &&
+                  _cmsService.selectedProperty._id == prop._id
+                "
+              >
+                {{ prop.title }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div id="newproperty" class="hidden">
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-2">
+                <label for="title">Title</label>
+              </div>
+              <div class="col-sm-10">
+                <input
+                  type="text"
+                  formControlName="title"
+                  class="form-control"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-2">
+                <label for="title">Prop Name</label>
+              </div>
+              <div class="col-sm-10">
+                <input
+                  type="text"
+                  id="pname"
+                  formControlName="pname"
+                  class="checkreadonly form-control"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-2">
+                <label for="access">Access</label>
+              </div>
+              <div class="col-sm-10">
+                <select
+                  formControlName="access"
+                  class="checkreadonly form-c form-controls"
+                  required
+                >
+                  <option value="public" selected="selected">Public</option>
+                  <option value="private">Private</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-2">
+                <label for="type">Data type</label>
+              </div>
+              <div class="col-sm-10">
+                <select
+                  #datatype
+                  (change)="datatypeChange(datatype.value)"
+                  id="type"
+                  formControlName="type"
+                  class="checkreadonly form-c form-controls"
+                  required
+                >
+                  <option value="" selected="selected">Select datatype</option>
+                  <option value="string">String</option>
+                  <option value="Date">Date</option>
+                  <option value="time">Time</option>
+                  <option value="DateTime">DateTime</option>
+                  <option value="boolean">Boolean</option>
+                  <option value="number">Number</option>
+                  <option value="file">File</option>
+                  <option value="array">Array</option>
+                  <option value="Object">Object</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" id="objectdiv">
+            <div class="row">
+              <div class="col-sm-2">
+                <label for="object">Object</label>
+              </div>
+              <div class="col-sm-10">
+                <select
+                  formControlName="object"
+                  class="checkreadonly form-c form-controls"
+                >
+                  <option
+                    value="{{ capitalize(moddel.replace('.ts', '')) }}"
+                    *ngFor="let moddel of _cmsService.models"
+                  >
+                    {{ moddel }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-2">
+                <label for="inputtype">Input type</label>
+              </div>
+              <div class="col-sm-10">
+                <select
+                  id="inputtype"
+                  #inputtype
+                  (change)="inputtypeChange(inputtype.value)"
+                  formControlName="inputtype"
+                  class="checkreadonly form-c form-controls"
+                  required
+                >
+                  <option value="" selected="selected">Select inputtype</option>
+                  <option value="Checkbox">Checkbox</option>
+                  <option value="Datepicker">Datepicker</option>
+                  <option value="Textarea">Textarea</option>
+                  <option value="Rtf">Rich Text Editor</option>
+                  <option value="Text">Text</option>
+                  <option value="Radio">Radio</option>
+                  <option value="Select">Select</option>
+                  <option value="SelectWithEmpty">Select with empty</option>
+                  <option value="SelectMulti">Select multiple</option>
+                  <option value="SelectAdd">Select add</option>
+                  <option value="Slider">Slider</option>
+                  <option value="SliderToggle">Slide toggle</option>
+                  <option value="Password">Password</option>
+                  <option value="Color">Color</option>
+                  <option value="Email">Email</option>
+                  <option value="Number">Number</option>
+                  <option value="Range">Range</option>
+                  <option value="Search">Search</option>
+                  <option value="Telephone">Telephone</option>
+                  <option value="Time">Time</option>
+                  <option value="DateTime">Date Time</option>
+                  <option value="File">File</option>
+                  <option value="URL">URL</option>
+                  <option value="Object">Object</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" id="valuesLabels">
+            <div class="row">
+              <div class="col-sm-2">
+                <label id="labelvalues" for="values">Labels / Values</label>
+              </div>
+              <div class="col-sm-10">
+                <input
+                  type="text"
+                  id="values"
+                  placeholder="prop values"
+                  #values
+                  formControlName="values"
+                  class="float_r form-control50 ng-valid ng-touched ng-dirty"
+                />
+                <input
+                  type="text"
+                  id="labels"
+                  placeholder="prop labels"
+                  #labels
+                  formControlName="labels"
+                  class="float_l form-control50 ng-valid ng-touched ng-dirty"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-2">
+              <label for="minlength">Min/Max length</label>
+            </div>
+            <div class="col-sm-10">
+              <input
+                type="text"
+                placeholder="min length"
+                class="form-control50 float_l"
+                formControlName="minlength"
+              />
+              <input
+                type="text"
+                placeholder="max length"
+                formControlName="maxlength"
+                class="form-control50 float_r"
+              />
+            </div>
+          </div>
+
+          <div class="row form-group">
+            <div class="row">
+              <div class="col-sm-2">
+                <label>Required</label>
+              </div>
+              <div class="col-sm-10">
+                <div class="form-control4">
+                  <input
+                    type="checkbox"
+                    #required
+                    formControlName="required"
+                    id="required"
+                    class="hidden"
+                    value="true"
+                  />
+                  <span
+                    (click)="toggleCheckbox('required')"
+                    style="font-size: 1.5em"
+                    class="required {{
+                      required.checked == true
+                        ? 'icmn-checkbox-checked2'
+                        : 'icmn-checkbox-unchecked2'
+                    }}"
+                  ></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-2">
+                <label id="inputLabelPreview" for="inputPreview"
+                  >Input preview</label
+                >
+              </div>
+              <div class="col-sm-10" id="inputPreview">
+                <textarea
+                  readonly
+                  id="TextareaPreview"
+                  class="inputPreview form-control ng-untouched ng-pristine ng-valid"
+                >
+Textarea</textarea
+                >
+                <textarea
+                  readonly
+                  id="RtfPreview"
+                  class="inputPreview form-control ng-untouched ng-pristine ng-valid"
+                >
+Rtf</textarea
+                >
+
+                <input
+                  readonly
+                  value="TextPreview"
+                  id="TextPreview"
+                  matInput
+                  type="text"
+                  class="inputPreview form-control ng-untouched ng-pristine ng-valid"
+                />
+
+                <div id="CheckboxPreview" class="inputPreview form-control4">
+                  <input type="checkbox" />A<input type="checkbox" />B
+                </div>
+
+                <div id="RadioPreview" class="inputPreview form-control4">
+                  <input type="radio" />A<input type="radio" />B
+                </div>
+
+                <input
+                  readonly
+                  value="Password"
+                  id="PasswordPreview"
+                  matInput
+                  type="password"
+                  class="inputPreview form-control ng-untouched ng-pristine ng-valid"
+                />
+
+                <input
+                  readonly
+                  value="#ffffff"
+                  id="ColorPreview"
+                  matInput
+                  type="color"
+                  class="inputPreview form-control ng-untouched ng-pristine ng-valid"
+                />
+                <input
+                  readonly
+                  value=""
+                  id="EmailPreview"
+                  matInput
+                  type="email"
+                  class="inputPreview form-control ng-untouched ng-pristine ng-valid"
+                />
+                <input
+                  readonly
+                  value=""
+                  id="NumberPreview"
+                  matInput
+                  type="number"
+                  class="inputPreview form-control ng-untouched ng-pristine ng-valid"
+                />
+
+                <div id="RangePreview" class="inputPreview form-control4">
+                  <input
+                    readonly
+                    (click)="rangeShowValue($event)"
+                    value=""
+                    type="range"
+                    min="0"
+                    max="10"
+                    class="form-control ng-untouched ng-pristine ng-valid"
+                  />
+                </div>
+                <input
+                  readonly
+                  id="FilePreview"
+                  type="file"
+                  class="inputPreview form-control ng-untouched ng-pristine ng-valid"
+                />
+
+                <input
+                  readonly
+                  value=""
+                  id="DatepickerPreview"
+                  matInput
+                  type="date"
+                  class="inputPreview form-control"
+                />
+                <input
+                  readonly
+                  value=""
+                  id="DateTimePreview"
+                  matInput
+                  type="datetime"
+                  class="inputPreview form-control ng-untouched ng-pristine ng-valid"
+                />
+                <input
+                  readonly
+                  value=""
+                  id="TimePreview"
+                  matInput
+                  type="time"
+                  class="inputPreview form-control ng-untouched ng-pristine ng-valid"
+                />
+                <input
+                  readonly
+                  value=""
+                  id="URLPreview"
+                  matInput
+                  type="url"
+                  class="inputPreview form-control ng-untouched ng-pristine ng-valid"
+                />
+
+                <input
+                  readonly
+                  value=""
+                  id="SearchPreview"
+                  matInput
+                  type="search"
+                  class="inputPreview form-control ng-untouched ng-pristine ng-valid"
+                />
+                <input
+                  readonly
+                  value=""
+                  id="TelephonePreview"
+                  matInput
+                  type="tel"
+                  class="inputPreview form-control ng-untouched ng-pristine ng-valid"
+                />
+
+                <div id="RadioPreview" class="inputPreview form-control4"></div>
+
+                <select
+                  readonly
+                  id="SelectPreview"
+                  class="inputPreview form-c form-controls ng-valid ng-dirty ng-touched"
+                  placeholder="Select preview"
+                >
+                  <option value="test 1">test 1</option>
+                  <option value="test 2">test 2</option>
+                </select>
+
+                <select
+                  readonly
+                  id="SelectAddPreview"
+                  class="inputPreview form-c form-controls ng-valid ng-dirty ng-touched"
+                  placeholder="Select preview"
+                >
+                  <option value="test 1">test 1</option>
+                  <option value="test 2">test 2</option>
+                </select>
+
+                <select
+                  readonly
+                  id="SelectWithEmptyPreview"
+                  class="inputPreview form-c form-controls ng-valid ng-dirty ng-touched"
+                  placeholder="Select preview"
+                >
+                  <option value="">Select value</option>
+                  <option value="test 1">test 1</option>
+                  <option value="test 2">test 2</option>
+                </select>
+
+                <select
+                  readonly
+                  id="SelectMultiPreview"
+                  multiple
+                  class="inputPreview form-c form-controls ng-valid ng-dirty ng-touched"
+                  placeholder="Select preview"
+                >
+                  <option value="">Select value</option>
+                  <option value="test 1">test 1</option>
+                  <option value="test 2">test 2</option>
+                </select>
+
+                <select
+                  readonly
+                  id="ObjectPreview"
+                  class="inputPreview form-c form-controls ng-valid ng-dirty ng-touched"
+                  placeholder="Select preview"
+                >
+                  <option value="">Select model</option>
+                  <option
+                    value="{{ prop }}"
+                    *ngFor="let prop of _cmsService.models"
+                  >
+                    {{ prop }}
+                  </option>
+                </select>
+
+                <div id="SliderPreview" class="inputPreview form-control4">
+                  <input type="range" />
+                </div>
+
+                <div
+                  id="SliderTogglePreview"
+                  class="inputPreview form-control4"
+                >
+                  <input type="range" />
+                </div>
+
+                <div
+                  id="SliderTogglePreview"
+                  class="inputPreview form-control4"
+                ></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" id="listdiv">
+            <div class="row">
+              <div class="col-sm-2">
+                <label for="list">List</label>
+              </div>
+              <div class="col-sm-10">
+                <select
+                  formControlName="list"
+                  class="form-c form-controls"
+                  (change)="ListToLabelsAndValues($event)"
+                >
+                  <option value=""></option>
+                  <option
+                    value="{{ moddel._id }}"
+                    *ngFor="let moddel of _cmsService.SystemLists"
+                  >
+                    {{ moddel.title }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-10">
+              <button
+                type="button"
+                id="saveCmsButton"
+                [disabled]="
+                  !propForm.valid || _userService.isUserLoggedIn == false
+                "
+                class="btn btn-success btn_r"
+                (click)="saveProperty()"
+              >
+                Save Property
+              </button>
+              <button
+                type="reset"
+                [disabled]="propForm.pristine"
+                class="btn btn-danger btn_r"
+              >
+                Revert
+              </button>
+              <button
+                type="button"
+                id="btndeleteProp"
+                [disabled]="_userService.isUserLoggedIn == false"
+                (click)="removeProperty()"
+                class="btn_r btn btn-danger btndeleteProp"
+              >
+                Delete Property
+              </button>
+              <input
+                type="button"
+                [disabled]="
+                  !propForm.valid || _userService.isUserLoggedIn == false
+                "
+                (click)="addPropertyToPage()"
+                class="btn_r btn btn-success"
+                value="Add to page"
+              />
+              <input
+                type="button"
+                [disabled]="_userService.isUserLoggedIn == false"
+                class="btn btn-success"
+                value="Upsert kids"
+              />
+            </div>
+          </div>
+          <div class="row" id="propinuseby"></div>
+        </div>
+
+        <div
+          class="propertiesAdded topline20"
+          *ngIf="
+            _cmsService.pageSelected.properties &&
+            _cmsService.pageSelected.properties.length > 0
+          "
+        >
+          <button
+            [disabled]="
+              _userService.isUserLoggedIn == false ? 'inline-block' : 'none'
+            "
+            class="btn btn-primary btn_r"
+            (click)="clearProperties()"
+          >
+            Clear properties
+          </button>
+          <button
+            [disabled]="_userService.isUserLoggedIn == false"
+            class="margin_r_10 btn btn-primary"
+            (click)="CreateClassFile()"
+          >
+            Create class
+          </button>
+          <br /><br />
+          <h4>
+            Properties added on {{ _cmsService.pageSelected.title }} ({{
+              _cmsService.pageSelected.properties.length
+            }})
+          </h4>
+          <table style="width: 100%" class="table">
+            <tr class="row bold">
+              <td
+                class="col-sm-1"
+                title="Move"
+                [style.display]="
+                  _userService.isUserLoggedIn == true ? '' : 'none'
+                "
+              >
+                Move
+              </td>
+              <td class="col-sm-5" title="Property">Property</td>
+              <td class="col-sm-2" title="Input">Input</td>
+              <td class="col-sm-1 alignR" title="Insert">Ins</td>
+              <td class="col-sm-1 alignR" title="Required">Req</td>
+              <td class="col-sm-2 alignR" title="Type">Type</td>
+              <td class="col-sm-1 alignR" title="Delete">Del</td>
+            </tr>
+
+            <tbody
+              cdkDropList
+              class="example-list"
+              (cdkDropListDropped)="drop($event)"
+            >
+              <tr
+                cdkDrag
+                class="example-box {{ b % 2 == 0 ? 'bg_grey' : 'bg_white' }}"
+                *ngFor="let prop of properties; let b = index"
+              >
+                <td
+                  [style.display]="
+                    _userService.isUserLoggedIn == true
+                      ? 'inline-block'
+                      : 'none'
+                  "
+                  class="propsort col-sm-1 icmn-arrow-resize8"
+                  id="prop_{{ _cmsService.propertiesFull[b]._id }}"
+                ></td>
+                <td class="col-sm-5">
+                  <input
+                    type="checkbox"
+                    id="pageProp_{{ _cmsService.propertiesFull[b].title }}_{{
+                      b
+                    }}"
+                    class="hidden"
+                    value="true"
+                  /><span (click)="toggleCheckbox('pageProp_')" class=""></span>
+                  {{ _cmsService.propertiesFull[b].title }}
+                </td>
+                <td title="Input" class="col-sm-2" style="white-space: nowrap">
+                  {{ _cmsService.propertiesFull[b].inputtype }}
+                </td>
+                <td class="col-sm-1 alignR" title="Insert property to page">
+                  <span
+                    (click)="upsertProperty(_cmsService.propertiesFull[b])"
+                    class="icon_medium icmn-bubble-plus"
+                  ></span>
+                </td>
+                <td class="col-sm-1 alignR" title="Property required">
+                  <span class="icon_medium">{{
+                    _cmsService.propertiesFull[b].required == true
+                      ? "Yes"
+                      : "No"
+                  }}</span>
+                </td>
+                <td title="Type" class="col-sm-2 alignR">
+                  <span class="">{{ _cmsService.propertiesFull[b].type }}</span>
+                </td>
+                <td title="Delete property to page" class="col-sm-1 alignR">
+                  <span
+                    (click)="removePropertyFromPage(b)"
+                    class="icon_medium icmn-cancel-circle"
+                  ></span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <br /><br />
+        <div
+          [style.display]="
+            _cmsService.propertyInUseBy.length > 0 ? 'inline-block' : 'none'
+          "
+        >
+          <h4>
+            In use by ({{
+              _cmsService.propertyInUseBy.length > 0
+                ? _cmsService.propertyInUseBy.length
+                : ""
+            }}
+            objects):
+          </h4>
+          <div *ngFor="let prop of _cmsService.propertyInUseBy; let b = index">
+            <a routerLink="/cms/{{ prop._id }}">{{ prop.title }}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      id="tab_9"
+      class="tabfield hidden"
+      *ngIf="_cmsService.pageSelected.parent != '5a3cf9378e89191f15ed348f'"
+    >
+      Add properties in objects
+    </div>
+  </form>
+
+  <div class="tabfield hidden" id="tab_10">
+    <h4>Json:</h4>
+    <h3>pageSelected:</h3>
+    <div style="max-width: 300px">
+      <pre>{{ _cmsService.pageSelected | json }}</pre>
+    </div>
+  </div>
+
+  <div class="tabfield hidden" id="tab_11">
+    <form [formGroup]="filterForm" novalidate>
+      <h4>Filters</h4>
+      <div class="hidden form-group">
+        <div class="row">
+          <div class="col-sm-2">
+            <label>ID</label>
+          </div>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" />
+          </div>
+        </div>
+      </div>
+
+      <div class="hidden row">
+        <div class="col-sm-2">
+          <label>Type</label>
+        </div>
+        <div class="col-sm-10">
+          <select
+            (click)="updateFilterButton($event)"
+            id="filtertype"
+            class="checkreadonly form-c form-controls"
+          >
+            <option
+              value="{{ capitalize(moddel.replace('.ts', '')) }}"
+              *ngFor="let moddel of _cmsService.models"
+            >
+              {{ moddel }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <div class="form-group">
+          <div class="row">
+            <div class="col-sm-2">
+              <label>Add</label>
+            </div>
+            <div class="col-sm-10">
+              <select
+                id="valuesId"
+                formControlName="values"
+                (change)="showSelectFilter($event)"
+                class="form-c form-controls"
+              >
+                <option value="">Select a filter</option>
+                <option
+                  value="{{ moddel._id }}"
+                  *ngFor="let moddel of _cmsService.properties; let j = index"
+                >
+                  {{ moddel.title }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-2"></div>
+          <div class="col-sm-10">
+            <input
+              [disabled]="_userService.isUserLoggedIn == false"
+              id="addFilterToPageButton"
+              type="button"
+              (click)="addFilterToPage()"
+              class="addFilterToPageButton hidden btn btn-success"
+              value="Add filter to page"
+            />
+          </div>
+        </div>
+        <br /><br />
+
+        <div>
+          <div class="propertiesAdded" *ngIf="_cmsService.pageSelected.filter">
+            <div class="row">
+              <div class="col-sm-2"></div>
+              <div class="col-sm-10">
+                <button
+                  class="float_r btn btn-primary"
+                  (click)="clearFilters()"
+                >
+                  Clear filters
+                </button>
+              </div>
+            </div>
+            <h4>
+              Filters added on {{ _cmsService.pageSelected.title }} ({{
+                _cmsService.pageSelected.filter.length
+              }})
+            </h4>
+            <table class="row" style="width: 100%">
+              <tr>
+                <th
+                  class="col-sm-2"
+                  title="Move"
+                  [style.display]="
+                    _userService.isUserLoggedIn == true
+                      ? 'inline-block'
+                      : 'none'
+                  "
+                >
+                  Move
+                </th>
+                <th class="col-sm-8" title="Property">Property</th>
+                <th class="col-sm-2 float_r" title="Delete">Del</th>
+              </tr>
+              <tr
+                class="row  {{ x % 2 == 0 ? 'bg_lightgrey' : 'bg_grey' }}"
+                *ngFor="
+                  let property of _cmsService.currentCmsFilters;
+                  let x = index
+                "
+              >
+                <td
+                  [style.display]="
+                    _userService.isUserLoggedIn == true
+                      ? 'inline-block'
+                      : 'none'
+                  "
+                  class="pagefilter col-sm-2 icmn-arrow-resize8"
+                  id="pfilter_{{ property._id }}"
+                  (onDropSuccess)="onFilter()"
+                  title="{{ property.title }}"
+                ></td>
+                <td class="col-sm-8">
+                  <h5>{{ property.title }}</h5>
+                </td>
+                <td class="col-sm-2 float_r">
+                  <span
+                    (click)="deletefilter(x)"
+                    class="icon_medium icmn-cancel-circle"
+                  ></span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="tabfield hidden" id="tab_12">
+    <div>
+      export class Page {{ "{" }}<br />
+      &nbsp;&nbsp;constructor(<br />
+      <div *ngFor="let property of _cmsService.propertiesFull; let i = index">
+        &nbsp;&nbsp;&nbsp;&nbsp; {{ property.access }} {{ property.pname }}:
+        {{ property.required }}, <br />
+      </div>
+      &nbsp;&nbsp;)<br />
+      {{ "}" }}
+    </div>
+  </div>
+
+  <div class="tabfield hidden" id="tab_13">
+    <h3>pageParent:</h3>
+    <div style="max-width: 300px">
+      <pre>{{ _cmsService.parentPage | json }}</pre>
+    </div>
+  </div>
+
+  <div class="tabfield hidden" id="tab_14">
+    <h3>selectedProperty:</h3>
+    <div style="max-width: 300px">
+      <pre>{{ _cmsService.selectedProperty | json }}</pre>
+    </div>
+    <h3>Filters:</h3>
+    <div style="max-width: 300px">
+      <pre>{{ _filterService.cmsFilterstxt | json }}</pre>
+    </div>
+  </div>
+
+  <div class="tabfield hidden" id="tab_15">
+    <h3>properties:</h3>
+    <div style="max-width: 300px">
+      <pre>{{ _cmsService.properties | json }}</pre>
+    </div>
+  </div>
+
+  <div class="tabfield hidden" id="tab_16">
+    <h3>pageChild:</h3>
+    <div style="max-width: 300px">
+      <pre>{{ _cmsService.childPage | json }}</pre>
+    </div>
+  </div>
+
+  <div class="tabfield hidden" id="tab_17">
+    <h4>Models:</h4>
+    <div *ngFor="let moddel of _cmsService.models">
+      <span> {{ moddel }} </span>
+    </div>
+  </div>
+
+  <div class="tabfield hidden" id="tab_18">
+    <div class="wellr well-lgr">
+      <h4>Insert kids <b>;</b></h4>
+      Number of fields (min 1 title) :
+      <span id="multifields">{{ multifieldsupload }}</span
+      ><br />
+      Lines seperate by <br /><br />
+
+      <br /><br />
+
+      <div class="row">
+        <div class="col-sm-2">
+          <label for="insertListObject">Object</label>
+        </div>
+        <div class="col-sm-10">
+          <select
+            [(ngModel)]="insertListObject"
+            class="groupzi form-c form-controls"
+          >
+            <option value="">Select object</option>
+            <option
+              value="{{ season._id }}"
+              *ngFor="let season of _cmsService.sysObjects; let e = index"
+            >
+              {{ season.title }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-2">
+          <label for="insertListVisible">Visible</label>
+        </div>
+        <div class="col-sm-10">
+          <div class="form-controlg bg_lightgreen">
+            <input type="checkbox" [(ngModel)]="insertListVisible" class="" />
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-2">
+          <label for="insertListSecure">Secure</label>
+        </div>
+        <div class="col-sm-10">
+          <div class="form-controlg bg_lightgreen">
+            <input
+              type="checkbox"
+              (change)="checkDeleteButtons()"
+              [(ngModel)]="insertListSecure"
+              class=""
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-2">Column 1 : Title</div>
+        <div class="col-sm-10">
+          <textarea
+            (keydown)="validateinsertListvalue($event)"
+            class="bg_lightgreen form-control"
+            rows="6"
+            id="insertListvalue"
+          ></textarea>
+        </div>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-10">
+          <input
+            [disabled]="_userService.isUserLoggedIn == false"
+            class="btn btn-primary button btn_r"
+            type="button"
+            value="insert kids"
+            (click)="insert_newlist()"
+          />
+          <input
+            [disabled]="_userService.isUserLoggedIn == false"
+            class="btn btn-primary button btn_r"
+            type="button"
+            value="insert multi kids"
+            (click)="insert_newlist_test()"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabfield hidden" id="tab_19">
+    <div class="wellr well-lgr">
+      <input
+        [disabled]="_userService.isUserLoggedIn == false"
+        type="button"
+        class="btn"
+        (click)="scan_new_folder()"
+        value="Scan files"
+      /><br /><br />
+      <div class="row">
+        <div class="col-sm-2">
+          <label class="btn" (click)="scan_music_folder()">Scan music</label>
+        </div>
+        <div class="col-sm-10">
+          <input
+            type="text"
+            id="music_folder"
+            class="form-controlg bg_lightgreen"
+          />
+        </div>
+        <br /><br />
+      </div>
+      <input
+        [disabled]="_userService.isUserLoggedIn == false"
+        type="button"
+        class="btn"
+        (click)="scan_url_folder()"
+        value="URL updates"
+      />
+    </div>
+  </div>
+</div>

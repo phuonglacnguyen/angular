@@ -1,0 +1,5 @@
+ffmpeg
+
+						$_SESSION["command"].= "\"D:\\ffmpeg\\bin\\ffmpeg.exe\" -ss ".$starttime." -i ".$dir.$old_file."  -t ".$endtime." -vcodec libx265 ".($info->frame_width > 1920 ? "-filter:v \"scale=1920:-1\" " : "")." -preset:v medium -crf 27 -async 1 ".($info->audio_codec_name != 'aac' ? "-c:a aac -b:a 128k " : "-c:a copy ")."-y {$new_file} > Z:\\websites\\heo\\public\\assets\\sys\\list_to_hvec.txt 2>&1 \r\n"; //frame%d
+
+

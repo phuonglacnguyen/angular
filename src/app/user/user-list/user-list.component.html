@@ -1,0 +1,58 @@
+<div
+  [style.display]="_userService.isUserLoggedIn == true ? '' : 'none'"
+  id="imgmenu"
+  class="imgmenu"
+>
+  <ul class="nav nav-tabs">
+    <li class="imgmenua" id="toggle_div_new_cms">
+      <a title="New User">
+        <span
+          class="icon_b icmn-file-plus cursor"
+          (click)="toggle_new_user()"
+        ></span>
+      </a>
+    </li>
+    <li class="imgmenua hidden" title="Home">
+      <a title="Home" routerLink="/cms" class="home icmn-home6"></a>
+    </li>
+  </ul>
+</div>
+
+<div id="tablemenu" class="well-lgix welli">
+  <div id="tbl">
+    <ul class="levelA table">
+      <li
+        [class.active]="_userService.userSelected._id == user._id"
+        id="row_{{ user._id }}"
+        class="table-row trow {{ a % 2 == 0 ? 'bg_grey' : '' }}"
+        title="{{ user._id }} {{ user.dateCreated }}"
+        *ngFor="let a = index; let user; of: _userService.users"
+      >
+        <div
+          class="tabrowdl"
+          *ngIf="
+            (_userService.user_current &&
+              _userService.user_current.userRole == 100) ||
+            (_userService.user_current &&
+              _userService.user_current._id === user._id)
+          "
+        >
+          <span
+            class="table-cell col-sm-1 icon icmn-lamp8 {{
+              user.active == true ? 'color_trans' : ''
+            }}"
+          ></span>
+          <span title="Add to selected list" class="hidden"
+            ><input
+              class="checkbox"
+              type="checkbox"
+              id="list_checkbox_{{ user._id }}"
+          /></span>
+          <a (click)="user_edit(user)" class="col-sm-10 table-cell cursor"
+            >{{ user.first_name }} {{ user.last_name }}</a
+          >
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

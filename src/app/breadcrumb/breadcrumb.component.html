@@ -1,0 +1,7 @@
+<div class="breadcrumb">
+  <span *ngFor="let k = index, let page of _cmsService.treelevels">
+    <span class="cursor" *ngIf="page.title != 'Root'">
+      <span class="breadcrumb_txt" routerLink="{{ _userService.user_current && _userService.user_current.userRole == 100 ? 'cms/'+page._id : '' }}">&laquo; &nbsp;</span>
+      <span class="breadcrumb_txt" title="{{ titlecheck(page.title) }}{{ page.title != 'Homepage' ? '/'+page._id : '' }}" routerLink="{{ page.title != 'Homepage' ? titlecheck(page.title)+'/'+page._id : 'homepage' }}">{{ page.title | slice:0:20 }} {{ page.title.length > 20 ? '...' : ''}}</span></span>
+  </span>
+</div>

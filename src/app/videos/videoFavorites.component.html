@@ -1,0 +1,891 @@
+<div id="PopupDiv" (click)="clearPopupDiv()"></div>
+<div id="homepage" class="row table-row">
+  <div id="index" class="{{ video ? 'cell_left' : 'field' }}">
+    <h4 *ngIf="album.title" class="title1">
+      <a id="title" routerLink="/Media/5c0d439264c6c530246b5689">{{
+        album.title
+      }}</a>
+    </h4>
+    <div
+      *ngIf="!_userService.user_current"
+      class="{{ _userService.user_current ? '' : 'welli well-lgi2' }}"
+    >
+      <h4 class="title6">Only for registered users</h4>
+    </div>
+    <div
+      class="{{
+        _userService.user_current !== undefined ? '' : 'welli well-lgi2'
+      }}"
+    >
+      <div
+        class="bg_white paddinger20b borderRadius"
+        *ngIf="video !== undefined && videoId !== undefined"
+      >
+        <div id="mobileimage"></div>
+        <table
+          style="
+            width: 100%;
+            margin: 0px 0px 10px 0px;
+            border-spacing: 0px;
+            border-collapse: separate;
+            padding: 0px;
+          "
+        >
+          <tr>
+            <td style="vertical-align: top">
+              <span
+                [style.display]="
+                  video.schemaextend[0] &&
+                  video.schemaextend[0].videowidth != ''
+                    ? 'block'
+                    : 'none'
+                "
+              >
+                <span class="label">Resolution</span
+                >{{ video.schemaextend[0].videowidth }} x
+                {{ video.schemaextend[0].videoheight }}<br />
+              </span>
+              <span
+                [style.display]="
+                  video.schemaextend[0] &&
+                  video.schemaextend[0].videocodec != ''
+                    ? 'block'
+                    : 'none'
+                "
+              >
+                <span class="label">Video codec</span
+                >{{ video.schemaextend[0].videocodec }}
+                <a
+                  target="_blank"
+                  href="https://chromium.woolyss.com/"
+                  class="txt_red {{
+                    video.schemaextend[0].videocodec == 'H265' ? '' : 'hidden'
+                  }}"
+                  ><small>You need Chromium</small></a
+                >
+              </span>
+
+              <div
+                [style.display]="
+                  video.schemaextend[0].filesiz != '' ? 'block' : 'none'
+                "
+              >
+                <span class="label">Filesize</span
+                >{{ humanfilesize(video.schemaextend[0].filesiz, "MB", 2) }}
+              </div>
+
+              <div
+                [style.display]="
+                  video.schemaextend[0].imdbrating != '' &&
+                  video.schemaextend[0].imdbrating != undefined
+                    ? 'block'
+                    : 'none'
+                "
+              >
+                <span class="label">Rating</span
+                >{{ video.schemaextend[0].imdbrating }}<br />
+              </div>
+              <div
+                [style.display]="
+                  video.schemaextend[0].length != '' &&
+                  video.schemaextend[0].length != undefined &&
+                  video.schemaextend[0].length > 0
+                    ? 'none'
+                    : 'none'
+                "
+                title="{{ video.schemaextend[0].length }}"
+              ></div>
+
+              <div
+                [style.display]="
+                  video.schemaextend[0].datepublish != '' &&
+                  video.schemaextend[0].datepublish != undefined
+                    ? 'block'
+                    : 'none'
+                "
+              >
+                <span class="label">Date publish</span
+                >{{ dateFormat(video.schemaextend[0].datepublish) }}
+              </div>
+
+              <div
+                [style.display]="
+                  video.schemaextend[0].length != '' &&
+                  video.schemaextend[0].length != undefined
+                    ? 'block'
+                    : 'none'
+                "
+              >
+                <span class="label">Length</span
+                >{{ this._cmsService.secondsToHms(video.schemaextend[0].length)
+                }}<br />
+              </div>
+
+              <div
+                *ngIf="_userService.user_current && video && userVideoTime != 0"
+              >
+                <a
+                  title="Click to reset clip time"
+                  (click)="lastTimeReset()"
+                  class="label pointer"
+                  >Last time</a
+                ><a
+                  class="pointer"
+                  (click)="setMovieTime()"
+                  title="Click to set time {{
+                    _cmsService.secondsToHms(videoPlayer.currentTime)
+                  }}"
+                  >{{ _cmsService.secondsToHms(userVideoTime) }}</a
+                >
+              </div>
+
+              <div
+                [style.display]="
+                  video.schemaextend[0].subtitles &&
+                  video.schemaextend[0].subtitles.length > 0
+                    ? 'block'
+                    : 'none'
+                "
+                style="margin: 10px 0px 10px 0px"
+              >
+                <span class="label"
+                  >Subtitle{{
+                    video.schemaextend[0].subtitles &&
+                    video.schemaextend[0].subtitles.length > 1
+                      ? "s"
+                      : ""
+                  }}</span
+                >
+                <span
+                  *ngFor="
+                    let country of video.schemaextend[0].subtitles;
+                    let e = index
+                  "
+                >
+                  <a style="margin-right: 10px"
+                    ><img
+                      (click)="setSubtitleTrack(this.video._id, country.ISO)"
+                      height="16px"
+                      title="Click to load {{ country.ISO }} subtitles"
+                      src="api/images/{{ country.ISO.toLowerCase() }}.svg"
+                  /></a>
+                </span>
+              </div>
+              <div
+                id="movieinfobutton"
+                (click)="movieinfotoggle()"
+                title="Toggle movie info"
+                class="bold pointer"
+                [style.display]="
+                  video.schemaextend[0].director != undefined &&
+                  video.schemaextend[0].director != ''
+                    ? 'block'
+                    : 'none'
+                "
+              >
+                More ...<br />
+              </div>
+            </td>
+            <td style="vertical-align: top; text-align: right">
+              <img
+                id="detailimage"
+                src="/api/assets/content/{{ videoId }}/image.jpg"
+                alt=""
+                width="100"
+                class="float_r cursor"
+                title="{{ albumId }}"
+                (click)="
+                  fullscreen('/api/assets/content/' + videoId + '/image.jpg')
+                "
+              />
+            </td>
+          </tr>
+        </table>
+        <div id="movieinfo" style="display: none">
+          <div
+            [style.display]="
+              video.schemaextend[0].imdb != '' &&
+              video.schemaextend[0].imdb != undefined
+                ? 'block'
+                : 'none'
+            "
+          >
+            <span class="label">IMDB</span
+            ><a
+              target="_blank"
+              href="http://www.imdb.com/title/{{ video.schemaextend[0].imdb }}"
+              >{{ video.schemaextend[0].imdb }}</a
+            ><br />
+          </div>
+          <div
+            [style.display]="
+              video.schemaextend[0].dateandtime != '' &&
+              video.schemaextend[0].dateandtime != undefined
+                ? 'block'
+                : 'none'
+            "
+          >
+            <span class="label">Date</span
+            >{{ video.schemaextend[0].dateandtime | date : "dd-MM-yyyy" }}<br />
+          </div>
+          <div
+            [style.display]="
+              video.schemaextend[0].director != undefined &&
+              video.schemaextend[0].director != ''
+                ? 'block'
+                : 'none'
+            "
+          >
+            <span class="label">Director</span
+            >{{ video.schemaextend[0].director }}<br /><br />
+          </div>
+          <div
+            [style.display]="
+              video.schemaextend[0].actors != undefined &&
+              video.schemaextend[0].actors != ''
+                ? 'block'
+                : 'none'
+            "
+          >
+            <span class="label">Actors</span><br />{{
+              video.schemaextend[0].actors
+            }}<br /><br />
+          </div>
+          <div
+            [style.display]="
+              video.schemaextend[0].genres != undefined &&
+              video.schemaextend[0].genres != ''
+                ? 'block'
+                : 'none'
+            "
+          >
+            <span class="label">Genres</span><br />{{
+              video.schemaextend[0].genres
+            }}<br /><br />
+          </div>
+          <div
+            [style.display]="
+              video.schemaextend[0].plot != undefined &&
+              video.schemaextend[0].plot != ''
+                ? 'block'
+                : 'none'
+            "
+          >
+            <span class="label">Description</span><br />{{
+              video.schemaextend[0].plot
+            }}<br />
+          </div>
+        </div>
+
+        <div id="indexbutton">
+          <div
+            *ngIf="allItems2 && allItems2.length > 0"
+            title="Sort title"
+            (click)="sortByTitle()"
+            class="icmn-key-A indexbutton"
+          ></div>
+          <div
+            *ngIf="allItems2 && allItems2.length > 0"
+            title="Shuffle"
+            (click)="shuffle2()"
+            class="icmn-insert-template indexbutton"
+          ></div>
+          <div
+            *ngIf="allItems2 && allItems2.length > 0"
+            title="Reverse"
+            (click)="sortBy()"
+            class="icmn-key-down indexbutton"
+          ></div>
+          <div
+            title="Toggle Playlist"
+            (click)="togglePlaylist()"
+            class="icmn-file-text indexbutton"
+          ></div>
+          <div
+            class="icmn-file-picture indexbutton float_r"
+            *ngIf="
+              _userService.user_current &&
+              _userService.user_current.userRole == 100 &&
+              albumId &&
+              album.title != 'Movies'
+            "
+            routerLink="/cms/{{ albumId }}/true"
+            title="Admin Album"
+          ></div>
+          <div
+            class="icmn-file-video indexbutton float_r"
+            style="margin: 0px 8px 0px 0px"
+            *ngIf="
+              _userService.user_current &&
+              _userService.user_current.userRole == 100
+            "
+            routerLink="/cms/{{ video._id }}/true"
+            title="Admin video"
+          ></div>
+        </div>
+        <div id="allitems">
+          <h4 *ngIf="allItems2 && allItems2.length > 1" class="subtitle">
+            Playlist<span *ngIf="allItems2.length > 1" class="float_r"
+              >{{ playListIndex3 + 1 }} / {{ allItems2.length }}</span
+            >
+          </h4>
+          <div
+            *ngIf="allItems2 && allItems2.length > 1"
+            class="playlistlarge scroller"
+          >
+            <div *ngFor="let page of allItems2; let b = index">
+              <div
+                class="indexlinks {{ b % 2 == 0 ? 'bg_white' : 'bg_grey' }} {{
+                  videoId == page._id ? 'current' : ''
+                }}"
+                id="pagez{{ b }}"
+                title="{{ page.title }}"
+                (click)="setVideoLink2(b, page, true)"
+              >
+                <span
+                  *ngIf="
+                    _userService.user_current != undefined &&
+                    _userService.user_current.userRole == 100
+                  "
+                >
+                </span>
+                <div class="elipses">
+                  <span routerLink="/cms/{{ page._id }}/true"> A - </span>
+
+                  {{ page.title
+                  }}<span class="hidden" title="Number of hits">{{
+                    page.hits > 0 ? page.hits : ""
+                  }}</span>
+                </div>
+              </div>
+              <!-- einde indexlinks-->
+            </div>
+            <!-- einde ngFor-->
+          </div>
+          <!-- einde scroller-->
+        </div>
+        <!-- einde allItems-->
+      </div>
+      <!-- einde welli well-lgi2-->
+    </div>
+    <!-- einde welli index -->
+  </div>
+  <div class="{{ !videoId ? 'field' : 'cell_right' }}">
+    <div class="{{ !videoId ? 'hidden' : '' }}">
+      <div
+        [style.display]="_userService.isUserLoggedIn == true ? 'block' : 'none'"
+        class="videowrapper"
+        [style.margin]="
+          _userService.isUserLoggedIn == true
+            ? '0px 0px 0px 0px'
+            : '0px 0px 0px 0px'
+        "
+      >
+        <h4
+          [style.display]="
+            _userService.isUserLoggedIn == true && video ? 'block' : 'none'
+          "
+          name="player_status"
+          class="{{ videoId ? 'title3' : 'title3' }} player_status"
+        >
+          <span id="player_status">Player ready</span>
+          <span class="float_r" id="player_time">00:00:00</span>
+        </h4>
+
+        <video
+          #videoPlayer
+          preload="auto"
+          autoplay
+          id="player"
+          controls
+          [style.display]="
+            _userService.isUserLoggedIn == true && video ? 'block' : 'none'
+          "
+        >
+          <source #videoSource id="playersource" src="" type="video/mp4" />
+          <track
+            id="enTrack"
+            src=""
+            label="English"
+            kind="subtitles"
+            srclang="en"
+            default
+          />
+          <track
+            id="nlTrack"
+            src=""
+            label="Dutch"
+            kind="subtitles"
+            srclang="nl"
+          />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      <div
+        class="video_buttons"
+        [style.display]="
+          _userService.isUserLoggedIn == true && video ? 'flex' : 'none'
+        "
+        style="border-radius: 0px 0px 6px 6px"
+      >
+        <span
+          id="player_favorite"
+          style="{{
+            _userService.user_current != undefined &&
+            getFavByFind(videoId) === true
+              ? 'color:#dc3545;'
+              : ''
+          }}"
+          *ngIf="_userService.user_current"
+          class="{{
+            _userService.user_current != undefined &&
+            getFavByFind(videoId) === true
+              ? 'icmn-heart7'
+              : 'icmn-heart7'
+          }}"
+          (click)="toggleFavorite2(video._id, video.title)"
+        ></span>
+        <span
+          id="player_shufflebutton"
+          (click)="shuffle()"
+          class="icmn-shuffle"
+          title="shuffle movies"
+        ></span>
+        <span
+          id="player_skipbackwardbutton"
+          (click)="player_backward()"
+          class="icmn-first"
+        ></span>
+        <span
+          id="player_backwardbutton"
+          (click)="player_skipbackward()"
+          class="icmn-backward2"
+        ></span>
+        <span
+          id="player_startbutton"
+          (click)="player_play()"
+          class="icmn-play4"
+        ></span>
+        <span
+          id="player_pausebutton"
+          (click)="player_pause()"
+          class="icmn-pause2 hidden"
+        ></span>
+        <span
+          id="player_skipbutton"
+          (click)="player_skip()"
+          class="icmn-forward3"
+        ></span>
+        <span
+          id="player_forwardbutton"
+          (click)="player_forward()"
+          class="icmn-last"
+        ></span>
+        <span
+          id="player_lastplay"
+          (click)="player_lastplay()"
+          class="icmn-movie"
+          title="Replay at last point"
+        ></span>
+        <span
+          id="player_volumedecrease"
+          (click)="player_volume_decrease()"
+          class="icmn-volume-decrease"
+        ></span>
+        <span
+          id="player_volumeincrease"
+          (click)="player_volume_increase()"
+          class="icmn-volume-increase"
+        ></span>
+        <span
+          id="player_muteoffbutton"
+          (click)="player_mute()"
+          class="hidden icmn-volume-mute4"
+          title="volume off"
+        ></span>
+        <span
+          id="player_muteonbutton"
+          (click)="player_mute()"
+          class="icmn-volume-medium"
+          title="volume on"
+        ></span>
+      </div>
+    </div>
+    <h4
+      *ngIf="_userService.user_current && this._cmsService.allItems2"
+      class="{{ videoId ? 'title2' : 'title1' }}"
+    >
+      <a routerLink="/Media/5c0d439264c6c530246b5689">Favorite movies</a
+      ><span
+        style="
+          border-left: 1px solid #ffffff;
+          margin: 0px 0px 0px 10px;
+          padding: 0px 0px 0px 10px;
+        "
+        class="absolute_right no_mobile"
+        >{{ playListIndex }} / {{ _cmsService.allItems2.length + 1 }}</span
+      ><span
+        *ngIf="_cmsService.pager2"
+        style="float: right"
+        class="hidden"
+        title="Found {{ this._cmsService.allItems2.length + 1 }} movies"
+        id="allItemsCount"
+        >Page {{ _cmsService.pager2.currentPage }} /
+        {{ _cmsService.pager2.pages.length }}</span
+      ><span
+        class="float_r underline"
+        title="Click to shuffle"
+        (click)="shuffle()"
+        >{{ _cmsService.allItems2.length + 1 }} results</span
+      >
+    </h4>
+
+    <div id="ngpipes" class="hidden">
+      <input
+        type="text"
+        name="filterText"
+        placeholder="Keyword"
+        (change)="filterKeyword($event)"
+        class="inputXSmall"
+        (ngModel)="(filterText)"
+        id="filterText"
+        value=""
+      />
+      <select
+        class="selectXSmall"
+        (change)="filterSelectFirstletter($event)"
+        id="filterFirstletter"
+        title="Filter on 1st letter"
+      >
+        <option selected value="">1st letter</option>
+        <option
+          *ngFor="let letter of _filterService.letters"
+          value="{{ letter }}"
+        >
+          {{ letter }}
+        </option>
+      </select>
+      <select
+        class="selectXSmall"
+        (change)="filterSelectGenre($event)"
+        id="filterMovieGenre"
+        title="Filter on genre"
+      >
+        <option value="" selected="selected">Genre</option>
+        <option
+          *ngFor="let genre of _cmsService.movieGenres"
+          value="{{ genre.title }}"
+        >
+          {{ genre.title }}
+        </option>
+      </select>
+      <select
+        class="selectXSmall"
+        (change)="filterSelectRating($event)"
+        id="filterRating"
+        title="Filter on rating"
+      >
+        <option value="" selected="selected">Rating</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+      </select>
+      <div class="extraFilters">
+        <span
+          class="icmn-key-down icon"
+          title="Reverse order"
+          (click)="sortByAlbums()"
+        ></span>
+        <span
+          class="icmn-insert-template icon"
+          title="Shuffle"
+          (click)="shuffleAlbum()"
+        ></span>
+        <span
+          class="icmn-key-A icon"
+          title="Sort by title"
+          (click)="sortByAlbum()"
+        ></span>
+      </div>
+    </div>
+    <div class="flex-container">
+      <div
+        *ngFor="
+          let page of _cmsService.pagedItems2
+            | filter : _filterService.filterText
+            | firstletter : _filterService.filterFirstletter
+            | movieGenre : _filterService.filterGenre
+            | movieRating : _filterService.filterRatings;
+          let b = index
+        "
+        [style.display]="page.visible == true ? 'inline-block' : 'none'"
+        class="blok_movie {{
+          videoId == page._id || albumId == page._id ? 'current' : ''
+        }}"
+      >
+        <div class="movieimage">
+          <div class="blok_movie_bottom">
+            <span
+              *ngIf="page.schemaextend[0].videocodec"
+              class="codec {{
+                page.schemaextend[0].videocodec
+                  ? page.schemaextend[0].videocodec
+                  : ''
+              }}"
+              >{{
+                page.schemaextend[0].videocodec
+                  ? page.schemaextend[0].videocodec
+                  : ""
+              }}</span
+            >
+            <span *ngIf="seen(page)" class="seen icmn-eye-plus"></span>
+          </div>
+          <div class="subtitles">
+            <a
+              *ngFor="
+                let country of page.schemaextend[0].subtitles;
+                let e = index
+              "
+            >
+              <span style="margin-left: 0px"
+                ><img
+                  height="16px"
+                  src="api/images/{{ country.ISO.toLowerCase() }}.svg"
+                />
+              </span>
+            </a>
+          </div>
+          <img
+            (click)="setVideoLink(b, page, true)"
+            class="{{
+              this.albumId == '5c0d45ea64c6c530246b568f'
+                ? 'blokmedia'
+                : 'blokmovie'
+            }} "
+            src="/api/assets/content/{{ page._id }}/thumb.jpg"
+            alt="{{ page.title }}"
+          />
+        </div>
+        <div class="info">
+          <span
+            *ngIf="_userService.user_current"
+            id="fav{{ page._id }}"
+            class="favorites {{
+              _userService.user_current != undefined &&
+              getFavByFind(page._id) === true
+                ? 'icmn-heart7'
+                : 'icmn-heart8'
+            }}"
+            (click)="toggleFavorite(page, page.title)"
+          ></span>
+          <div (click)="setVideoLink(b, page, true)" fragment="player_status">
+            <h4
+              title="1 {{ page._id }}"
+              [style.display]="videoId == undefined ? 'block' : 'none'"
+            >
+              {{ page.title }}
+            </h4>
+            <h4
+              title="2 {{ page.title }}"
+              class="{{ page._id == videoId ? 'active' : '' }}"
+              [style.display]="videoId == undefined ? 'none' : 'block'"
+            >
+              {{ page.title }}
+            </h4>
+            <table
+              class="table"
+              cellpadding="0"
+              cellspacing="0"
+              style="line-height: 130%; font-size: 14px"
+            >
+              <tbody>
+                <tr [style.display]="page.kids == 0 ? 'none' : 'inline-block'">
+                  <td width="100">Episodes :</td>
+                  <td>{{ page.kids }}</td>
+                </tr>
+                <tr
+                  [style.display]="
+                    page.schemaextend[0].length != undefined &&
+                    page.schemaextend[0].length != ''
+                      ? 'block'
+                      : 'none'
+                  "
+                >
+                  <td width="100">Length</td>
+                  <td>
+                    {{
+                      _cmsService.toHoursAndMinutes(page.schemaextend[0].length)
+                    }}
+                  </td>
+                </tr>
+                <tr
+                  [style.display]="
+                    page.schemaextend[0].imdbrating != undefined &&
+                    page.schemaextend[0].imdbrating != ''
+                      ? 'block'
+                      : 'none'
+                  "
+                >
+                  <td width="100">Rating</td>
+                  <td>{{ page.schemaextend[0].imdbrating }}</td>
+                </tr>
+                <tr
+                  [style.display]="
+                    page.schemaextend[0].subtitles != undefined &&
+                    page.schemaextend[0].subtitles.length > 0
+                      ? 'none'
+                      : 'none'
+                  "
+                >
+                  <td width="100">Subtitles</td>
+                  <td>
+                    <span
+                      *ngFor="
+                        let country of page.schemaextend[0].subtitles;
+                        let e = index
+                      "
+                    >
+                      {{ country.ISO
+                      }}{{
+                        e < page.schemaextend[0].subtitles.length - 1
+                          ? ", "
+                          : ""
+                      }}
+                    </span>
+                  </td>
+                </tr>
+                <tr
+                  [style.display]="
+                    page.schemaextend[0].filesiz != undefined &&
+                    page.schemaextend[0].filesiz != ''
+                      ? 'block'
+                      : 'none'
+                  "
+                >
+                  <td width="100">Filesize</td>
+                  <td>
+                    {{ humanfilesize(page.schemaextend[0].filesiz, "MB", 2) }}
+                  </td>
+                </tr>
+                <tr
+                  [style.display]="
+                    page.schemaextend[0].videowidth != undefined &&
+                    page.schemaextend[0].videowidth != ''
+                      ? 'block'
+                      : 'none'
+                  "
+                >
+                  <td width="100">Resolution</td>
+                  <td>
+                    {{ page.schemaextend[0].videowidth }} X
+                    {{ page.schemaextend[0].videoheight }}
+                  </td>
+                </tr>
+                <tr [style.display]="page.hits != undefined ? 'block' : 'none'">
+                  <td width="100">Hits :</td>
+                  <td>
+                    {{ page.hits }}
+                  </td>
+                </tr>
+                <tr
+                  [style.display]="
+                    page.schemaextend[0].genres != undefined &&
+                    page.schemaextend[0].genres != ''
+                      ? 'none'
+                      : 'none'
+                  "
+                >
+                  <td width="60">Genre</td>
+                  <td>{{ page.schemaextend[0].genres }}</td>
+                </tr>
+
+                <tr
+                  [style.display]="
+                    page.schemaextend[0].videocodec != undefined &&
+                    page.schemaextend[0].videocodec != '' &&
+                    page.schemaextend[0].videocodec != 'none'
+                      ? 'none'
+                      : 'none'
+                  "
+                >
+                  <td width="100">Codec</td>
+                  <td>
+                    {{ page.schemaextend[0].videocodec }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <!--einde set setVideoLink -->
+        </div>
+        <!--einde info -->
+      </div>
+      <!--einde ngFor page -->
+    </div>
+    <!-- einde flex container -->
+
+    <div>
+      <ul
+        *ngIf="
+          _cmsService.pager2 &&
+          _cmsService.pager2.pages.length &&
+          _cmsService.pager2.pages.length > 1
+        "
+        class="pagination2"
+        id="pagination"
+      >
+        <li [ngClass]="{ disabled: _cmsService.pager2.currentPage === 1 }">
+          <a (click)="setPage(1)">{{ videoId == undefined ? "<<" : "<<" }}</a>
+        </li>
+        <li [ngClass]="{ disabled: _cmsService.pager2.currentPage === 1 }">
+          <a (click)="setPage(_cmsService.pager2.currentPage - 1)">{{
+            videoId == undefined ? "<" : "<"
+          }}</a>
+        </li>
+        <li
+          *ngFor="let page of _cmsService.pager2.pages"
+          [ngClass]="{ active: _cmsService.pager2.currentPage === page }"
+        >
+          <a (click)="setPage(page)">{{ page }}</a>
+        </li>
+        <li
+          [ngClass]="{
+            disabled:
+              _cmsService.pager2.currentPage === _cmsService.pager2.totalPages
+          }"
+        >
+          <a (click)="setPage(_cmsService.pager2.currentPage + 1)">{{
+            videoId == undefined ? ">" : ">"
+          }}</a>
+        </li>
+        <li
+          [ngClass]="{
+            disabled:
+              _cmsService.pager2.currentPage === _cmsService.pager2.totalPages
+          }"
+        >
+          <a (click)="setPage(_cmsService.pager2.totalPages)">{{
+            videoId == undefined ? ">>" : ">>"
+          }}</a>
+        </li>
+      </ul>
+      <h4 class="title_footer" *ngIf="_cmsService.pagedItems2.length > 0">
+        <a routerLink="Media/5c0d439264c6c530246b5689">Videos&nbsp;</a
+        ><a
+          class="float_r icmn-circle-up2 icon"
+          id="scrollToTop"
+          (click)="scrollToTop()"
+        ></a>
+      </h4>
+    </div>
+  </div>
+  <!-- einde field -->
+  <br style="clear: both" />
+</div>
+<div id="bottomfield" name="bottomfield"></div>

@@ -1,0 +1,34 @@
+﻿<div class="border border-light rounded">
+  <div class="hidden messages" id="messagesAlert">
+    <h4>System report:</h4>
+    <div *ngFor="let message of _messageService.messages">
+      <div class="row">
+        <div
+          (click)="_messageService.closeMessageAlert()"
+          class="close float_r"
+          title="Close Alert"
+        >
+          <span class="icomoon icmn-cancel-square"></span>
+        </div>
+        <div class="alert" role="alert">{{ message }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div id="tabs" class="tabs">
+      <div class="show" id="tab_1">
+        <app-medialib-list
+          [images]="images"
+          [MediaSelected]="MediaSelected"
+          (getMediaList)="getImageDData()"
+          (getMediaSelected)="gMediaSelected($event)"
+        >
+        </app-medialib-list>
+      </div>
+
+      <div class="hidden" id="tab_2">
+        <app-medialib-playlist [images]="images"></app-medialib-playlist>
+      </div>
+    </div>
+  </div>
+</div>

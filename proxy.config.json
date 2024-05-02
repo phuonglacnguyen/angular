@@ -1,0 +1,11 @@
+﻿{
+  "/api/*": {
+    "target": "http://10.0.0.128:3001",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api": "http://10.0.0.128:3001/api"
+    }
+  }
+}

@@ -1,0 +1,725 @@
+<div id="PopupDiv" (click)="clearPopupDiv()"></div>
+<div id="homepage" class="row table-row">
+  <div
+    id="index"
+    class="table-cell {{
+      videoId == undefined || album == undefined ? 'field' : 'cell_left'
+    }}"
+    style="{{ album == undefined ? 'display:none;' : '' }}"
+  >
+    <h4 class="title1">
+      <span
+        class="float_r icmn-circle-down2 icontitle"
+        (click)="scrollToBottom()"
+        title="Go to bottom"
+      ></span
+      ><a id="title1" routerLink="/Media/5bd13b5af01e2a3d7c47dc42"></a>
+    </h4>
+    <div class="{{ videoId !== undefined ? '' : 'welli well-lgi2' }}">
+      <!---->
+
+      <div>
+        <div class="bg_white paddinger20b borderRadius">
+          <table
+            id="songspec"
+            style="
+              font-size: 14px;
+              border-spacing: 0px;
+              border-collapse: separate;
+              border: 0px;
+              width: 100%;
+              margin: 0px 0px 10px 0px;
+              padding: 0px;
+            "
+            class="hidden"
+          >
+            <tr>
+              <td
+                id="label_title"
+                style="width: 80px; vertical-align: top"
+              ></td>
+              <td colspan="2" style="font-weight: bold" id="clip_title"></td>
+            </tr>
+            <tr>
+              <td id="label_artist" style="width: 80px"></td>
+              <td id="clip_artist"></td>
+              <td rowspan="5">
+                <img
+                  *ngIf="albumId != '5c352687ecfbd41448ff71ae'"
+                  id="detailimage"
+                  src=""
+                  alt=""
+                  width="80"
+                  class="float_r cursor"
+                  (click)="fullscreen()"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td id="label_filesiz" style="width: 80px"></td>
+              <td id="clip_filesiz"></td>
+            </tr>
+            <tr>
+              <td id="label_musicgenre" style="width: 80px"></td>
+              <td style="width: 160px" id="clip_musicgenre"></td>
+            </tr>
+            <tr>
+              <td id="label_length" style="width: 80px"></td>
+              <td id="clip_length"></td>
+            </tr>
+            <tr id="label_bitrate_tr">
+              <td id="label_bitrate" style="width: 80px"></td>
+              <td id="clip_bitrate"></td>
+            </tr>
+          </table>
+          <div></div>
+          <div id="indexbutton">
+            <div
+              *ngIf="_userService.user_current"
+              title="Go to favorites"
+              class="icmn-enlarge5 indexbutton"
+              routerLink="/Music/6553fed32704c658555d3324"
+            ></div>
+            <div
+              title="Sort title"
+              (click)="sortByTitle()"
+              class="icmn-key-A indexbutton"
+            ></div>
+            <div
+              title="Sort track"
+              (click)="sortByTrack()"
+              class="icmn-key-right indexbutton"
+            ></div>
+            <div
+              title="Shuffle"
+              (click)="shuffle()"
+              class="icmn-insert-template indexbutton"
+            ></div>
+            <div
+              title="Reverse"
+              (click)="sortBy()"
+              class="icmn-key-down indexbutton"
+            ></div>
+            <div
+              class="icmn-file-picture indexbutton float_r"
+              style="margin: 5px 0px 0px 0px"
+              *ngIf="
+                _userService.user_current &&
+                _userService.user_current.userRole == 100
+              "
+              routerLink="/cms/{{ videoId }}/true"
+              title="Admin Album"
+            ></div>
+            <div
+              class="icmn-file-video indexbutton float_r"
+              style="margin: 5px 8px 0px 0px"
+              *ngIf="
+                _userService.user_current &&
+                _userService.user_current.userRole == 100 &&
+                videoId &&
+                album &&
+                album[playListIndex]
+              "
+              routerLink="/cms/{{ album[playListIndex]._id }}/true"
+              title="Admin song {{ album[playListIndex].title }}"
+            ></div>
+          </div>
+          <div id="scroller" class="scroller">
+            <div
+              style="font-size: 16px; height: 18px"
+              *ngFor="let pagez of album; let c = index"
+              class="songblock icon indexlinks {{
+                c % 2 == 0 ? 'bg_white' : 'bg_grey'
+              }} {{ playListIndex == c ? 'current' : '' }} {{
+                _userService.user_current && getFavByFind(pagez._id) === true
+                  ? 'bg_lightblue'
+                  : ''
+              }} {{
+                _userService.user_current != undefined &&
+                getFavByTitle(pagez.title) === true
+                  ? 'bg_lightgreen'
+                  : ''
+              }}"
+              title="{{
+                _userService.user_current != undefined &&
+                getFavByFind(pagez._id) === true
+                  ? 'remove ' + pagez.title + ' from favorites'
+                  : 'add ' + pagez.title + ' to favorites'
+              }}"
+            >
+              <span
+                *ngIf="_userService.user_current"
+                id="fav{{ pagez._id }}"
+                class="favorites_songs {{
+                  _userService.user_current != undefined &&
+                  getFavByFind(pagez._id) === true
+                    ? 'icmn-minus-circle'
+                    : 'icmn-plus-circle'
+                }}"
+                (click)="toggleFavorite2(pagez)"
+              ></span>
+              <span
+                *ngIf="
+                  _userService.user_current != undefined &&
+                  _userService.user_current.userRole == 100
+                "
+              >
+                <span routerLink="/cms/{{ pagez._id }}/true">
+                  {{ c + 1 }} -
+                </span>
+              </span>
+              <span
+                *ngIf="albumId === '5c378f5b2b23de317cace407'"
+                id="{{ pagez.title }}"
+                name="Collections"
+                id="pagez{{ c }}"
+                (click)="
+                  playTracks(
+                    c,
+                    'api/assets/music/Albums/' +
+                      pagez.schemaextend[0].url
+                        .replace('Ballads/', '')
+                        .replace('POP/', '')
+                        .replace('Pop/', '')
+                        .replace('Dance/', '')
+                        .replace('Other/', '')
+                        .replace('Albums/', ''),
+                    pagez
+                  )
+                "
+                >{{ pagez.title | slice : 0 : 34 }}
+                {{ pagez.title.length > 34 ? "..." : ""
+                }}<span class="float_r">{{ pagez.hits }}</span
+                ><span class="float_r border_r">{{
+                  _cmsService.humanfilesize(
+                    pagez.schemaextend[0].filesiz,
+                    "MB",
+                    1
+                  )
+                }}</span></span
+              >
+              <span
+                *ngIf="albumId === '5c35264fecfbd41448ff71ad'"
+                id="{{ pagez.title }}"
+                name="M albums"
+                id="pagez{{ c }}"
+                (click)="
+                  playTracks(
+                    c,
+                    'api/assets/music/Albums/' +
+                      pagez.schemaextend[0].url
+                        .replace('Hip-Hop/', '')
+                        .replace('Rock/', '')
+                        .replace('Reggea/', '')
+                        .replace('Rap/', '')
+                        .replace('Classics/', '')
+                        .replace('POP/', ''),
+                    pagez
+                  )
+                "
+                >{{ pagez.title | slice : 0 : 34 }}
+                {{ pagez.title.length > 34 ? "..." : ""
+                }}<span class="float_r">{{ pagez.hits }}</span
+                ><span class="float_r border_r">{{
+                  _cmsService.humanfilesize(
+                    pagez.schemaextend[0].filesiz,
+                    "MB",
+                    1
+                  )
+                }}</span></span
+              >
+              <span
+                *ngIf="albumId === '5c352840ecfbd41448ff71b1'"
+                id="{{ pagez.title }}"
+                name="Soundtracks"
+                id="pagez{{ c }}"
+                (click)="
+                  playTracks(
+                    c,
+                    'api/assets/music/' + pagez.schemaextend[0].url,
+                    pagez
+                  )
+                "
+                >{{ pagez.title | slice : 0 : 34 }}
+                {{ pagez.title.length > 34 ? "..." : ""
+                }}<span class="float_r">{{ pagez.hits }}</span
+                ><span class="float_r border_r">{{
+                  _cmsService.humanfilesize(
+                    pagez.schemaextend[0].filesiz,
+                    "MB",
+                    1
+                  )
+                }}</span></span
+              >
+              <span
+                *ngIf="albumId === '5c352687ecfbd41448ff71ae'"
+                id="{{ pagez.title }}"
+                name="Singles"
+                id="pagez{{ c }}"
+                (click)="
+                  playTracks(
+                    c,
+                    'api/assets/music/Albums/' + pagez.schemaextend[0].url,
+                    pagez
+                  )
+                "
+                >{{ pagez.title | slice : 0 : 34 }}
+                {{ pagez.title.length > 34 ? "..." : ""
+                }}<span class="float_r">{{ pagez.hits }}</span
+                ><span class="float_r border_r">{{
+                  _cmsService.humanfilesize(
+                    pagez.schemaextend[0].filesiz,
+                    "MB",
+                    1
+                  )
+                }}</span></span
+              >
+              <span
+                *ngIf="albumId === '5c352818ecfbd41448ff71af'"
+                id="{{ pagez.title }}"
+                name="Albums"
+                id="pagez{{ c }}"
+                (click)="
+                  playTracks(
+                    c,
+                    'api/assets/music/Albums/' +
+                      pagez.schemaextend[0].url
+                        .replace('Hip-Hop/', '')
+                        .replace('Rock/', '')
+                        .replace('Reggea/', '')
+                        .replace('Rap/', '')
+                        .replace('Classics/', '')
+                        .replace('POP/', '')
+                        .replace('Pop/', '')
+                        .replace('Albums/', '')
+                        .replace('Ballads/', ''),
+                    pagez
+                  )
+                "
+                >{{ pagez.title | slice : 0 : 34 }}
+                {{ pagez.title.length > 34 ? "..." : ""
+                }}<span class="float_r">{{ pagez.hits }}</span
+                ><span class="float_r border_r">{{
+                  _cmsService.humanfilesize(
+                    pagez.schemaextend[0].filesiz,
+                    "MB",
+                    1
+                  )
+                }}</span></span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="{{
+      videoId == undefined || album == undefined ? 'field' : 'cell_right'
+    }}"
+  >
+    <div
+      style="width: 100%; padding: 0px;border-spacing: 0px;{{
+        album == undefined ? 'display:none;' : ''
+      }}"
+    >
+      <h4 class="title3">
+        <span id="player_status">Media player</span
+        ><span *ngIf="this.album" style="float: right">{{
+          this.playListIndex + 1 + " / " + this.album.length
+        }}</span>
+      </h4>
+      <div class="wellr well-lgi2" *ngIf="videoId != undefined">
+        <div id="player_time"></div>
+        <audio
+          #videoPlayer
+          id="player"
+          style="
+            background-color: #f1f3f4;
+            width: 100%;
+            margin: 0px 0px 0px 0px;
+          "
+          preload="auto"
+          controls
+        >
+          <source #videoSource id="playersource" src="" type="audio/mpeg" />
+          Your browser does not support the audio tag.
+        </audio>
+      </div>
+
+      <div
+        id="video_buttons"
+        style="
+          border-radius: 0px 0px 6px 6px;
+          margin: -6px 0px 10px 0px;
+          background-color: #f1f3f4;
+        "
+        class="bg_white"
+      >
+        <div class="video_buttons" *ngIf="_userService.isUserLoggedIn == true">
+          <span
+            *ngIf="_userService.user_current && album && album[playListIndex]"
+            style="{{
+              getFavByFind(album[playListIndex]._id) === true
+                ? 'color:#dc3545;'
+                : ''
+            }}"
+            id="player_favbutton"
+            (click)="player_fav()"
+            class="{{
+              album[playListIndex] &&
+              _userService.user_current != undefined &&
+              getFavByFind(album[playListIndex]._id) === true
+                ? 'icmn-heart7'
+                : 'icmn-heart7'
+            }}"
+            title="Add to favortes"
+          ></span>
+          <span
+            id="player_hideshowbutton"
+            (click)="player_hideshow()"
+            class="icmn-box-remove"
+            title="Show/Hide player"
+          ></span>
+          <span
+            id="player_skipbackwardbutton"
+            (click)="player_skipbackward()"
+            class="icmn-first"
+            title="previous song"
+          ></span>
+          <span
+            id="player_backwardbutton"
+            (click)="player_backward()"
+            class="icmn-backward2"
+            title="backup song"
+          ></span>
+          <span
+            id="player_startbutton"
+            (click)="player_play()"
+            class="icmn-play4"
+            title="play song"
+          ></span>
+          <span
+            id="player_pausebutton"
+            (click)="player_pause()"
+            class="icmn-pause2 hidden"
+            title="pause song"
+          ></span>
+          <span
+            id="player_skipbutton"
+            (click)="player_skip()"
+            class="icmn-forward3"
+            title="forward songs"
+          ></span>
+          <span
+            id="player_forwardbutton"
+            (click)="player_forward()"
+            class="icmn-last"
+            title="next songs"
+          ></span>
+          <span
+            id="player_shufflebutton"
+            (click)="shuffle()"
+            class="icmn-shuffle"
+            title="shuffle songs"
+          ></span>
+          <span
+            id="player_volumedecrease"
+            (click)="player_volumedown()"
+            class="icmn-volume-decrease"
+            title="volume down"
+          ></span>
+          <span
+            id="player_volumeincrease"
+            (click)="player_volumeup()"
+            class="icmn-volume-increase"
+            title="volume up"
+          ></span>
+          <span
+            id="player_muteoffbutton"
+            (click)="player_mute()"
+            class="hidden icmn-volume-mute4"
+            title="volume off"
+          ></span>
+          <span
+            id="player_muteonbutton"
+            (click)="player_mute()"
+            class="icmn-volume-medium"
+            title="volume on"
+          ></span>
+        </div>
+      </div>
+    </div>
+
+    <div
+      style="{{
+        albumId ? 'margin: 0px 0px 0px 0px;' : 'margin: 0px 0px 10px 0px;'
+      }}"
+      *ngIf="albumId == '5c35264fecfbd41448ff71ad'"
+      class="videowrapper"
+    >
+      <div [style.display]="videoId !== undefined ? 'block' : 'none'">
+        <h4 id="player_artist" class="title2">
+          {{ artistalbum ? artistalbum.title : "Albums"
+          }}<span class="float_r">{{ albums.length }} albums</span>
+        </h4>
+        <div *ngIf="albumId == '5c35264fecfbd41448ff71ad'" class="albumfield">
+          <div
+            *ngFor="let pagez of albums; let c = index"
+            class="blok_music {{
+              currentAlbum && pagez._id == currentAlbum._id ? 'current' : ''
+            }}"
+          >
+            <div class=" {{ currentAlbum._id == pagez._id ? '' : '' }}">
+              <span
+                style="color: #dc3545; z-index: 9999; position: absolute"
+                *ngIf="_userService.user_current"
+                id="fav{{ pagez._id }}"
+                class="favorites {{
+                  _userService.user_current != undefined &&
+                  getFavByFind2(pagez._id) === true
+                    ? 'icmn-heart7'
+                    : 'icmn-heart8'
+                }}"
+                (click)="toggleFavorite(pagez)"
+              ></span>
+              <span
+                (click)="linkClicked(pagez, c)"
+                class="cursor"
+                title="{{ pagez.title }}"
+              >
+                <span class="albuminfo">Hits: {{ pagez.hits }}</span>
+                <img
+                  id="pic_{{ pagez._id }}"
+                  src="{{
+                    albumCover(video.title.replace('_Rock', ''), pagez.title)
+                  }}"
+                  alt=""
+                /><br />
+                {{ pagez.title }}</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h4 class="{{ videoId ? 'title2' : 'title6' }}">
+        <span routerLink="/Media/5bd13b5af01e2a3d7c47dc42"
+          ><span id="musiccat">{{
+            albumId == "5c35264fecfbd41448ff71ad" ? "Artists" : "Albums"
+          }}</span></span
+        ><span
+          class="float_r pointer"
+          (click)="shuffleAlbums()"
+          title="Click to Shuffle"
+          id="allItemsCount"
+          >{{ allItems ? allItems.length : "" }} results</span
+        >
+      </h4>
+
+      <div id="ngpipes" class="hidden">
+        <input
+          type="text"
+          name="filterText"
+          placeholder="Keyword"
+          (change)="filterKeyword($event)"
+          class="inputXSmall"
+          [(ngModel)]="filterText"
+          id="filterText"
+          value=""
+        />
+        <select
+          class="selectXSmall"
+          [(ngModel)]="filterFirstletter"
+          (change)="filterSelectFirstletter($event)"
+          id="filterFirstletter"
+        >
+          <option value="" selected="selected">Letter</option>
+          <option *ngFor="let letter of items" value="{{ letter }}">
+            {{ letter }}
+          </option>
+        </select>
+        <select
+          class="selectXSmall"
+          (change)="filterSelectGenre($event)"
+          [(ngModel)]="filtermusicGenre"
+          id="filterMusicGenre"
+          title="Filter on genre"
+        >
+          <option value="" selected="selected">Genre</option>
+          <option
+            *ngFor="let pagez of _cmsService.musicGenres; let c = index"
+            value="{{ pagez.title }}"
+          >
+            {{ pagez.title }}
+          </option>
+        </select>
+        <select class="selectXSmall" (change)="filterSort($event)">
+          <option value="">Sort on</option>
+          <option value="_id">ID</option>
+          <option value="title">Title</option>
+          <option value="date">Date</option>
+        </select>
+        <span
+          class="icmn-key-down icon"
+          title="Reverse order"
+          (click)="sortByAlbums()"
+        ></span>
+        <span
+          class="icmn-insert-template icon"
+          title="Shuffle"
+          (click)="shuffleAlbum()"
+        ></span>
+        <span
+          class="icmn-key-A icon"
+          title="Sort by title"
+          (click)="sortByAlbum()"
+        ></span>
+      </div>
+
+      <div class="flex-container">
+        <div
+          *ngFor="
+            let page of pagedItems
+              | filter : _filterService.filterText
+              | firstletter : _filterService.filterFirstletter
+              | musicGenre : _filterService.musicGenre;
+            let b = index
+          "
+          [style.display]="
+            page.visible == true && pagedItems.indexOf(page) != -1
+              ? 'inline-block'
+              : 'none'
+          "
+          class="{{
+            this.albumId == '5c0d45ea64c6c530246b568f'
+              ? 'blok_media'
+              : 'blok_kid'
+          }} {{
+            albumId == page._id ||
+            videoId == page._id ||
+            (this.artistalbum && this.artistalbum._id) == page._id
+              ? 'current'
+              : ''
+          }}"
+        >
+          <span
+            style="margin: 10px 10px 0px 6px; z-index: 9999; float: right"
+            *ngIf="
+              _userService.user_current && albumId != '5c35264fecfbd41448ff71ad'
+            "
+            id="fav{{ page._id }}"
+            class="favorites {{
+              _userService.user_current != undefined &&
+              getFavByFind2(page._id) === true
+                ? 'icmn-heart7'
+                : 'icmn-heart8'
+            }}"
+            (click)="toggleFavorite(page)"
+          ></span>
+          <div
+            (click)="setVideoLink(b, page)"
+            class="image"
+            *ngIf="
+              albumId != '5c35264fecfbd41448ff71ad' &&
+              albumId != '5c352687ecfbd41448ff71ae'
+            "
+          >
+            <img
+              *ngIf="albumId != '5c352818ecfbd41448ff71af'"
+              class="albumimage"
+              src="{{ albumCover2(page.title) }}"
+              alt="1"
+              width="120"
+              height="120"
+            />
+            <img
+              *ngIf="albumId == '5c352818ecfbd41448ff71af' && artists"
+              class="albumimage"
+              src="{{ albumCover3(page) }}"
+              alt="2"
+              width="120"
+              height="120"
+            />
+          </div>
+          <div class="info" (click)="setVideoLink(b, page)">
+            <h4
+              title="1 {{ page.title }}"
+              [style.display]="videoId == undefined ? 'block' : 'none'"
+            >
+              {{ page.title }}
+            </h4>
+            <h4
+              title="2 {{ page.title }}"
+              class="{{ page._id == videoId ? 'active' : '' }}"
+              [style.display]="videoId == undefined ? 'none' : 'block'"
+            >
+              {{ page.title }}
+            </h4>
+            <div [style.display]="page.kids == 0 ? 'none' : 'inline'">
+              {{
+                page.objectType == "5c3528d1ecfbd41448ff71b5"
+                  ? "Songs"
+                  : "Albums"
+              }}: {{ page.kids }}
+            </div>
+            <div
+              *ngIf="
+                page.schemaextend[0] &&
+                page.schemaextend[0].musicgenre &&
+                albumId != '5c35264fecfbd41448ff71ad'
+              "
+            >
+              Genre: {{ page.schemaextend[0].musicgenre }}
+            </div>
+            <div *ngIf="page">Hits: {{ page.hits }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <ul
+        *ngIf="pager.pages && pager.pages.length && pager.pages.length > 1"
+        id="pagination"
+        class="pagination2"
+      >
+        <li *ngIf="pager.currentPage !== 1">
+          <a (click)="setPage(1)"><<</a>
+        </li>
+        <li [ngClass]="{ disabled: pager.currentPage === 1 }">
+          <a (click)="setPage(pager.currentPage - 1)">{{
+            videoId == undefined ? "<" : "<"
+          }}</a>
+        </li>
+        <li
+          *ngFor="let page of pager.pages"
+          [ngClass]="{ active: pager.currentPage === page }"
+        >
+          <a (click)="setPage(page)">{{ page }}</a>
+        </li>
+        <li [ngClass]="{ disabled: pager.currentPage === pager.totalPages }">
+          <a (click)="setPage(pager.currentPage + 1)">{{
+            videoId == undefined ? ">" : ">"
+          }}</a>
+        </li>
+        <li [ngClass]="{ disabled: pager.currentPage === pager.totalPages }">
+          <a (click)="setPage(pager.totalPages)">>></a>
+        </li>
+      </ul>
+
+      <h4 class="title_footer">
+        <a routerLink="/Media/5bd13b5af01e2a3d7c47dc42">Music</a
+        ><a
+          class="float_r icmn-circle-up2 icontitle"
+          id="scrollToTop"
+          (click)="scrollToTop()"
+        ></a>
+      </h4>
+    </div>
+  </div>
+  <br style="clear: both" />
+</div>

@@ -1,0 +1,44 @@
+<ul cdkDropList
+    class="rowul_{{currentPage._id}} levelF turowlink scroller"
+    (cdkDropListDropped)="onDrop($event)">
+  <li cdkDrag
+      *ngFor="let f = index, let fpage of cmsPages | filter : (_cmsService.treelevels.length == 5) &&  _filterService.filterText | firstletter : (_cmsService.treelevels.length == 5) && _filterService.filterFirstletter"
+       class="trow_{{fpage.parent}} {{  fpage._id == _cmsService.pageSelected._id ? 'current' : '' }} {{ f%2 == 0 ? 'bg_darkgrey' : 'bg_grey' }}"
+      data-kids="off"
+      scope="rowF"
+      [cdkDragData]="fpage"
+      dir="{{ fpage.parent }}"
+      id="rowli_{{fpage._id}}"
+      title="{{fpage.title}}">
+    <div id="tabrowdl_{{fpage._id}}" class=" tabrowdl {{ fpage._id == _cmsService.pageSelected._id ? 'active' : '' }} {{ _cmsService.treelevels.length > 5 && _cmsService.treelevels[5]._id == fpage._id && fpage._id != _cmsService.pageSelected._id ? 'bactive' : '' }}">
+      <span [style.display]="_userService.isUserLoggedIn == true ? '' : 'none'" class="hidden table-cell col-sm-1 dnd icon handle {{ userlogin == true && fpage.parent == _cmsService.pageSelected._id ? ' icmn-arrow-resize8' : ' icmn-arrow-resize7' }}"></span>
+      <span class="table-cell Visibility col-sm-1 icon {{ fpage.visible == true ? 'icmn-lamp8' : 'icmn-lamp7' }}" title="{{ fpage.visible == true ? 'On' : 'Off' }}" id="visibility_{{fpage._id}}"></span>
+      <span class="table-cell Security col-sm-1 hidden {{ fpage.secure == true ? 'icmn-link4' : 'icmn-unlink4' }}" id="published_{{fpage._id}}"></span>
+      <span class="table-cell col-sm-1 {{ fpage.kids > 0 ? 'icmn-play4' : '' }}" title="{{fpage.kids}}" id="rowchild_{{fpage._id}}"></span>
+      <span class="table-cell col-sm-1 hidden letter hidden" title="F">6</span>
+      <span class="table-cell col-sm-1 Checkboxes hidden"><input class="checkbox chklevelF  {{ fpage.secure == true ? 'disabled' : ''}}" type="checkbox" id="chk_{{ fpage._id }}" value="1" title="{{ fpage.title }}" (click)="_cmsService.listCheckboxCount('chk_'+fpage._id)" /> &nbsp; </span>
+
+      <img *ngIf="_cmsService.listAutoImage == true" class="table-cell col-sm-1" src="/api/images/tekniek_ico.png" (load)="imageInfo(fpage)" alt="" />
+      <a (click)="_cmsService.listlink(fpage)"
+         id="tabrowl_{{fpage._id}}"
+         class="tabrowl mybuttonz col-sm-6 kid{{fpage.treelevel}} indent_6"
+         title="{{ fpage.kids > 0 ? fpage.kids + ' items under ' + fpage.title : '' }}">
+       <span> {{fpage.title | slice:0:32 }} </span>
+
+       <span *ngFor="let prop of _cmsService.filterFull;">
+        <span *ngIf="fpage._id == _cmsService.pageSelected._id" class="ucfirst smalltxt">{{ prop.pname != undefined ? ' | '+prop.pname : '' }}</span>
+     </span>
+
+       <span *ngIf="fpage.objectType == '5bf9d60fe2776742d80831e5'"><img class="listImages hidden" src="/api/assets/content/{{fpage._id}}/main.jpg" alt="" width="120"></span>
+        
+        <span class="float_r iconLetter" id="rowcell_{{fpage._id}}">{{fpage.kids > 0 ? fpage.kids : ''}}</span>
+      </a>
+
+    </div>
+    <app-cms-tablerowG [currentPage]="fpage"
+                       [userlogin]="userlogin"
+                       [cmsPages]="fpage.cmsSubPages"
+                       [tableLevel]="(tableLevel+1)">
+    </app-cms-tablerowG>
+  </li>
+</ul>

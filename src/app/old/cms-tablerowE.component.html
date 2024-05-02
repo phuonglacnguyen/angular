@@ -1,0 +1,49 @@
+<ul cdkDropList
+    class="rowul_{{currentPage._id}} levelE turowlink"
+    (cdkDropListDropped)="onDrop($event)"
+    >
+    <li cdkDrag
+        *ngFor="let e = index, let epage of cmsPages | filter : (_cmsService.treelevels.length == 4) &&  _filterService.filterText | firstletter : (_cmsService.treelevels.length == 4) && _filterService.filterFirstletter"
+        class="trow_{{epage.parent}} {{  epage._id == _cmsService.pageSelected._id ? 'current' : '' }}  {{ e%2 == 0 ? 'bg_grey' : 'bg_white' }}"
+        [cdkDragData]="epage"
+        data-kids="off"
+        (onDropSuccess)="_cmsService.onMoveb(epage, e)"
+        scope="rowE"
+        dir="{{ epage.parent }}"
+        id="rowli_{{epage._id}}">
+      <div id="tabrowdl_{{epage._id}}" class="tabrowdl {{ epage._id == _cmsService.pageSelected._id ? 'active' : '' }} {{ _cmsService.treelevels.length > 4 && _cmsService.treelevels[4]._id == epage._id && epage._id != _cmsService.pageSelected._id ? 'bactive' : '' }}">
+        <span [style.display]="_userService.isUserLoggedIn == true ? '' : 'none'" class="hidden table-cell col-sm-1 dnd icon handle {{ userlogin == true && epage.parent == _cmsService.pageSelected._id ? ' icmn-arrow-resize8' : ' icmn-arrow-resize7' }}"></span>
+        <span class="table-cell col-sm-1 Visibility icon {{ epage.visible == true ? 'icmn-lamp8' : 'icmn-lamp7' }}" title="{{ epage.visible == true ? 'On' : 'Off' }}" id="visibility_{{epage._id}}"></span>
+        <span class="table-cell col-sm-1 Security hidden {{ epage.secure == true ? 'icmn-link4' : 'icmn-unlink4' }}" id="published_{{epage._id}}"></span>
+        <span class="table-cell col-sm-1 {{ epage.kids > 0 ? 'icmn-arrow-right5' : 'icon' }}" title="{{epage.kids}}" id="rowchild_{{epage._id}}"></span>
+        <span class="table-cell col-sm-1 hidden letter" title="E">5</span>
+        <span class="table-cell col-sm-1 Checkboxes hidden"><input class="checkbox chklevelE  {{ epage.secure == true ? 'disabled' : ''}}" type="checkbox" id="chk_{{ epage._id }}" value="1" title="{{ epage.title }}" (click)="_cmsService.listCheckboxCount('chk_'+epage._id)" /> &nbsp; </span>
+
+        <img *ngIf="_cmsService.listAutoImage == true" class="table-cell col-sm-1" src="/api/images/tekniek_ico.png" (load)="createThumb(epage._id)" alt="" />
+
+
+        <a (click)="_cmsService.listlink(epage)"
+           id="tabrowl_{{epage._id}}"
+           class="tabrowl table-cell mybuttonz col-sm-6 kid{{epage.treelevel}} indent_5"
+           title="{{ epage.title }}">
+          {{epage.title | slice:0:32}}
+
+          <span *ngFor="let prop of _cmsService.propertiesFull;" class="smalltxt">
+             
+          </span>
+
+          <span *ngFor="let prop of _cmsService.filterFull;">
+             <span *ngIf="epage._id == _cmsService.pageSelected._id" class="ucfirst smalltxt">{{ prop.pname != undefined ? ' | '+prop.pname : '' }}</span>
+          </span>
+
+          <span class="float_r iconLetter" id="rowcell_{{epage._id}}">{{epage.kids > 0 ? epage.kids : ''}}</span>
+        </a>
+      </div>
+        <app-cms-tablerowF [currentPage]="epage" 
+                           [userlogin]="userlogin"
+                           [cmsPages]="epage.cmsSubPages" 
+                           [tableLevel]="(tableLevel+1)">
+        </app-cms-tablerowF>
+
+    </li>
+</ul>
