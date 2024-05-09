@@ -13,7 +13,7 @@ import { Files } from './../../models/bots/Files';
 import { Address } from './../../models/address';
 import { UserService } from './../services/user.service';
 import { FileUpload } from './../../models/file-upload';
-import { environment } from 'src/environments/environment';
+import { environment } from './../../environments/environment';
 
 @Injectable()
 export class CmsService {
@@ -201,7 +201,9 @@ export class CmsService {
   }
 
   ListParents2() {
-    return this._http.get<Array<Page>>('/api/getListParents');
+    return this._http.get<Array<Page>>(
+      environment.API_URL + '/api/getListParents'
+    );
   }
 
   getArtist() {
@@ -306,7 +308,7 @@ export class CmsService {
 
   getListByName(name: string) {
     return this._http
-      .get('/api/getListByName/' + name)
+      .get(environment.API_URL + '/api/getListByName/' + name)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
@@ -337,7 +339,11 @@ export class CmsService {
   checkAssetFolder(assetfolder: string) {
     return this._http
       .get<boolean>(
-        '/api/checkAssetFolder/' + assetfolder + '/' + this.pageSelected._id
+        environment.API_URL +
+          '/api/checkAssetFolder/' +
+          assetfolder +
+          '/' +
+          this.pageSelected._id
       )
       .pipe(map((response) => response));
   }
@@ -345,60 +351,88 @@ export class CmsService {
   createAssetFolder(assetfolder: string) {
     return this._http
       .get(
-        '/api/createAssetFolder/' + assetfolder + '/' + this.pageSelected._id
+        environment.API_URL +
+          '/api/createAssetFolder/' +
+          assetfolder +
+          '/' +
+          this.pageSelected._id
       )
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   createAssetFolderItem(assetfolder: string, id: string) {
     return this._http
-      .get('/api/createAssetFolder/' + assetfolder + '/' + id)
+      .get(
+        environment.API_URL + '/api/createAssetFolder/' + assetfolder + '/' + id
+      )
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   deletAssetFolderItem(assetfolder: string, id: string) {
     return this._http
-      .get('/api/deleteAssetFolder/' + assetfolder + '/' + id)
+      .get(
+        environment.API_URL + '/api/deleteAssetFolder/' + assetfolder + '/' + id
+      )
       .pipe();
   }
 
   copyfile(id, oldfile: string, newfile: string) {
     return this._http
-      .get('/api/filecopy/' + id + '/' + oldfile + '/' + newfile)
+      .get(
+        environment.API_URL +
+          '/api/filecopy/' +
+          id +
+          '/' +
+          oldfile +
+          '/' +
+          newfile
+      )
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   copyOldImages(oldid: string, filenam: string) {
     return this._http
-      .get('/api/copyoldimages/' + oldid + '/' + filenam)
+      .get(environment.API_URL + '/api/copyoldimages/' + oldid + '/' + filenam)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   copyOldMovieGenres(oldid: string, moviegenres: string) {
     return this._http
-      .get('/api/copyoldmoviegenres/' + oldid + '/' + moviegenres)
+      .get(
+        environment.API_URL +
+          '/api/copyoldmoviegenres/' +
+          oldid +
+          '/' +
+          moviegenres
+      )
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   copyOldMovieImdb(oldid: string, imdblink: string) {
     console.log(oldid + ' ' + imdblink);
     return this._http
-      .get('/api/copyoldmovieimdb/' + oldid + '/' + imdblink)
+      .get(
+        environment.API_URL + '/api/copyoldmovieimdb/' + oldid + '/' + imdblink
+      )
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   deleteAssetFolder(assetfolder: string) {
     return this._http
       .get(
-        '/api/deleteAssetFolder/' + assetfolder + '/' + this.pageSelected._id
+        environment.API_URL +
+          '/api/deleteAssetFolder/' +
+          assetfolder +
+          '/' +
+          this.pageSelected._id
       )
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   upload(files: Array<File>, nameExtension: string) {
     return this._http.put(
-      this._baseURL +
-        'uploadContent/' +
+      environment.API_URL +
+        '/api/uploadContent/' +
         nameExtension +
         '/' +
         this.pageSelected._id,
@@ -408,73 +442,79 @@ export class CmsService {
 
   filedelete(fileId: string, filename: string) {
     return this._http
-      .get('/api/contentdelete/' + fileId + '/' + filename)
+      .get(
+        environment.API_URL + '/api/contentdelete/' + fileId + '/' + filename
+      )
       .pipe();
   }
 
   checkAssetFile(fileN: string, fileId: string, id: string) {
-    return this._http.get<string>('/api/assetfile/' + id + '/' + fileN).pipe();
+    return this._http
+      .get<string>(environment.API_URL + '/api/assetfile/' + id + '/' + fileN)
+      .pipe();
   }
 
   checkAssetFile2(fileN: string, fileId: string, id: string) {
-    return this._http.get('/api/assetfile2/' + id + '/' + fileN).pipe();
+    return this._http
+      .get(environment.API_URL + '/api/assetfile2/' + id + '/' + fileN)
+      .pipe();
   }
 
   saveListDeleteImage(pageId: string) {
     return this._http
-      .get('/api/saveListDeleteImage/' + pageId)
+      .get(environment.API_URL + '/api/saveListDeleteImage/' + pageId)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   createImage(id: string) {
     return this._http
-      .get('/api/createImage/' + id)
+      .get(environment.API_URL + '/api/createImage/' + id)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   lengthFromMovie(page: Page) {
     return this._http
-      .post('/api/lengthFromMovie', page)
+      .post(environment.API_URL + '/api/lengthFromMovie', page)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   convertMovie(page: Page) {
     return this._http
-      .put('/api/convertMovie', page)
+      .put(environment.API_URL + '/api/convertMovie', page)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   convertAudio(page: Page) {
     return this._http
-      .put('/api/convertAudio', page)
+      .put(environment.API_URL + '/api/convertAudio', page)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   autoCrop(page: Page, id: string) {
-    return this._http.get('/api/cropdetect/' + id).pipe();
+    return this._http.get(environment.API_URL + '/api/cropdetect/' + id).pipe();
   }
 
   faststartById(id: string) {
     return this._http
-      .get('/api/faststart/' + id)
+      .get(environment.API_URL + '/api/faststart/' + id)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   faststart(page: Page) {
     return this._http
-      .put('/api/faststart', page)
+      .put(environment.API_URL + '/api/faststart', page)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   createImageById(id: string) {
     return this._http
-      .get('/api/createImage/' + id)
+      .get(environment.API_URL + '/api/createImage/' + id)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   createImageByIdSeconds(id: string, seconds: number) {
     return this._http
-      .get('/api/createImage/' + id + '/' + seconds)
+      .get(environment.API_URL + '/api/createImage/' + id + '/' + seconds)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
@@ -522,7 +562,9 @@ export class CmsService {
             document.getElementById('content_' + inputId).innerHTML =
               `<video style="border-radius: 6px;" width="100%" id="mainmov_` +
               inputId +
-              `" controls><source id="mainsource" src="/api/assets/content/` +
+              `" controls><source id="mainsource" src="` +
+              environment.API_URL +
+              `/api/assets/content/` +
               id +
               `/` +
               fileN +
@@ -556,7 +598,9 @@ export class CmsService {
           } else if (res == 'mp3') {
             document.getElementById('content_' + inputId).innerHTML =
               `<audio #videoPlayer id="player" style="background-color: #F1F3F4;width:100%;border-radius: 0px;margin:0px 0px 0px 0px;" preload="auto" controls>
-                  <source #videoSource id="playersource" src="/assets/music/Album/` +
+                  <source #videoSource id="playersource" src=" ` +
+              environment.API_URL +
+              `/assets/music/Album/` +
               this.pageSelected.schemaextend[0].url.replace('Albums/', '') +
               `" type="audio/mpeg">
                   Your browser does not support the audio tag.
@@ -565,7 +609,9 @@ export class CmsService {
             document.getElementById('content_' + inputId).innerHTML =
               '<img  id="' +
               fileN +
-              '_image" src="/api/assets/content/' +
+              '_image" src="' +
+              environment.API_URL +
+              '/api/assets/content/' +
               id +
               '/' +
               fileN +
@@ -591,7 +637,9 @@ export class CmsService {
             }, 2000);
           } else {
             document.getElementById('content_' + inputId).innerHTML =
-              '<div class="paddinger9"><a href="http://77.171.83.149:4200/api/assets/content/' +
+              '<div class="paddinger9"><a href="' +
+              environment.API_URL +
+              '/api/assets/content/' +
               id +
               '/' +
               fileN +
@@ -950,26 +998,31 @@ export class CmsService {
 
   writeFile(text: object) {
     return this._http
-      .post('/api/writefile/writefile', text)
+      .post(environment.API_URL + '/api/writefile/writefile', text)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   updatePickorder(pageId: string, pickorder: number) {
     return this._http
-      .get('/api/updatepickorder/' + pageId + '/' + pickorder)
+      .get(
+        environment.API_URL + '/api/updatepickorder/' + pageId + '/' + pickorder
+      )
       .pipe(); // map(response => JSON.parse(JSON.stringify(response)).data)
   }
 
   setStringReplace(pageId: string, string: string) {
     return this._http
-      .get('/api/setStringReplace/' + pageId + '/' + string)
+      .get(
+        environment.API_URL + '/api/setStringReplace/' + pageId + '/' + string
+      )
       .pipe(); // map(response => JSON.parse(JSON.stringify(response)).data)
   }
 
   upsertPage(page: Page) {
     return this._http
       .get(
-        '/api/upsertpage/' +
+        environment.API_URL +
+          '/api/upsertpage/' +
           this.selectedProperty.type +
           '/' +
           this.selectedProperty.pname +
@@ -1117,13 +1170,21 @@ export class CmsService {
 
   listValueToField(id: string, name: string, value: string, type: string) {
     return this._http.get<Page>(
-      '/api/listValueToField/' + id + '/' + name + '/' + value + '/' + type
+      environment.API_URL +
+        '/api/listValueToField/' +
+        id +
+        '/' +
+        name +
+        '/' +
+        value +
+        '/' +
+        type
     );
   }
 
   getObjectKids(parentId: string) {
     return this._http
-      .get('/api/object/pages/' + parentId)
+      .get(environment.API_URL + '/api/object/pages/' + parentId)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
@@ -1193,13 +1254,13 @@ export class CmsService {
 
   mediadelete(media: string) {
     return this._http
-      .get('/api/contentdelete/' + media)
+      .get(environment.API_URL + '/api/contentdelete/' + media)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   filterdelete(index: number, page: Page) {
     return this._http
-      .put('/api/contfildelete/' + index, page)
+      .put(environment.API_URL + '/api/contfildelete/' + index, page)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
@@ -1226,32 +1287,32 @@ export class CmsService {
 
   pageupload(files: Array<File>, fileExten: string) {
     return this._http
-      .put('/api/pageupload/' + fileExten, files)
+      .put(environment.API_URL + '/api/pageupload/' + fileExten, files)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   fileCheck(file: string) {
     return this._http
-      .get('/api/assets/content/' + file)
+      .get(environment.API_URL + '/api/assets/content/' + file)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   scan_new_folder(objekt: Page) {
     return this._http
-      .post('/api/assets/scan_new_folder', objekt)
+      .post(environment.API_URL + '/api/assets/scan_new_folder', objekt)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   scan_music_folder(objekt, path: string) {
     objekt.path = path;
     return this._http
-      .post('/api/assets/scan_music_folder', objekt)
+      .post(environment.API_URL + '/api/assets/scan_music_folder', objekt)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   scan_url_folder(objekt) {
     return this._http
-      .get('/api/assets/scan_url_folder', objekt)
+      .get(environment.API_URL + '/api/assets/scan_url_folder', objekt)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
@@ -1460,7 +1521,9 @@ export class CmsService {
   }
 
   getcontext(page: Page) {
-    return this._http.get<Array<Page>>('/api/getcontext/' + page._id);
+    return this._http.get<Array<Page>>(
+      environment.API_URL + '/api/getcontext/' + page._id
+    );
   }
 
   // context(page: Page) {
@@ -1745,9 +1808,11 @@ export class CmsService {
   }
 
   getModel(fname: string) {
-    this._http.get<File>('/api/model/read/' + fname).subscribe((data) => {
-      document.getElementById('modelRead').innerHTML = this.nl2br(data, '');
-    });
+    this._http
+      .get<File>(environment.API_URL + '/api/model/read/' + fname)
+      .subscribe((data) => {
+        document.getElementById('modelRead').innerHTML = this.nl2br(data, '');
+      });
   }
 
   getModels() {
@@ -1794,65 +1859,69 @@ export class CmsService {
 
   getImdb(page: Page) {
     return this._http
-      .post('/api/getImdb/', page)
+      .post(environment.API_URL + '/api/getImdb/', page)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   getImdbById(pageId: string) {
     return this._http
-      .get('/api/getImdb/' + pageId)
+      .get(environment.API_URL + '/api/getImdb/' + pageId)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   srtToVtt(page: Page, lang) {
     return this._http
-      .get('/api/convertSrtToVtt/' + lang + '/' + page._id)
+      .get(
+        environment.API_URL + '/api/convertSrtToVtt/' + lang + '/' + page._id
+      )
       .pipe();
   }
 
   fileToImageConverter(id: string) {
     return this._http
-      .get('/api/fileToImageConverter/' + id)
+      .get(environment.API_URL + '/api/fileToImageConverter/' + id)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   getMovieInfo(page: Page) {
-    return this._http.post<Page>('/api/getMovieInfo/', page).pipe();
+    return this._http
+      .post<Page>(environment.API_URL + '/api/getMovieInfo/', page)
+      .pipe();
   }
 
   getMovieInfoById(pageId: string) {
     return this._http
-      .get<Page>('/api/getMovieInfoById/' + pageId)
+      .get<Page>(environment.API_URL + '/api/getMovieInfoById/' + pageId)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   geturl(pageId: string) {
     return this._http
-      .get('/api/geturl/' + pageId)
+      .get(environment.API_URL + '/api/geturl/' + pageId)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   getImageInfo(page: Page) {
     return this._http
-      .post('/api/getImageInfo/', page)
+      .post(environment.API_URL + '/api/getImageInfo/', page)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   imageThumbFromImage(id: string) {
     return this._http
-      .get('/api/imageThumbFromImage/' + id)
+      .get(environment.API_URL + '/api/imageThumbFromImage/' + id)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   incrementKid(parentId: string) {
     return this._http
-      .get('/api/pages/inckid/' + parentId)
+      .get(environment.API_URL + '/api/pages/inckid/' + parentId)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   decrementKid(parentId: string) {
     return this._http
-      .get('/api/pages/deckid/' + parentId)
+      .get(environment.API_URL + '/api/pages/deckid/' + parentId)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
@@ -2085,43 +2154,45 @@ export class CmsService {
 
   fileAlbumAdd(mediaId: string, albums: string) {
     return this._http
-      .get('/api/fileAlbumAdd/' + mediaId + '/' + albums)
+      .get(environment.API_URL + '/api/fileAlbumAdd/' + mediaId + '/' + albums)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   fileAlbumDelete(mediaId: string, albums: Array<Page>) {
     return this._http
-      .put('/api/fileAlbumDelete/' + mediaId, albums)
+      .put(environment.API_URL + '/api/fileAlbumDelete/' + mediaId, albums)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   listPropertyUsedBy(propid: string) {
-    return this._http.get('/api/listPropertyUsedBy/' + propid).pipe();
+    return this._http
+      .get(environment.API_URL + '/api/listPropertyUsedBy/' + propid)
+      .pipe();
   }
 
   getAllSongs() {
-    return this._http.get('/api/allsongs').pipe();
+    return this._http.get(environment.API_URL + '/api/allsongs').pipe();
   }
 
   folderIdCheck() {
-    return this._http.get('/api/folderIdCheck').pipe();
+    return this._http.get(environment.API_URL + '/api/folderIdCheck').pipe();
   }
 
   filterParentList() {
     return this._http
-      .get('/api/filter/parentList')
+      .get(environment.API_URL + '/api/filter/parentList')
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   filterUsersList() {
     return this._http
-      .get('/api/filter/usersList')
+      .get(environment.API_URL + '/api/filter/usersList')
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   filterMediaList() {
     return this._http
-      .get('/api/filter/mediaList')
+      .get(environment.API_URL + '/api/filter/mediaList')
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
@@ -2305,11 +2376,13 @@ export class CmsService {
   }
 
   getProperty(propid: string) {
-    return this._http.get<CmsProperty>('/api/cmsproperty/' + propid).pipe();
+    return this._http
+      .get<CmsProperty>(environment.API_URL + '/api/cmsproperty/' + propid)
+      .pipe();
   }
   getFilter(propid: string) {
     return this._http
-      .get('/api/cmsproperty/' + propid)
+      .get(environment.API_URL + '/api/cmsproperty/' + propid)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
@@ -2413,7 +2486,7 @@ export class CmsService {
 
   getPropByName(prop: CmsProperty) {
     return this._http
-      .get('/api/getPropByName/' + prop)
+      .get(environment.API_URL + '/api/getPropByName/' + prop)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
@@ -2519,58 +2592,66 @@ export class CmsService {
   }
 
   getPages(parentId: string) {
-    return this._http.get<Array<Page>>('/api/pages/' + parentId).pipe();
+    return this._http
+      .get<Array<Page>>(environment.API_URL + '/api/pages/' + parentId)
+      .pipe();
   }
 
   getPagez(parentId: string) {
-    return this._http.get('/api/pagez/' + parentId).pipe();
+    return this._http
+      .get(environment.API_URL + '/api/pagez/' + parentId)
+      .pipe();
   }
 
   getcms(parentId: string) {
-    return this.http.get<Page>('/api/page/' + parentId);
+    return this.http.get<Page>(environment.API_URL + '/api/page/' + parentId);
   }
 
   getchildcms(parentId: string) {
-    return this._http.get<Page>('/api/childpage/' + parentId).pipe(); //
+    return this._http
+      .get<Page>(environment.API_URL + '/api/childpage/' + parentId)
+      .pipe(); //
   }
 
   updateParent(id: string, parent: string) {
     return this._http
-      .get('/api/updateparent/' + id + '/' + parent)
+      .get(environment.API_URL + '/api/updateparent/' + id + '/' + parent)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   updateMusicGenre(id: string, genre: string) {
     return this._http
-      .get('/api/mgenre/' + id + '/' + genre)
+      .get(environment.API_URL + '/api/mgenre/' + id + '/' + genre)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
   updateTreelevel(id: string, genre: string) {
     return this._http
-      .get('/api/treelevel/' + id + '/' + genre)
+      .get(environment.API_URL + '/api/treelevel/' + id + '/' + genre)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   updateListKids(id: string, listitem: string) {
     return this._http
-      .get('/api/updateListKids/' + id + '/' + listitem)
+      .get(environment.API_URL + '/api/updateListKids/' + id + '/' + listitem)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   updateListItem(id: string, listitem: string) {
     return this._http
-      .get('/api/updatelistitem/' + id + '/' + listitem)
+      .get(environment.API_URL + '/api/updatelistitem/' + id + '/' + listitem)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   updateListGenre(id: string, listitem: string) {
     return this._http
-      .get('/api/updatelistgenre/' + id + '/' + listitem)
+      .get(environment.API_URL + '/api/updatelistgenre/' + id + '/' + listitem)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   updateObject(id: string, objekt: string) {
-    return this._http.get('/api/updateobject/' + id + '/' + objekt).pipe();
+    return this._http
+      .get(environment.API_URL + '/api/updateobject/' + id + '/' + objekt)
+      .pipe();
   }
 
   setpageSelectedIndex(number: number) {
@@ -2607,34 +2688,47 @@ export class CmsService {
   }
 
   getBackgrounds(picId: string) {
-    return this._http.get('/api/backgrounds/' + picId).pipe();
+    return this._http
+      .get(environment.API_URL + '/api/backgrounds/' + picId)
+      .pipe();
   }
 
   getPagesDesc(parentId: string) {
-    return this._http.get('/api/pagesdesc/' + parentId).pipe();
+    return this._http
+      .get(environment.API_URL + '/api/pagesdesc/' + parentId)
+      .pipe();
   }
 
   getPagesAsc(parentId: string) {
-    return this._http.get('/api/pagesasc/' + parentId).pipe();
+    return this._http
+      .get(environment.API_URL + '/api/pagesasc/' + parentId)
+      .pipe();
   }
 
   getPagesVisible(parentId: string) {
-    return this._http.get<Array<Page>>('/api/pagesvisible/' + parentId).pipe();
+    return this._http
+      .get<Array<Page>>(environment.API_URL + '/api/pagesvisible/' + parentId)
+      .pipe();
   }
 
   getPhotoPersons(personId: string) {
-    return this._http.get('/api/persons/' + personId).pipe();
+    return this._http
+      .get(environment.API_URL + '/api/persons/' + personId)
+      .pipe();
   }
 
   getMusicAlbums() {
-    return this._http.get('/api/musicalbums/').pipe();
+    return this._http.get(environment.API_URL + '/api/musicalbums/').pipe();
   }
 
   createBat(filename: string, commands: any, ids: any) {
     let tmp = {};
     tmp['contents'] = commands;
     tmp['ids'] = ids;
-    return this._http.put('/api/createBat/' + filename, tmp);
+    return this._http.put(
+      environment.API_URL + '/api/createBat/' + filename,
+      tmp
+    );
   }
 
   getRandomChild(parent: string) {
@@ -2651,7 +2745,8 @@ export class CmsService {
   ) {
     return this._http
       .get(
-        '/api/insertImagesParentName/' +
+        environment.API_URL +
+          '/api/insertImagesParentName/' +
           artistName +
           '/' +
           albumName +
@@ -2669,22 +2764,32 @@ export class CmsService {
   ) {
     return this._http
       .post(
-        '/api/insertByParentName/' + parentName + '/' + title + '/' + url,
+        environment.API_URL +
+          '/api/insertByParentName/' +
+          parentName +
+          '/' +
+          title +
+          '/' +
+          url,
         page
       )
       .pipe();
   }
 
   getAlbumsByArray(searcharray: Array<string>) {
-    return this._http.post('/api/getAlbumsByArray', searcharray).pipe();
+    return this._http
+      .post(environment.API_URL + '/api/getAlbumsByArray', searcharray)
+      .pipe();
   }
 
   insertPageWithUrl(page: Page) {
-    return this._http.post('/api/page', page).pipe();
+    return this._http.post(environment.API_URL + '/api/page', page).pipe();
   }
 
   getPagesByTitle(parentId: string) {
-    return this._http.get<Array<Page>>('/api/pagesbytitle/' + parentId).pipe();
+    return this._http
+      .get<Array<Page>>(environment.API_URL + '/api/pagesbytitle/' + parentId)
+      .pipe();
   }
 
   setPages(pages: Array<Page>) {
@@ -2734,19 +2839,22 @@ export class CmsService {
   }
 
   getPropertiesList() {
-    return this._http.get<Array<CmsProperty>>('/api/getproperties').pipe();
+    return this._http
+      .get<Array<CmsProperty>>(environment.API_URL + '/api/getproperties')
+      .pipe();
   }
 
   getCmsObject(cmsproperty: CmsProperty) {
     return this._http
-      .get('/api/cmsproperty/' + cmsproperty._id)
+      .get(environment.API_URL + '/api/cmsproperty/' + cmsproperty._id)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   upsertProperty(propname: string, datatype: string) {
     return this._http
       .get(
-        '/api/upsertproperty/' +
+        environment.API_URL +
+          '/api/upsertproperty/' +
           this.pageSelected._id +
           '/' +
           propname +
@@ -2764,7 +2872,8 @@ export class CmsService {
   ) {
     return this._http
       .get(
-        '/api/upsertprop/' +
+        environment.API_URL +
+          '/api/upsertprop/' +
           page +
           '/' +
           propname +
@@ -2777,40 +2886,52 @@ export class CmsService {
   }
 
   updatePage(page: Page) {
-    return this._http.put<Page>('/api/page/' + page._id, page);
+    return this._http.put<Page>(
+      environment.API_URL + '/api/page/' + page._id,
+      page
+    );
   }
 
   page_update(page: Page) {
-    return this._http.post<Page>('/api/page_update/' + page._id, page);
+    return this._http.post<Page>(
+      environment.API_URL + '/api/page_update/' + page._id,
+      page
+    );
   }
 
   insertPerson(pageId: string, Person: string) {
-    return this._http.get('/api/insertPerson/' + pageId + '/' + Person).pipe(); // map(response => JSON.parse(JSON.stringify(response)).data)
+    return this._http
+      .get(environment.API_URL + '/api/insertPerson/' + pageId + '/' + Person)
+      .pipe(); // map(response => JSON.parse(JSON.stringify(response)).data)
   }
 
   deletePerson(pageId: string) {
-    return this._http.get('/api/deletePerson/' + pageId + '/').pipe();
+    return this._http
+      .get(environment.API_URL + '/api/deletePerson/' + pageId + '/')
+      .pipe();
   }
 
   insertPage(page: Page) {
-    return this._http.post<Page>('/api/page/', page).pipe();
+    return this._http
+      .post<Page>(environment.API_URL + '/api/page/', page)
+      .pipe();
   }
 
   checkCmsObject(cmsproperty: CmsProperty) {
     return this._http
-      .get('/api/cmsproperty/' + cmsproperty._id)
+      .get(environment.API_URL + '/api/cmsproperty/' + cmsproperty._id)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   checkPropInUse(propid: string) {
     return this._http
-      .get('/api/checkpropinuse/' + propid)
+      .get(environment.API_URL + '/api/checkpropinuse/' + propid)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   createThumb(pageid: string) {
     return this._http
-      .get('/api/createthumb/' + pageid)
+      .get(environment.API_URL + '/api/createthumb/' + pageid)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
@@ -2838,7 +2959,9 @@ export class CmsService {
     //   .replace('music/Dance/', 'music/Albums/')
     //   .replace('Collections/Classics/', 'Collections/')
     //   .replace('music/Singles/', 'music/Albums/Singles/');
-    return this._http.post<Page>('/api/id3tags/', page).pipe();
+    return this._http
+      .post<Page>(environment.API_URL + '/api/id3tags/', page)
+      .pipe();
   }
 
   getSongUrl(page: Page) {
@@ -2865,13 +2988,13 @@ export class CmsService {
 
   imagerotate(pageid: string) {
     return this._http
-      .get('/api/imagerotate/' + pageid)
+      .get(environment.API_URL + '/api/imagerotate/' + pageid)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   imagerotate2(pageid: string, degrees: string) {
     return this._http
-      .get('/api/imagerotate/' + pageid + '/' + degrees)
+      .get(environment.API_URL + '/api/imagerotate/' + pageid + '/' + degrees)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
@@ -2897,47 +3020,55 @@ export class CmsService {
 
   insertCmsObject(cmsproperty: CmsProperty) {
     return this._http
-      .post('/api/cmsproperty', cmsproperty)
+      .post(environment.API_URL + '/api/cmsproperty', cmsproperty)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data)); // map(response => JSON.parse(JSON.stringify(response)).data)
   }
 
   updateCmsObject(cmsproperty: CmsProperty) {
     return this._http
-      .put('/api/cmsproperty/' + cmsproperty._id, cmsproperty)
+      .put(
+        environment.API_URL + '/api/cmsproperty/' + cmsproperty._id,
+        cmsproperty
+      )
       .pipe();
   }
 
   GetPageSelectedAddMedia() {
     return this._http
-      .put('/api/page/' + this.pageSelected._id, this.pageSelected)
+      .put(
+        environment.API_URL + '/api/page/' + this.pageSelected._id,
+        this.pageSelected
+      )
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   createPage(page: Page) {
     return this._http
-      .post('/api/cms', page)
+      .post(environment.API_URL + '/api/cms', page)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   destroyPage(page: Page) {
     return this._http
-      .delete('/api/cms/' + page._id)
+      .delete(environment.API_URL + '/api/cms/' + page._id)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   destroyPageById(pageId: string) {
-    return this._http.get('/api/cmsdelete/' + pageId).pipe();
+    return this._http
+      .get(environment.API_URL + '/api/cmsdelete/' + pageId)
+      .pipe();
   }
 
   unsecurePageById(pageId: string) {
     return this._http
-      .get('/api/unsecurepagebyid/' + pageId)
+      .get(environment.API_URL + '/api/unsecurepagebyid/' + pageId)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
   removeProperty(cmsprop: CmsProperty) {
     return this._http
-      .delete('/api/CmsProperty/' + cmsprop._id)
+      .delete(environment.API_URL + '/api/CmsProperty/' + cmsprop._id)
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 
@@ -2945,32 +3076,40 @@ export class CmsService {
     let input = new FormData();
     input.append('file', fileToUpload);
     return this._http
-      .post('/api/userimage/' + page._id, input)
+      .post(environment.API_URL + '/api/userimage/' + page._id, input)
       .subscribe((response) => JSON.parse(JSON.stringify(response)).data);
   }
 
   getParentSelected(pageid: string) {
-    return this._http.get<Page>('/api/getpage/' + pageid).pipe();
+    return this._http
+      .get<Page>(environment.API_URL + '/api/getpage/' + pageid)
+      .pipe();
   }
 
   insertField(page: Page, fieldname: string, tval: string) {
     page.schemaextend[0][fieldname] = tval;
     console.log(page);
-    return this._http.put('/api/fieldupdate', page).subscribe();
+    return this._http
+      .put(environment.API_URL + '/api/fieldupdate', page)
+      .subscribe();
   }
 
   insertField2(page: Page, fieldname: string, tval: string) {
     page[fieldname] = tval;
-    return this._http.put('/api/fieldupdate', page).subscribe();
+    return this._http
+      .put(environment.API_URL + '/api/fieldupdate', page)
+      .subscribe();
   }
 
   scanmodels() {
-    return this._http.get<Array<string>>('/api/files/models/').pipe();
+    return this._http
+      .get<Array<string>>(environment.API_URL + '/api/files/models/')
+      .pipe();
   }
 
   scanbots() {
     return this._http
-      .get('/api/files/bots/')
+      .get(environment.API_URL + '/api/files/bots/')
       .pipe(map((response) => JSON.parse(JSON.stringify(response)).data));
   }
 }
