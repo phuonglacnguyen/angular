@@ -2,7 +2,7 @@ default:
   image: node:16.14.2-bullseye
 
 stages:
-  - build
+  - setup
   - test
 
   install:
