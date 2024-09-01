@@ -87,7 +87,7 @@ export class menusTopButtons implements OnInit {
     this.ip.getIPAddress().subscribe((res: any) => {
       if (res.ip == '77.171.83.149') {
         this.user.email = 'webmaster@tekniek.com';
-        this.user.password = 'Lievelinh@13';
+        this.user.password = 'Xxxxxx';
         this.getLogin(this.user);
       }
     });
